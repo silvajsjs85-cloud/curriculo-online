@@ -1,0 +1,2295 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Atelier CV — Gerador de Currículo Profissional</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,400&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0f0f0e;
+    --paper: #faf8f3;
+    --cream: #f3efe6;
+    --accent: #c8482b;
+    --accent-soft: #e8d5cd;
+    --muted: #6b6560;
+    --line: #1a1a18;
+    --sage: #6b7a5a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ========== NAVEGAÇÃO ========== */
+  .nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 20px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(250, 248, 243, 0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(15,15,14,0.08);
+  }
+
+  .logo {
+    font-family: 'Fraunces', serif;
+    font-size: 24px;
+    font-weight: 600;
+    font-style: italic;
+    letter-spacing: -0.02em;
+  }
+
+  .logo span { color: var(--accent); }
+
+  .nav-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* ========== HERO ========== */
+  .hero {
+    min-height: 100vh;
+    padding: 120px 40px 60px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+    position: relative;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 20%;
+    right: 45%;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, var(--accent-soft) 0%, transparent 70%);
+    opacity: 0.5;
+    z-index: 0;
+  }
+
+  .hero-content { position: relative; z-index: 1; }
+
+  .hero-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .hero-label::before {
+    content: '';
+    width: 40px;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  .hero h1 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(48px, 7vw, 96px);
+    line-height: 0.95;
+    font-weight: 400;
+    letter-spacing: -0.03em;
+    margin-bottom: 32px;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: var(--accent);
+    font-weight: 300;
+  }
+
+  .hero p {
+    font-size: 19px;
+    color: var(--muted);
+    max-width: 480px;
+    margin-bottom: 40px;
+    line-height: 1.5;
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+  }
+
+  .btn-primary {
+    background: var(--ink);
+    color: var(--paper);
+    border: none;
+    padding: 18px 36px;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 2px;
+    font-family: inherit;
+  }
+
+  .btn-primary:hover {
+    background: var(--accent);
+    transform: translateY(-2px);
+  }
+
+  .btn-ghost {
+    background: transparent;
+    border: 1px solid var(--ink);
+    padding: 18px 36px;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    cursor: pointer;
+    color: var(--ink);
+    transition: all 0.3s ease;
+    border-radius: 2px;
+    font-family: inherit;
+  }
+
+  .btn-ghost:hover { background: var(--ink); color: var(--paper); }
+
+  .hero-visual {
+    position: relative;
+    height: 600px;
+    z-index: 1;
+  }
+
+  .mock-cv {
+    position: absolute;
+    background: white;
+    box-shadow: 0 40px 80px -20px rgba(15,15,14,0.25);
+    padding: 40px;
+    border-radius: 4px;
+  }
+
+  .mock-cv-1 {
+    width: 70%;
+    height: 85%;
+    top: 5%;
+    left: 0;
+    transform: rotate(-3deg);
+    z-index: 2;
+  }
+
+  .mock-cv-2 {
+    width: 70%;
+    height: 85%;
+    top: 10%;
+    right: 0;
+    transform: rotate(4deg);
+    z-index: 1;
+    opacity: 0.9;
+  }
+
+  .mock-line {
+    height: 8px;
+    background: var(--cream);
+    border-radius: 2px;
+    margin-bottom: 12px;
+  }
+
+  .mock-line.title { background: var(--ink); height: 14px; width: 60%; margin-bottom: 20px; }
+  .mock-line.small { width: 40%; }
+  .mock-line.accent { background: var(--accent); width: 25%; height: 4px; margin: 20px 0; }
+
+  /* ========== FEATURES ========== */
+  .features {
+    padding: 120px 40px;
+    background: var(--cream);
+    border-top: 1px solid rgba(15,15,14,0.1);
+    border-bottom: 1px solid rgba(15,15,14,0.1);
+  }
+
+  .features-grid {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 60px;
+  }
+
+  .feature-item {
+    border-top: 1px solid var(--ink);
+    padding-top: 24px;
+  }
+
+  .feature-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    margin-bottom: 16px;
+  }
+
+  .feature-item h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 28px;
+    font-weight: 500;
+    line-height: 1.2;
+    margin-bottom: 12px;
+    letter-spacing: -0.02em;
+  }
+
+  .feature-item p {
+    color: var(--muted);
+    font-size: 15px;
+  }
+
+  /* ========== BUILDER ========== */
+  .builder-section {
+    padding: 100px 40px;
+    max-width: 1600px;
+    margin: 0 auto;
+  }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 80px;
+  }
+
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 20px;
+  }
+
+  .section-title {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(36px, 5vw, 64px);
+    font-weight: 400;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+  }
+
+  .section-title em { font-style: italic; color: var(--accent); }
+
+  .builder-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: start;
+  }
+
+  .cv-preview-wrapper {
+    position: relative;
+  }
+
+  /* ========== FORMULÁRIO ========== */
+  .form-panel {
+    background: white;
+    border: 1px solid rgba(15,15,14,0.12);
+    border-radius: 4px;
+    overflow: hidden;
+    position: sticky;
+    top: 100px;
+    max-height: calc(100vh - 140px);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .form-tabs {
+    display: flex;
+    border-bottom: 1px solid rgba(15,15,14,0.1);
+    background: var(--cream);
+    overflow-x: auto;
+    scrollbar-width: thin;
+  }
+
+  .form-tab {
+    padding: 18px 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    white-space: nowrap;
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    transition: all 0.2s ease;
+    border-bottom: 2px solid transparent;
+    font-weight: 500;
+  }
+
+  .form-tab.active {
+    color: var(--ink);
+    border-bottom-color: var(--accent);
+    background: white;
+  }
+
+  .form-tab:hover { color: var(--ink); }
+
+  .form-content {
+    padding: 40px;
+    overflow-y: auto;
+    flex: 1;
+  }
+
+  .form-panel-title {
+    font-family: 'Fraunces', serif;
+    font-size: 28px;
+    font-weight: 500;
+    margin-bottom: 8px;
+    letter-spacing: -0.02em;
+  }
+
+  .form-panel-subtitle {
+    color: var(--muted);
+    font-size: 14px;
+    margin-bottom: 32px;
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  label {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 8px;
+    color: var(--ink);
+  }
+
+  input, textarea, select {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid rgba(15,15,14,0.15);
+    border-radius: 3px;
+    font-family: inherit;
+    font-size: 14px;
+    background: var(--paper);
+    transition: all 0.2s ease;
+    color: var(--ink);
+  }
+
+  input:focus, textarea:focus, select:focus {
+    outline: none;
+    border-color: var(--accent);
+    background: white;
+    box-shadow: 0 0 0 3px var(--accent-soft);
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 90px;
+    line-height: 1.5;
+  }
+
+  .dynamic-item {
+    padding: 20px;
+    background: var(--cream);
+    border-radius: 4px;
+    margin-bottom: 16px;
+    position: relative;
+    border: 1px solid rgba(15,15,14,0.08);
+  }
+
+  .dynamic-item .remove-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: none;
+    border: none;
+    color: var(--muted);
+    cursor: pointer;
+    font-size: 18px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+  }
+
+  .dynamic-item .remove-btn:hover {
+    background: var(--accent);
+    color: white;
+  }
+
+  .add-btn {
+    background: transparent;
+    border: 1px dashed var(--ink);
+    padding: 14px;
+    width: 100%;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--ink);
+    border-radius: 3px;
+    transition: all 0.2s ease;
+    margin-top: 8px;
+  }
+
+  .add-btn:hover {
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  /* ========== UPLOAD DE FOTO ========== */
+  .photo-upload {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    padding: 16px;
+    background: var(--cream);
+    border-radius: 4px;
+    border: 1px solid rgba(15,15,14,0.08);
+  }
+
+  .photo-preview {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background: white;
+    border: 2px dashed rgba(15,15,14,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    flex-shrink: 0;
+    position: relative;
+  }
+
+  .photo-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .photo-placeholder {
+    font-size: 10px;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .photo-actions {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .photo-btn {
+    display: inline-block;
+    padding: 10px 16px;
+    background: var(--ink);
+    color: var(--paper);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 3px;
+    border: none;
+    font-family: inherit;
+    transition: all 0.2s ease;
+    text-align: center;
+    width: fit-content;
+  }
+
+  .photo-btn:hover {
+    background: var(--accent);
+  }
+
+  .photo-btn-remove {
+    background: transparent;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+  }
+
+  .photo-btn-remove:hover {
+    background: var(--accent);
+    color: white;
+  }
+
+  .photo-hint {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  /* ========== VISUALIZAÇÃO DO CV ========== */
+  .cv-preview-wrapper {
+    position: relative;
+  }
+
+  .preview-toolbar {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .toolbar-actions {
+    display: flex;
+    gap: 8px;
+    margin-left: auto;
+    flex-wrap: wrap;
+  }
+
+  .utility-btn {
+    background: transparent;
+    color: var(--ink);
+    border: 1px solid rgba(15,15,14,0.25);
+    padding: 10px 18px;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: all 0.2s ease;
+  }
+
+  .utility-btn:hover {
+    background: var(--ink);
+    color: var(--paper);
+    transform: translateY(-1px);
+  }
+
+  .template-selector {
+    display: flex;
+    gap: 8px;
+    padding: 4px;
+    background: var(--cream);
+    border-radius: 3px;
+    border: 1px solid rgba(15,15,14,0.08);
+  }
+
+  .template-btn {
+    padding: 8px 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    border-radius: 2px;
+    transition: all 0.2s ease;
+    font-weight: 500;
+  }
+
+  .template-btn.active {
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  .export-btn {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 3px;
+    margin-left: 0;
+    transition: all 0.2s ease;
+  }
+
+  .export-btn:hover {
+    background: var(--ink);
+    transform: translateY(-1px);
+  }
+
+  .export-hint {
+    font-size: 12px;
+    color: var(--muted);
+    margin: 12px 0 16px;
+    padding: 10px 14px;
+    background: var(--cream);
+    border-left: 2px solid var(--accent);
+    border-radius: 2px;
+    line-height: 1.5;
+  }
+
+  .export-hint strong {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  .cv-preview {
+    background: white;
+    box-shadow: 0 30px 60px -20px rgba(15,15,14,0.2);
+    overflow: visible;
+    position: relative;
+    border-radius: 2px;
+    width: 100%;
+  }
+
+  /* ========== TEMPLATE: CLÁSSICO ========== */
+  .cv-classic {
+    padding: 48px 52px;
+    font-family: 'Inter', sans-serif;
+    color: #1a1a18;
+    font-size: 10px;
+    line-height: 1.5;
+  }
+
+  .cv-classic .cv-header {
+    border-bottom: 2px solid #1a1a18;
+    padding-bottom: 20px;
+    margin-bottom: 24px;
+    display: flex;
+    gap: 24px;
+    align-items: center;
+  }
+
+  .cv-classic .cv-photo {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+    border: 2px solid #1a1a18;
+  }
+
+  .cv-classic .cv-header-text {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .cv-classic .cv-name {
+    font-family: 'Fraunces', serif;
+    font-size: 32px;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    margin-bottom: 4px;
+    line-height: 1;
+  }
+
+  .cv-classic .cv-title-role {
+    font-size: 13px;
+    color: var(--accent);
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .cv-classic .cv-contact {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    font-size: 10px;
+    color: #555;
+  }
+
+  .cv-classic .cv-contact span::before {
+    content: '•';
+    margin-right: 6px;
+    color: var(--accent);
+  }
+
+  .cv-classic .cv-contact span:first-child::before { display: none; }
+
+  .cv-classic .cv-section {
+    margin-bottom: 20px;
+  }
+
+  .cv-classic .cv-section-title {
+    font-family: 'Fraunces', serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    margin-bottom: 10px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid #e0ddd6;
+    color: #1a1a18;
+  }
+
+  .cv-classic .cv-entry {
+    margin-bottom: 12px;
+  }
+
+  .cv-classic .cv-entry-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 2px;
+  }
+
+  .cv-classic .cv-entry-title {
+    font-weight: 600;
+    font-size: 11px;
+    color: #1a1a18;
+  }
+
+  .cv-classic .cv-entry-date {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: var(--accent);
+  }
+
+  .cv-classic .cv-entry-sub {
+    font-style: italic;
+    font-size: 10px;
+    color: #555;
+    margin-bottom: 4px;
+  }
+
+  .cv-classic .cv-entry-desc {
+    font-size: 10px;
+    color: #333;
+    line-height: 1.5;
+  }
+
+  .cv-classic .cv-skills-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px 20px;
+  }
+
+  .cv-classic .cv-skill {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    padding-bottom: 2px;
+    border-bottom: 1px dotted #ccc;
+  }
+
+  .cv-classic .cv-skill-level {
+    color: var(--accent);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+  }
+
+  .cv-classic .cv-summary {
+    font-size: 10px;
+    color: #333;
+    line-height: 1.6;
+    font-style: italic;
+  }
+
+  /* ========== TEMPLATE: MODERNO ========== */
+  .cv-modern {
+    display: grid;
+    grid-template-columns: 35% 65%;
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    min-height: 600px;
+  }
+
+  .cv-modern .cv-sidebar {
+    background: #1a1a18;
+    color: #faf8f3;
+    padding: 40px 28px;
+    min-height: 100%;
+  }
+
+  .cv-modern .cv-photo {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+    margin: 0 auto 20px;
+    border: 3px solid var(--accent);
+  }
+
+  .cv-modern .cv-main {
+    padding: 40px 32px;
+    color: #1a1a18;
+  }
+
+  .cv-modern .cv-name {
+    font-family: 'Fraunces', serif;
+    font-size: 26px;
+    font-weight: 500;
+    line-height: 1;
+    margin-bottom: 6px;
+    letter-spacing: -0.02em;
+  }
+
+  .cv-modern .cv-title-role {
+    font-size: 11px;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 24px;
+    font-weight: 500;
+  }
+
+  .cv-modern .cv-sidebar .cv-section-title {
+    font-family: 'Fraunces', serif;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 10px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid rgba(250,248,243,0.2);
+    color: var(--accent);
+  }
+
+  .cv-modern .cv-main .cv-section-title {
+    font-family: 'Fraunces', serif;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #1a1a18;
+    padding-bottom: 4px;
+    border-bottom: 2px solid var(--accent);
+    display: inline-block;
+  }
+
+  .cv-modern .cv-section {
+    margin-bottom: 22px;
+  }
+
+  .cv-modern .cv-contact span {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 9px;
+    word-break: break-word;
+    opacity: 0.85;
+  }
+
+  .cv-modern .cv-contact span strong {
+    display: block;
+    color: var(--accent);
+    font-size: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 600;
+    margin-bottom: 2px;
+  }
+
+  .cv-modern .cv-skill-item {
+    margin-bottom: 8px;
+    font-size: 9px;
+  }
+
+  .cv-modern .cv-skill-name {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 3px;
+    font-weight: 500;
+  }
+
+  .cv-modern .cv-skill-bar {
+    height: 3px;
+    background: rgba(250,248,243,0.15);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .cv-modern .cv-skill-fill {
+    height: 100%;
+    background: var(--accent);
+  }
+
+  .cv-modern .cv-entry {
+    margin-bottom: 14px;
+    padding-left: 14px;
+    border-left: 1px solid #e0ddd6;
+    position: relative;
+  }
+
+  .cv-modern .cv-entry::before {
+    content: '';
+    position: absolute;
+    left: -4px;
+    top: 3px;
+    width: 7px;
+    height: 7px;
+    background: var(--accent);
+    border-radius: 50%;
+  }
+
+  .cv-modern .cv-entry-date {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: var(--accent);
+    margin-bottom: 2px;
+  }
+
+  .cv-modern .cv-entry-title {
+    font-weight: 600;
+    font-size: 11px;
+    margin-bottom: 2px;
+  }
+
+  .cv-modern .cv-entry-sub {
+    font-size: 10px;
+    color: #666;
+    margin-bottom: 4px;
+  }
+
+  .cv-modern .cv-entry-desc {
+    font-size: 9px;
+    line-height: 1.5;
+    color: #333;
+  }
+
+  .cv-modern .cv-summary {
+    font-size: 10px;
+    line-height: 1.6;
+    color: #333;
+  }
+
+  .cv-modern .cv-lang-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 4px;
+    font-size: 9px;
+  }
+
+  /* ========== TEMPLATE: EDITORIAL ========== */
+  .cv-editorial {
+    padding: 50px 55px;
+    font-family: 'Inter', sans-serif;
+    color: #1a1a18;
+    font-size: 10px;
+    line-height: 1.55;
+  }
+
+  .cv-editorial .cv-header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding-bottom: 24px;
+    position: relative;
+  }
+
+  .cv-editorial .cv-photo {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 0 auto 16px;
+    display: block;
+    border: 1px solid #e0ddd6;
+    padding: 4px;
+    background: white;
+  }
+
+  .cv-editorial .cv-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 2px;
+    background: var(--accent);
+  }
+
+  .cv-editorial .cv-name {
+    font-family: 'Fraunces', serif;
+    font-size: 38px;
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .cv-editorial .cv-title-role {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 14px;
+  }
+
+  .cv-editorial .cv-contact {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    font-size: 9px;
+    color: #666;
+    flex-wrap: wrap;
+  }
+
+  .cv-editorial .cv-section {
+    margin-bottom: 22px;
+  }
+
+  .cv-editorial .cv-section-title {
+    font-family: 'Fraunces', serif;
+    font-size: 13px;
+    font-style: italic;
+    font-weight: 500;
+    text-align: center;
+    margin-bottom: 12px;
+    color: var(--accent);
+    letter-spacing: 0.02em;
+  }
+
+  .cv-editorial .cv-section-title::before,
+  .cv-editorial .cv-section-title::after {
+    content: '—';
+    color: #ccc;
+    margin: 0 8px;
+  }
+
+  .cv-editorial .cv-entry {
+    margin-bottom: 14px;
+    padding-bottom: 12px;
+    border-bottom: 1px dashed #e0ddd6;
+  }
+
+  .cv-editorial .cv-entry:last-child {
+    border-bottom: none;
+  }
+
+  .cv-editorial .cv-entry-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 3px;
+  }
+
+  .cv-editorial .cv-entry-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 12px;
+  }
+
+  .cv-editorial .cv-entry-date {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: var(--accent);
+  }
+
+  .cv-editorial .cv-entry-sub {
+    font-size: 10px;
+    color: #555;
+    font-style: italic;
+    margin-bottom: 4px;
+  }
+
+  .cv-editorial .cv-entry-desc {
+    font-size: 10px;
+    line-height: 1.55;
+    color: #333;
+  }
+
+  .cv-editorial .cv-skills-inline {
+    text-align: center;
+    font-size: 10px;
+    line-height: 1.8;
+  }
+
+  .cv-editorial .cv-skills-inline span {
+    display: inline-block;
+    margin: 2px 6px;
+    padding: 2px 10px;
+    border: 1px solid #e0ddd6;
+    border-radius: 20px;
+    font-size: 9px;
+  }
+
+  .cv-editorial .cv-summary {
+    font-family: 'Fraunces', serif;
+    font-size: 12px;
+    font-style: italic;
+    text-align: center;
+    color: #333;
+    max-width: 85%;
+    margin: 0 auto;
+    line-height: 1.55;
+  }
+
+  /* ========== FOOTER ========== */
+  footer {
+    padding: 60px 40px 40px;
+    text-align: center;
+    border-top: 1px solid rgba(15,15,14,0.1);
+    background: var(--cream);
+    margin-top: 100px;
+  }
+
+  footer .logo {
+    margin-bottom: 12px;
+  }
+
+  footer p {
+    color: var(--muted);
+    font-size: 13px;
+  }
+
+  /* ========== RESPONSIVE ========== */
+  @media (max-width: 1024px) {
+    .builder-layout {
+      grid-template-columns: 1fr;
+    }
+    .form-panel {
+      position: relative;
+      top: 0;
+      max-height: none;
+    }
+    .hero {
+      grid-template-columns: 1fr;
+      padding-top: 100px;
+    }
+    .hero-visual { height: 400px; }
+    .features-grid { grid-template-columns: 1fr; gap: 40px; }
+  }
+
+  @media (max-width: 640px) {
+    .nav { padding: 16px 20px; }
+    .hero, .features, .builder-section { padding-left: 20px; padding-right: 20px; }
+    .form-content { padding: 24px; }
+    .form-row { grid-template-columns: 1fr; }
+    .hero-cta { flex-direction: column; align-items: stretch; }
+    .btn-primary, .btn-ghost { width: 100%; text-align: center; }
+  }
+
+  /* ========== ANIMAÇÕES ========== */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-content > * { animation: fadeUp 0.8s ease backwards; }
+  .hero-label { animation-delay: 0.1s; }
+  .hero h1 { animation-delay: 0.2s; }
+  .hero p { animation-delay: 0.3s; }
+  .hero-cta { animation-delay: 0.4s; }
+
+  .mock-cv { animation: fadeUp 1s ease 0.5s backwards; }
+
+  /* Esconde painéis de formulário */
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; animation: fadeUp 0.4s ease; }
+
+  /* ========== IMPRESSÃO / EXPORTAÇÃO PDF ========== */
+  @page {
+    size: A4 portrait;
+    margin: 0;
+  }
+
+  @media print {
+    /* Oculta TUDO no documento */
+    body * {
+      visibility: hidden !important;
+    }
+
+    /* Mostra apenas o currículo e seus descendentes */
+    #cvPreview,
+    #cvPreview * {
+      visibility: visible !important;
+    }
+
+    /* Reset do body para permitir impressão limpa */
+    html, body {
+      margin: 0 !important;
+      padding: 0 !important;
+      background: white !important;
+      width: 210mm !important;
+      height: auto !important;
+      overflow: visible !important;
+    }
+
+    /* Posiciona o currículo no topo da página com dimensões A4 */
+    #cvPreview {
+      position: absolute !important;
+      top: 0 !important;
+      left: 0 !important;
+      width: 210mm !important;
+      height: auto !important;
+      min-height: 297mm !important;
+      aspect-ratio: auto !important;
+      box-shadow: none !important;
+      border-radius: 0 !important;
+      overflow: visible !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      transform: none !important;
+    }
+
+    /* Garante que os templates internos preencham a página toda */
+    .cv-classic, .cv-modern, .cv-editorial {
+      width: 210mm !important;
+      overflow: visible !important;
+      page-break-inside: auto !important;
+    }
+
+    /* Força cores exatas (evita o navegador "limpar" cores escuras) */
+    * {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+      color-adjust: exact !important;
+    }
+
+    /* Oculta elementos que não devem aparecer no PDF */
+    .nav, .hero, .features, .section-header,
+    .form-panel, .preview-toolbar, footer {
+      display: none !important;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAVEGAÇÃO -->
+<nav class="nav">
+  <div class="logo">Atelier<span>CV</span></div>
+  <div class="nav-meta">Edição 2026 / PT-BR</div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-label">Gerador de Currículo</div>
+    <h1>Seu currículo,<br>feito com <em>ofício.</em></h1>
+    <p>Construa um currículo profissional que atende os padrões atuais do mercado — compatível com ATS, visualmente impecável e pronto para exportar em PDF.</p>
+    <div class="hero-cta">
+      <button class="btn-primary" onclick="document.getElementById('builder').scrollIntoView({behavior:'smooth'})">Começar agora</button>
+      <button class="btn-ghost" onclick="document.getElementById('builder').scrollIntoView({behavior:'smooth'})">Editar agora</button>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="mock-cv mock-cv-1">
+      <div class="mock-line title"></div>
+      <div class="mock-line small"></div>
+      <div class="mock-line accent"></div>
+      <div class="mock-line"></div>
+      <div class="mock-line"></div>
+      <div class="mock-line small"></div>
+      <div class="mock-line accent"></div>
+      <div class="mock-line"></div>
+      <div class="mock-line"></div>
+      <div class="mock-line small"></div>
+    </div>
+    <div class="mock-cv mock-cv-2">
+      <div class="mock-line title"></div>
+      <div class="mock-line small"></div>
+      <div class="mock-line accent"></div>
+      <div class="mock-line"></div>
+      <div class="mock-line"></div>
+      <div class="mock-line small"></div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features">
+  <div class="features-grid">
+    <div class="feature-item">
+      <div class="feature-num">01 / Compatível com ATS</div>
+      <h3>Passa pelos filtros automáticos.</h3>
+      <p>Estrutura limpa e texto selecionável que os sistemas de recrutamento conseguem ler sem erros.</p>
+    </div>
+    <div class="feature-item">
+      <div class="feature-num">02 / Três Templates</div>
+      <h3>Escolha o tom certo para a vaga.</h3>
+      <p>Clássico, Moderno e Editorial — cada um pensado para contextos e áreas distintas.</p>
+    </div>
+    <div class="feature-item">
+      <div class="feature-num">03 / Exportação PDF</div>
+      <h3>Pronto para enviar em um clique.</h3>
+      <p>Gere um PDF em alta qualidade, perfeitamente formatado para impressão ou envio digital.</p>
+    </div>
+  </div>
+</section>
+
+<!-- BUILDER -->
+<section class="builder-section" id="builder">
+  <div class="section-header">
+    <div class="section-label">O Construtor</div>
+    <h2 class="section-title">Preencha à esquerda.<br>Veja <em>pronto</em> à direita.</h2>
+  </div>
+
+  <div class="builder-layout">
+    <!-- FORMULÁRIO -->
+    <div class="form-panel">
+      <div class="form-tabs">
+        <button class="form-tab active" data-tab="pessoal">Pessoal</button>
+        <button class="form-tab" data-tab="resumo">Resumo</button>
+        <button class="form-tab" data-tab="experiencia">Experiência</button>
+        <button class="form-tab" data-tab="formacao">Formação</button>
+        <button class="form-tab" data-tab="habilidades">Habilidades</button>
+        <button class="form-tab" data-tab="idiomas">Idiomas</button>
+        <button class="form-tab" data-tab="certificacoes">Certificações</button>
+      </div>
+
+      <div class="form-content">
+        <!-- ABA: PESSOAL -->
+        <div class="tab-panel active" data-panel="pessoal">
+          <h3 class="form-panel-title">Informações pessoais</h3>
+          <p class="form-panel-subtitle">Como os recrutadores vão te encontrar.</p>
+
+          <div class="form-group">
+            <label>Foto de perfil (opcional)</label>
+            <div class="photo-upload">
+              <div class="photo-preview" id="photoPreview">
+                <span class="photo-placeholder">Sem foto</span>
+              </div>
+              <div class="photo-actions">
+                <label class="photo-btn">
+                  <input type="file" id="fotoInput" accept="image/*" style="display:none">
+                  Escolher foto
+                </label>
+                <button class="photo-btn photo-btn-remove" onclick="removePhoto()" id="removePhotoBtn" style="display:none">Remover</button>
+                <p class="photo-hint">JPG ou PNG. Ideal: foto quadrada com fundo neutro.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Nome completo</label>
+              <input type="text" id="nome" placeholder="Seu nome completo">
+            </div>
+            <div class="form-group">
+              <label>Cargo alvo</label>
+              <input type="text" id="cargo" placeholder="Cargo desejado">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>E-mail</label>
+              <input type="email" id="email" placeholder="voce@email.com">
+            </div>
+            <div class="form-group">
+              <label>Telefone</label>
+              <input type="tel" id="telefone" placeholder="+55 00 00000-0000">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Localização</label>
+              <input type="text" id="localizacao" placeholder="Cidade, UF">
+            </div>
+            <div class="form-group">
+              <label>LinkedIn</label>
+              <input type="text" id="linkedin" placeholder="linkedin.com/in/seu-perfil">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Portfólio / Site</label>
+            <input type="text" id="site" placeholder="seusite.com">
+          </div>
+        </div>
+
+        <!-- ABA: RESUMO -->
+        <div class="tab-panel" data-panel="resumo">
+          <h3 class="form-panel-title">Resumo profissional</h3>
+          <p class="form-panel-subtitle">Três a quatro linhas que capturam sua essência profissional.</p>
+
+          <div class="form-group">
+            <label>Resumo</label>
+            <textarea id="resumo" rows="6" placeholder="Ex: Profissional com experiência em sua área, foco em resultados mensuráveis, colaboração com equipes multidisciplinares e melhoria contínua de processos."></textarea>
+          </div>
+        </div>
+
+        <!-- ABA: EXPERIÊNCIA -->
+        <div class="tab-panel" data-panel="experiencia">
+          <h3 class="form-panel-title">Experiência profissional</h3>
+          <p class="form-panel-subtitle">Do mais recente para o mais antigo. Destaque resultados.</p>
+
+          <div id="experiencias-list"></div>
+          <button class="add-btn" onclick="addExperiencia()">+ Adicionar experiência</button>
+        </div>
+
+        <!-- ABA: FORMAÇÃO -->
+        <div class="tab-panel" data-panel="formacao">
+          <h3 class="form-panel-title">Formação acadêmica</h3>
+          <p class="form-panel-subtitle">Graduação, pós, MBA. Inclua a mais relevante primeiro.</p>
+
+          <div id="formacao-list"></div>
+          <button class="add-btn" onclick="addFormacao()">+ Adicionar formação</button>
+        </div>
+
+        <!-- ABA: HABILIDADES -->
+        <div class="tab-panel" data-panel="habilidades">
+          <h3 class="form-panel-title">Habilidades técnicas</h3>
+          <p class="form-panel-subtitle">Use palavras-chave que aparecem na vaga desejada.</p>
+
+          <div id="habilidades-list"></div>
+          <button class="add-btn" onclick="addHabilidade()">+ Adicionar habilidade</button>
+        </div>
+
+        <!-- ABA: IDIOMAS -->
+        <div class="tab-panel" data-panel="idiomas">
+          <h3 class="form-panel-title">Idiomas</h3>
+          <p class="form-panel-subtitle">Seja honesto sobre o nível — os entrevistadores testam.</p>
+
+          <div id="idiomas-list"></div>
+          <button class="add-btn" onclick="addIdioma()">+ Adicionar idioma</button>
+        </div>
+
+        <!-- ABA: CERTIFICAÇÕES -->
+        <div class="tab-panel" data-panel="certificacoes">
+          <h3 class="form-panel-title">Certificações e cursos</h3>
+          <p class="form-panel-subtitle">Opcional, mas útil para áreas técnicas.</p>
+
+          <div id="certificacoes-list"></div>
+          <button class="add-btn" onclick="addCertificacao()">+ Adicionar certificação</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- VISUALIZAÇÃO -->
+    <div class="cv-preview-wrapper">
+      <div class="preview-toolbar">
+        <div class="template-selector">
+          <button class="template-btn active" data-template="classic">Clássico</button>
+          <button class="template-btn" data-template="modern">Moderno</button>
+          <button class="template-btn" data-template="editorial">Editorial</button>
+        </div>
+        <div class="toolbar-actions">
+          <button class="utility-btn" onclick="clearData()">Limpar dados</button>
+          <button class="export-btn" onclick="exportPDF()">↓ Baixar PDF</button>
+        </div>
+      </div>
+      <p class="export-hint">Ao clicar em "Baixar PDF", abrirá a janela de impressão. Selecione <strong>"Salvar como PDF"</strong> como destino e clique em Salvar. O rascunho fica salvo apenas neste navegador.</p>
+      <div class="cv-preview" id="cvPreview"></div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="logo">Atelier<span>CV</span></div>
+  <p>Feito com atenção aos detalhes. Seus dados ficam apenas no seu navegador.</p>
+</footer>
+
+<script>
+// ========== ESTADO ==========
+const STORAGE_KEY = 'ateliercv-draft-v1';
+
+function createInitialState() {
+  return {
+    template: 'classic',
+    foto: '',
+    nome: '',
+    cargo: '',
+    email: '',
+    telefone: '',
+    localizacao: '',
+    linkedin: '',
+    site: '',
+    resumo: '',
+    experiencias: [],
+    formacao: [],
+    habilidades: [],
+    idiomas: [],
+    certificacoes: []
+  };
+}
+
+const state = createInitialState();
+
+function normalizeLoadedState(data) {
+  const clean = createInitialState();
+  Object.assign(clean, data || {});
+  ['experiencias', 'formacao', 'habilidades', 'idiomas', 'certificacoes'].forEach(key => {
+    if (!Array.isArray(clean[key])) clean[key] = [];
+  });
+  return clean;
+}
+
+function loadSavedState() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (!saved) return;
+    Object.assign(state, normalizeLoadedState(JSON.parse(saved)));
+  } catch (error) {
+    console.warn('Nao foi possivel carregar o rascunho salvo.', error);
+  }
+}
+
+function saveState() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  } catch (error) {
+    console.warn('Nao foi possivel salvar o rascunho localmente.', error);
+  }
+}
+
+function setActiveTemplate(template) {
+  document.querySelectorAll('.template-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.template === template);
+  });
+}
+
+function syncFormFields() {
+  ['nome','cargo','email','telefone','localizacao','linkedin','site','resumo'].forEach(field => {
+    const el = document.getElementById(field);
+    if (el) el.value = state[field] || '';
+  });
+}
+
+function renderAllDynamicForms() {
+  renderExperienciasForm();
+  renderFormacaoForm();
+  renderHabilidadesForm();
+  renderIdiomasForm();
+  renderCertificacoesForm();
+}
+
+function clearData() {
+  const shouldClear = confirm('Apagar todos os dados preenchidos?');
+  if (!shouldClear) return;
+
+  Object.assign(state, createInitialState());
+  localStorage.removeItem(STORAGE_KEY);
+  syncFormFields();
+  renderAllDynamicForms();
+  updatePhotoPreview();
+  setActiveTemplate(state.template);
+  render();
+}
+
+
+// ========== ABAS ==========
+document.querySelectorAll('.form-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.form-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    document.querySelector(`[data-panel="${tab.dataset.tab}"]`).classList.add('active');
+  });
+});
+
+// ========== TEMPLATE ==========
+document.querySelectorAll('.template-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.template-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    state.template = btn.dataset.template;
+    render();
+  });
+});
+
+// ========== EXPERIÊNCIA ==========
+function addExperiencia(data = {}) {
+  const exp = {
+    id: Date.now() + Math.random(),
+    cargo: data.cargo || '',
+    empresa: data.empresa || '',
+    local: data.local || '',
+    inicio: data.inicio || '',
+    fim: data.fim || '',
+    descricao: data.descricao || ''
+  };
+  state.experiencias.push(exp);
+  renderExperienciasForm();
+  render();
+}
+
+function renderExperienciasForm() {
+  const list = document.getElementById('experiencias-list');
+  list.innerHTML = state.experiencias.map(exp => `
+    <div class="dynamic-item">
+      <button class="remove-btn" onclick="removeExperiencia(${exp.id})">×</button>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Cargo</label>
+          <input type="text" value="${escapeHtml(exp.cargo)}" placeholder="Product Designer" oninput="updateExperiencia(${exp.id}, 'cargo', this.value)">
+        </div>
+        <div class="form-group">
+          <label>Empresa</label>
+          <input type="text" value="${escapeHtml(exp.empresa)}" placeholder="Empresa S.A." oninput="updateExperiencia(${exp.id}, 'empresa', this.value)">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Local</label>
+          <input type="text" value="${escapeHtml(exp.local)}" placeholder="São Paulo / Remoto" oninput="updateExperiencia(${exp.id}, 'local', this.value)">
+        </div>
+        <div class="form-group">
+          <label>Período</label>
+          <div class="form-row" style="gap:8px">
+            <input type="text" value="${escapeHtml(exp.inicio)}" placeholder="Jan 2022" oninput="updateExperiencia(${exp.id}, 'inicio', this.value)">
+            <input type="text" value="${escapeHtml(exp.fim)}" placeholder="Atual" oninput="updateExperiencia(${exp.id}, 'fim', this.value)">
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Descrição e conquistas</label>
+        <textarea rows="4" placeholder="• Liderou redesign do produto principal, resultando em +30% de retenção...&#10;• Gerenciou equipe de 4 designers..." oninput="updateExperiencia(${exp.id}, 'descricao', this.value)">${escapeHtml(exp.descricao)}</textarea>
+      </div>
+    </div>
+  `).join('');
+}
+
+function updateExperiencia(id, field, value) {
+  const exp = state.experiencias.find(e => e.id === id);
+  if (exp) { exp[field] = value; render(); }
+}
+
+function removeExperiencia(id) {
+  state.experiencias = state.experiencias.filter(e => e.id !== id);
+  renderExperienciasForm();
+  render();
+}
+
+// ========== FORMAÇÃO ==========
+function addFormacao(data = {}) {
+  const form = {
+    id: Date.now() + Math.random(),
+    curso: data.curso || '',
+    instituicao: data.instituicao || '',
+    inicio: data.inicio || '',
+    fim: data.fim || '',
+    descricao: data.descricao || ''
+  };
+  state.formacao.push(form);
+  renderFormacaoForm();
+  render();
+}
+
+function renderFormacaoForm() {
+  const list = document.getElementById('formacao-list');
+  list.innerHTML = state.formacao.map(f => `
+    <div class="dynamic-item">
+      <button class="remove-btn" onclick="removeFormacao(${f.id})">×</button>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Curso / Grau</label>
+          <input type="text" value="${escapeHtml(f.curso)}" placeholder="Bacharelado em Design" oninput="updateFormacao(${f.id}, 'curso', this.value)">
+        </div>
+        <div class="form-group">
+          <label>Instituição</label>
+          <input type="text" value="${escapeHtml(f.instituicao)}" placeholder="USP" oninput="updateFormacao(${f.id}, 'instituicao', this.value)">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Início</label>
+          <input type="text" value="${escapeHtml(f.inicio)}" placeholder="2016" oninput="updateFormacao(${f.id}, 'inicio', this.value)">
+        </div>
+        <div class="form-group">
+          <label>Conclusão</label>
+          <input type="text" value="${escapeHtml(f.fim)}" placeholder="2020" oninput="updateFormacao(${f.id}, 'fim', this.value)">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Observações (opcional)</label>
+        <input type="text" value="${escapeHtml(f.descricao)}" placeholder="TCC: Design de interfaces acessíveis" oninput="updateFormacao(${f.id}, 'descricao', this.value)">
+      </div>
+    </div>
+  `).join('');
+}
+
+function updateFormacao(id, field, value) {
+  const f = state.formacao.find(x => x.id === id);
+  if (f) { f[field] = value; render(); }
+}
+
+function removeFormacao(id) {
+  state.formacao = state.formacao.filter(f => f.id !== id);
+  renderFormacaoForm();
+  render();
+}
+
+// ========== HABILIDADES ==========
+function addHabilidade(data = {}) {
+  const h = {
+    id: Date.now() + Math.random(),
+    nome: data.nome || '',
+    nivel: data.nivel || 'Avançado'
+  };
+  state.habilidades.push(h);
+  renderHabilidadesForm();
+  render();
+}
+
+function renderHabilidadesForm() {
+  const list = document.getElementById('habilidades-list');
+  list.innerHTML = state.habilidades.map(h => `
+    <div class="dynamic-item">
+      <button class="remove-btn" onclick="removeHabilidade(${h.id})">×</button>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Habilidade</label>
+          <input type="text" value="${escapeHtml(h.nome)}" placeholder="Figma, Python, Gestão..." oninput="updateHabilidade(${h.id}, 'nome', this.value)">
+        </div>
+        <div class="form-group">
+          <label>Nível</label>
+          <select onchange="updateHabilidade(${h.id}, 'nivel', this.value)">
+            <option ${h.nivel==='Básico'?'selected':''}>Básico</option>
+            <option ${h.nivel==='Intermediário'?'selected':''}>Intermediário</option>
+            <option ${h.nivel==='Avançado'?'selected':''}>Avançado</option>
+            <option ${h.nivel==='Especialista'?'selected':''}>Especialista</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function updateHabilidade(id, field, value) {
+  const h = state.habilidades.find(x => x.id === id);
+  if (h) { h[field] = value; render(); }
+}
+
+function removeHabilidade(id) {
+  state.habilidades = state.habilidades.filter(h => h.id !== id);
+  renderHabilidadesForm();
+  render();
+}
+
+// ========== IDIOMAS ==========
+function addIdioma(data = {}) {
+  const i = {
+    id: Date.now() + Math.random(),
+    nome: data.nome || '',
+    nivel: data.nivel || 'Fluente'
+  };
+  state.idiomas.push(i);
+  renderIdiomasForm();
+  render();
+}
+
+function renderIdiomasForm() {
+  const list = document.getElementById('idiomas-list');
+  list.innerHTML = state.idiomas.map(i => `
+    <div class="dynamic-item">
+      <button class="remove-btn" onclick="removeIdioma(${i.id})">×</button>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Idioma</label>
+          <input type="text" value="${escapeHtml(i.nome)}" placeholder="Inglês" oninput="updateIdioma(${i.id}, 'nome', this.value)">
+        </div>
+        <div class="form-group">
+          <label>Nível</label>
+          <select onchange="updateIdioma(${i.id}, 'nivel', this.value)">
+            <option ${i.nivel==='Básico'?'selected':''}>Básico</option>
+            <option ${i.nivel==='Intermediário'?'selected':''}>Intermediário</option>
+            <option ${i.nivel==='Avançado'?'selected':''}>Avançado</option>
+            <option ${i.nivel==='Fluente'?'selected':''}>Fluente</option>
+            <option ${i.nivel==='Nativo'?'selected':''}>Nativo</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function updateIdioma(id, field, value) {
+  const i = state.idiomas.find(x => x.id === id);
+  if (i) { i[field] = value; render(); }
+}
+
+function removeIdioma(id) {
+  state.idiomas = state.idiomas.filter(i => i.id !== id);
+  renderIdiomasForm();
+  render();
+}
+
+// ========== CERTIFICAÇÕES ==========
+function addCertificacao(data = {}) {
+  const c = {
+    id: Date.now() + Math.random(),
+    nome: data.nome || '',
+    instituicao: data.instituicao || '',
+    ano: data.ano || ''
+  };
+  state.certificacoes.push(c);
+  renderCertificacoesForm();
+  render();
+}
+
+function renderCertificacoesForm() {
+  const list = document.getElementById('certificacoes-list');
+  list.innerHTML = state.certificacoes.map(c => `
+    <div class="dynamic-item">
+      <button class="remove-btn" onclick="removeCertificacao(${c.id})">×</button>
+      <div class="form-group">
+        <label>Certificação</label>
+        <input type="text" value="${escapeHtml(c.nome)}" placeholder="PMP — Project Management Professional" oninput="updateCertificacao(${c.id}, 'nome', this.value)">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Instituição</label>
+          <input type="text" value="${escapeHtml(c.instituicao)}" placeholder="PMI" oninput="updateCertificacao(${c.id}, 'instituicao', this.value)">
+        </div>
+        <div class="form-group">
+          <label>Ano</label>
+          <input type="text" value="${escapeHtml(c.ano)}" placeholder="2024" oninput="updateCertificacao(${c.id}, 'ano', this.value)">
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function updateCertificacao(id, field, value) {
+  const c = state.certificacoes.find(x => x.id === id);
+  if (c) { c[field] = value; render(); }
+}
+
+function removeCertificacao(id) {
+  state.certificacoes = state.certificacoes.filter(c => c.id !== id);
+  renderCertificacoesForm();
+  render();
+}
+
+// ========== INPUTS PESSOAIS ==========
+['nome','cargo','email','telefone','localizacao','linkedin','site','resumo'].forEach(field => {
+  const el = document.getElementById(field);
+  if (el) {
+    el.addEventListener('input', (e) => {
+      state[field] = e.target.value;
+      render();
+    });
+  }
+});
+
+// ========== UPLOAD DE FOTO ==========
+document.getElementById('fotoInput').addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  if (file.size > 5 * 1024 * 1024) {
+    alert('A imagem é muito grande. Use uma imagem de até 5MB.');
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = (event) => {
+    state.foto = event.target.result;
+    updatePhotoPreview();
+    render();
+  };
+  reader.readAsDataURL(file);
+});
+
+function updatePhotoPreview() {
+  const preview = document.getElementById('photoPreview');
+  const removeBtn = document.getElementById('removePhotoBtn');
+  if (state.foto) {
+    preview.innerHTML = `<img src="${state.foto}" alt="Foto">`;
+    removeBtn.style.display = 'inline-block';
+  } else {
+    preview.innerHTML = '<span class="photo-placeholder">Sem foto</span>';
+    removeBtn.style.display = 'none';
+  }
+}
+
+function removePhoto() {
+  state.foto = '';
+  document.getElementById('fotoInput').value = '';
+  updatePhotoPreview();
+  render();
+}
+
+// ========== UTILITÁRIOS ==========
+function escapeHtml(text) {
+  if (!text) return '';
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+function linkifyContato(c) {
+  if (!c) return '';
+  const original = String(c).trim();
+  const safe = escapeHtml(original);
+
+  if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(original)) {
+    return `<a href="mailto:${safe}" style="color:inherit;text-decoration:none">${safe}</a>`;
+  }
+
+  if (/(^https?:\/\/|\.com|\.br|\.net|\.org|linkedin)/i.test(original)) {
+    const url = /^https?:\/\//i.test(original) ? original : 'https://' + original;
+    return `<a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:none">${safe}</a>`;
+  }
+
+  if (/^[\(\+\d\s\-\)]+$/.test(original)) {
+    let tel = original.replace(/[^\d+]/g, '');
+    if (!tel.startsWith('+') && tel.length <= 11) tel = '+55' + tel;
+    return `<a href="tel:${escapeHtml(tel)}" style="color:inherit;text-decoration:none">${safe}</a>`;
+  }
+
+  return safe;
+}
+
+function nivelNum(nivel) {
+  const map = { 'Básico': 25, 'Intermediário': 50, 'Avançado': 75, 'Especialista': 100, 'Fluente': 90, 'Nativo': 100 };
+  return map[nivel] || 75;
+}
+
+// ========== RENDERIZAÇÃO DO CV ==========
+function render() {
+  const preview = document.getElementById('cvPreview');
+  if (state.template === 'classic') preview.innerHTML = renderClassic();
+  else if (state.template === 'modern') preview.innerHTML = renderModern();
+  else preview.innerHTML = renderEditorial();
+  saveState();
+}
+
+function renderClassic() {
+  const nome = state.nome || 'Seu Nome Completo';
+  const cargo = state.cargo || 'Seu Cargo';
+
+  const contato = [];
+  if (state.email) contato.push(state.email);
+  if (state.telefone) contato.push(state.telefone);
+  if (state.localizacao) contato.push(state.localizacao);
+  if (state.linkedin) contato.push(state.linkedin);
+  if (state.site) contato.push(state.site);
+
+  return `
+    <div class="cv-classic">
+      <div class="cv-header">
+        ${state.foto ? `<img src="${state.foto}" class="cv-photo" alt="Foto">` : ''}
+        <div class="cv-header-text">
+          <div class="cv-name">${escapeHtml(nome)}</div>
+          <div class="cv-title-role">${escapeHtml(cargo)}</div>
+          <div class="cv-contact">${contato.map(c => `<span>${linkifyContato(c)}</span>`).join('')}</div>
+        </div>
+      </div>
+
+      ${state.resumo ? `
+        <div class="cv-section">
+          <div class="cv-section-title">Resumo Profissional</div>
+          <div class="cv-summary">${escapeHtml(state.resumo)}</div>
+        </div>
+      ` : ''}
+
+      ${state.experiencias.length ? `
+        <div class="cv-section">
+          <div class="cv-section-title">Experiência Profissional</div>
+          ${state.experiencias.map(e => `
+            <div class="cv-entry">
+              <div class="cv-entry-header">
+                <div class="cv-entry-title">${escapeHtml(e.cargo || 'Cargo')}</div>
+                <div class="cv-entry-date">${escapeHtml(e.inicio)} ${e.inicio && e.fim ? '—' : ''} ${escapeHtml(e.fim)}</div>
+              </div>
+              <div class="cv-entry-sub">${escapeHtml(e.empresa)}${e.local ? ' · ' + escapeHtml(e.local) : ''}</div>
+              <div class="cv-entry-desc">${escapeHtml(e.descricao).replace(/\n/g, '<br>')}</div>
+            </div>
+          `).join('')}
+        </div>
+      ` : ''}
+
+      ${state.formacao.length ? `
+        <div class="cv-section">
+          <div class="cv-section-title">Formação Acadêmica</div>
+          ${state.formacao.map(f => `
+            <div class="cv-entry">
+              <div class="cv-entry-header">
+                <div class="cv-entry-title">${escapeHtml(f.curso)}</div>
+                <div class="cv-entry-date">${escapeHtml(f.inicio)} ${f.inicio && f.fim ? '—' : ''} ${escapeHtml(f.fim)}</div>
+              </div>
+              <div class="cv-entry-sub">${escapeHtml(f.instituicao)}</div>
+              ${f.descricao ? `<div class="cv-entry-desc">${escapeHtml(f.descricao)}</div>` : ''}
+            </div>
+          `).join('')}
+        </div>
+      ` : ''}
+
+      ${state.habilidades.length ? `
+        <div class="cv-section">
+          <div class="cv-section-title">Habilidades</div>
+          <div class="cv-skills-grid">
+            ${state.habilidades.map(h => `
+              <div class="cv-skill">
+                <span>${escapeHtml(h.nome)}</span>
+                <span class="cv-skill-level">${escapeHtml(h.nivel)}</span>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      ` : ''}
+
+      ${state.idiomas.length ? `
+        <div class="cv-section">
+          <div class="cv-section-title">Idiomas</div>
+          <div class="cv-skills-grid">
+            ${state.idiomas.map(i => `
+              <div class="cv-skill">
+                <span>${escapeHtml(i.nome)}</span>
+                <span class="cv-skill-level">${escapeHtml(i.nivel)}</span>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      ` : ''}
+
+      ${state.certificacoes.length ? `
+        <div class="cv-section">
+          <div class="cv-section-title">Certificações</div>
+          ${state.certificacoes.map(c => `
+            <div class="cv-entry">
+              <div class="cv-entry-header">
+                <div class="cv-entry-title">${escapeHtml(c.nome)}</div>
+                <div class="cv-entry-date">${escapeHtml(c.ano)}</div>
+              </div>
+              <div class="cv-entry-sub">${escapeHtml(c.instituicao)}</div>
+            </div>
+          `).join('')}
+        </div>
+      ` : ''}
+    </div>
+  `;
+}
+
+function renderModern() {
+  const nome = state.nome || 'Seu Nome Completo';
+  const cargo = state.cargo || 'Seu Cargo';
+
+  return `
+    <div class="cv-modern">
+      <aside class="cv-sidebar">
+        ${state.foto ? `<img src="${state.foto}" class="cv-photo" alt="Foto">` : ''}
+        <div class="cv-section">
+          <div class="cv-section-title">Contato</div>
+          <div class="cv-contact">
+            ${state.email ? `<span><strong>E-mail</strong>${linkifyContato(state.email)}</span>` : ''}
+            ${state.telefone ? `<span><strong>Telefone</strong>${linkifyContato(state.telefone)}</span>` : ''}
+            ${state.localizacao ? `<span><strong>Local</strong>${escapeHtml(state.localizacao)}</span>` : ''}
+            ${state.linkedin ? `<span><strong>LinkedIn</strong>${linkifyContato(state.linkedin)}</span>` : ''}
+            ${state.site ? `<span><strong>Site</strong>${linkifyContato(state.site)}</span>` : ''}
+          </div>
+        </div>
+
+        ${state.habilidades.length ? `
+          <div class="cv-section">
+            <div class="cv-section-title">Habilidades</div>
+            ${state.habilidades.map(h => `
+              <div class="cv-skill-item">
+                <div class="cv-skill-name">
+                  <span>${escapeHtml(h.nome)}</span>
+                </div>
+                <div class="cv-skill-bar">
+                  <div class="cv-skill-fill" style="width:${nivelNum(h.nivel)}%"></div>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        ` : ''}
+
+        ${state.idiomas.length ? `
+          <div class="cv-section">
+            <div class="cv-section-title">Idiomas</div>
+            ${state.idiomas.map(i => `
+              <div class="cv-lang-item">
+                <span>${escapeHtml(i.nome)}</span>
+                <span>${escapeHtml(i.nivel)}</span>
+              </div>
+            `).join('')}
+          </div>
+        ` : ''}
+
+        ${state.certificacoes.length ? `
+          <div class="cv-section">
+            <div class="cv-section-title">Certificações</div>
+            ${state.certificacoes.map(c => `
+              <div style="margin-bottom:8px;font-size:9px">
+                <div style="font-weight:600">${escapeHtml(c.nome)}</div>
+                <div style="opacity:0.8">${escapeHtml(c.instituicao)} · ${escapeHtml(c.ano)}</div>
+              </div>
+            `).join('')}
+          </div>
+        ` : ''}
+      </aside>
+
+      <main class="cv-main">
+        <div class="cv-name">${escapeHtml(nome)}</div>
+        <div class="cv-title-role">${escapeHtml(cargo)}</div>
+
+        ${state.resumo ? `
+          <div class="cv-section">
+            <div class="cv-section-title">Perfil</div>
+            <div class="cv-summary">${escapeHtml(state.resumo)}</div>
+          </div>
+        ` : ''}
+
+        ${state.experiencias.length ? `
+          <div class="cv-section">
+            <div class="cv-section-title">Experiência</div>
+            ${state.experiencias.map(e => `
+              <div class="cv-entry">
+                <div class="cv-entry-date">${escapeHtml(e.inicio)} ${e.inicio && e.fim ? '—' : ''} ${escapeHtml(e.fim)}</div>
+                <div class="cv-entry-title">${escapeHtml(e.cargo || 'Cargo')}</div>
+                <div class="cv-entry-sub">${escapeHtml(e.empresa)}${e.local ? ' · ' + escapeHtml(e.local) : ''}</div>
+                <div class="cv-entry-desc">${escapeHtml(e.descricao).replace(/\n/g, '<br>')}</div>
+              </div>
+            `).join('')}
+          </div>
+        ` : ''}
+
+        ${state.formacao.length ? `
+          <div class="cv-section">
+            <div class="cv-section-title">Formação</div>
+            ${state.formacao.map(f => `
+              <div class="cv-entry">
+                <div class="cv-entry-date">${escapeHtml(f.inicio)} ${f.inicio && f.fim ? '—' : ''} ${escapeHtml(f.fim)}</div>
+                <div class="cv-entry-title">${escapeHtml(f.curso)}</div>
+                <div class="cv-entry-sub">${escapeHtml(f.instituicao)}</div>
+                ${f.descricao ? `<div class="cv-entry-desc">${escapeHtml(f.descricao)}</div>` : ''}
+              </div>
+            `).join('')}
+          </div>
+        ` : ''}
+      </main>
+    </div>
+  `;
+}
+
+function renderEditorial() {
+  const nome = state.nome || 'Seu Nome Completo';
+  const cargo = state.cargo || 'Seu Cargo';
+
+  const contato = [];
+  if (state.email) contato.push(state.email);
+  if (state.telefone) contato.push(state.telefone);
+  if (state.localizacao) contato.push(state.localizacao);
+  if (state.linkedin) contato.push(state.linkedin);
+  if (state.site) contato.push(state.site);
+
+  return `
+    <div class="cv-editorial">
+      <div class="cv-header">
+        ${state.foto ? `<img src="${state.foto}" class="cv-photo" alt="Foto">` : ''}
+        <div class="cv-name">${escapeHtml(nome)}</div>
+        <div class="cv-title-role">${escapeHtml(cargo)}</div>
+        <div class="cv-contact">${contato.map(c => `<span>${linkifyContato(c)}</span>`).join('')}</div>
+      </div>
+
+      ${state.resumo ? `
+        <div class="cv-section">
+          <div class="cv-section-title">Perfil</div>
+          <div class="cv-summary">"${escapeHtml(state.resumo)}"</div>
+        </div>
+      ` : ''}
+
+      ${state.experiencias.length ? `
+        <div class="cv-section">
+          <div class="cv-section-title">Trajetória</div>
+          ${state.experiencias.map(e => `
+            <div class="cv-entry">
+              <div class="cv-entry-header">
+                <div class="cv-entry-title">${escapeHtml(e.cargo || 'Cargo')}</div>
+                <div class="cv-entry-date">${escapeHtml(e.inicio)} ${e.inicio && e.fim ? '—' : ''} ${escapeHtml(e.fim)}</div>
+              </div>
+              <div class="cv-entry-sub">${escapeHtml(e.empresa)}${e.local ? ', ' + escapeHtml(e.local) : ''}</div>
+              <div class="cv-entry-desc">${escapeHtml(e.descricao).replace(/\n/g, '<br>')}</div>
+            </div>
+          `).join('')}
+        </div>
+      ` : ''}
+
+      ${state.formacao.length ? `
+        <div class="cv-section">
+          <div class="cv-section-title">Formação</div>
+          ${state.formacao.map(f => `
+            <div class="cv-entry">
+              <div class="cv-entry-header">
+                <div class="cv-entry-title">${escapeHtml(f.curso)}</div>
+                <div class="cv-entry-date">${escapeHtml(f.inicio)} ${f.inicio && f.fim ? '—' : ''} ${escapeHtml(f.fim)}</div>
+              </div>
+              <div class="cv-entry-sub">${escapeHtml(f.instituicao)}</div>
+              ${f.descricao ? `<div class="cv-entry-desc">${escapeHtml(f.descricao)}</div>` : ''}
+            </div>
+          `).join('')}
+        </div>
+      ` : ''}
+
+      ${state.habilidades.length ? `
+        <div class="cv-section">
+          <div class="cv-section-title">Competências</div>
+          <div class="cv-skills-inline">
+            ${state.habilidades.map(h => `<span>${escapeHtml(h.nome)}</span>`).join('')}
+          </div>
+        </div>
+      ` : ''}
+
+      ${state.idiomas.length ? `
+        <div class="cv-section">
+          <div class="cv-section-title">Idiomas</div>
+          <div class="cv-skills-inline">
+            ${state.idiomas.map(i => `<span>${escapeHtml(i.nome)} · ${escapeHtml(i.nivel)}</span>`).join('')}
+          </div>
+        </div>
+      ` : ''}
+
+      ${state.certificacoes.length ? `
+        <div class="cv-section">
+          <div class="cv-section-title">Certificações</div>
+          ${state.certificacoes.map(c => `
+            <div class="cv-entry">
+              <div class="cv-entry-header">
+                <div class="cv-entry-title">${escapeHtml(c.nome)}</div>
+                <div class="cv-entry-date">${escapeHtml(c.ano)}</div>
+              </div>
+              <div class="cv-entry-sub">${escapeHtml(c.instituicao)}</div>
+            </div>
+          `).join('')}
+        </div>
+      ` : ''}
+    </div>
+  `;
+}
+
+// ========== EXPORTAR PDF (via impressão nativa do navegador) ==========
+function exportPDF() {
+  // Garante que o conteúdo atual esteja renderizado
+  render();
+
+  // Pequeno delay para garantir renderização antes da impressão
+  setTimeout(() => {
+    window.print();
+  }, 100);
+}
+
+// ========== INICIALIZAÇÃO ==========
+loadSavedState();
+syncFormFields();
+renderAllDynamicForms();
+updatePhotoPreview();
+setActiveTemplate(state.template);
+render();
+</script>
+
+</body>
+</html>
