@@ -3,20 +3,22 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Atelier CV — Gerador de Currículo Profissional</title>
+<title>Currículo que Conquista — Gerador de Currículo Grátis</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,400&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --ink: #0f0f0e;
-    --paper: #faf8f3;
-    --cream: #f3efe6;
-    --accent: #c8482b;
-    --accent-soft: #e8d5cd;
-    --muted: #6b6560;
-    --line: #1a1a18;
-    --sage: #6b7a5a;
+    --ink: #0f172a;
+    --paper: #f8fafc;
+    --cream: #e0f2fe;
+    --accent: #22c55e;
+    --accent-soft: #bbf7d0;
+    --muted: #475569;
+    --line: #1e293b;
+    --sage: #2563eb;
+    --blue: #2563eb;
+    --navy: #020617;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -54,6 +56,28 @@
   }
 
   .logo span { color: var(--accent); }
+
+  .nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .nav-checkout {
+    background: var(--accent);
+    color: #052e16;
+    padding: 10px 14px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+  }
+
+  .nav-checkout:hover {
+    background: #16a34a;
+  }
+
 
   .nav-meta {
     font-family: 'JetBrains Mono', monospace;
@@ -591,6 +615,72 @@
     color: var(--paper);
     transform: translateY(-1px);
   }
+
+
+
+  .palette-panel {
+    width: 100%;
+    background: #ffffff;
+    border: 1px solid rgba(15, 23, 42, 0.12);
+    border-radius: 14px;
+    padding: 14px;
+    margin-bottom: 14px;
+  }
+
+  .palette-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10px;
+    font-weight: 700;
+  }
+
+  .palette-selector {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(120px, 1fr));
+    gap: 8px;
+  }
+
+  .palette-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 10px;
+    border: 1px solid rgba(15, 23, 42, 0.14);
+    background: var(--paper);
+    color: var(--ink);
+    border-radius: 999px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    transition: all .2s ease;
+  }
+
+  .palette-btn:hover {
+    transform: translateY(-1px);
+    border-color: var(--accent);
+  }
+
+  .palette-btn.active {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-soft);
+    background: #ffffff;
+  }
+
+  .palette-swatch {
+    display: flex;
+    width: 34px;
+    height: 18px;
+    overflow: hidden;
+    border-radius: 999px;
+    border: 1px solid rgba(15, 23, 42, 0.15);
+    flex-shrink: 0;
+  }
+
+  .palette-swatch span { flex: 1; }
 
   .template-selector {
     display: flex;
@@ -1142,6 +1232,212 @@
     line-height: 1.55;
   }
 
+
+  /* ========== TEMA PÁGINA DE VENDAS ========== */
+  .nav {
+    background: rgba(248, 250, 252, 0.9);
+  }
+
+  .hero {
+    background:
+      radial-gradient(circle at top left, rgba(34, 197, 94, 0.22), transparent 34%),
+      radial-gradient(circle at bottom right, rgba(37, 99, 235, 0.18), transparent 35%),
+      linear-gradient(135deg, #020617 0%, #0f172a 58%, #111827 100%);
+    color: #f8fafc;
+  }
+
+  .hero h1,
+  .hero-content .hero-label {
+    color: #f8fafc;
+  }
+
+  .hero h1 em,
+  .logo span,
+  .section-title em,
+  .section-label,
+  .hero-label {
+    color: var(--accent);
+  }
+
+  .hero p {
+    color: #cbd5e1;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #052e16;
+    border-radius: 14px;
+    font-weight: 800;
+    box-shadow: 0 16px 40px rgba(34, 197, 94, 0.25);
+  }
+
+  .btn-primary:hover {
+    background: #16a34a;
+    color: #052e16;
+  }
+
+  .btn-ghost {
+    border-color: rgba(248, 250, 252, 0.75);
+    color: #f8fafc;
+    border-radius: 14px;
+  }
+
+  .btn-ghost:hover {
+    background: #f8fafc;
+    color: #0f172a;
+  }
+
+  .features {
+    background: #f8fafc;
+  }
+
+  .feature-item {
+    background: white;
+    border-top: 4px solid var(--accent);
+    border-radius: 20px;
+    padding: 26px;
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+  }
+
+  .builder-section {
+    background:
+      radial-gradient(circle at top right, rgba(37, 99, 235, 0.08), transparent 25%),
+      #f8fafc;
+  }
+
+  .form-panel,
+  .cv-preview,
+  .dynamic-item,
+  .template-selector,
+  .export-hint {
+    border-radius: 18px;
+  }
+
+  .form-tabs {
+    background: #e0f2fe;
+  }
+
+  .form-tab.active {
+    border-bottom-color: var(--accent);
+  }
+
+  .export-btn {
+    background: var(--accent);
+    color: #052e16;
+    border-radius: 12px;
+    font-weight: 800;
+  }
+
+  .template-selector {
+    flex-wrap: wrap;
+  }
+
+  .template-btn {
+    border-radius: 10px;
+  }
+
+  .template-btn.active {
+    background: var(--ink);
+    color: #f8fafc;
+  }
+
+  /* ========== TEMPLATE: ATS SIMPLES ========== */
+  .cv-ats {
+    padding: 44px 50px;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #111827;
+    font-size: 11px;
+    line-height: 1.5;
+  }
+  .cv-ats .cv-name { font-size: 28px; font-weight: 800; margin-bottom: 4px; text-transform: uppercase; }
+  .cv-ats .cv-title-role { font-size: 13px; font-weight: 700; color: #2563eb; margin-bottom: 8px; }
+  .cv-ats .cv-contact { font-size: 10px; color: #374151; border-bottom: 1px solid #111827; padding-bottom: 12px; margin-bottom: 18px; }
+  .cv-ats .cv-section { margin-bottom: 16px; }
+  .cv-ats .cv-section-title { font-size: 12px; font-weight: 800; text-transform: uppercase; border-bottom: 1px solid #d1d5db; margin-bottom: 8px; padding-bottom: 3px; }
+  .cv-ats .cv-entry { margin-bottom: 11px; }
+  .cv-ats .cv-entry-title { font-weight: 700; font-size: 11px; }
+  .cv-ats .cv-entry-sub, .cv-ats .cv-entry-date { color: #4b5563; font-size: 10px; }
+  .cv-ats .cv-entry-desc, .cv-ats .cv-summary { color: #1f2937; }
+  .cv-ats .cv-skills-inline span { display: inline-block; margin-right: 8px; }
+
+  /* ========== TEMPLATE: ADMINISTRATIVO ========== */
+  .cv-admin {
+    padding: 44px 50px;
+    font-family: 'Inter', sans-serif;
+    color: #0f172a;
+    font-size: 10px;
+    line-height: 1.55;
+    border-top: 12px solid #2563eb;
+  }
+  .cv-admin .cv-header { display: grid; grid-template-columns: 1fr auto; gap: 18px; border-bottom: 1px solid #dbeafe; padding-bottom: 18px; margin-bottom: 22px; }
+  .cv-admin .cv-name { font-family: 'Fraunces', serif; font-size: 34px; font-weight: 600; line-height: 1; }
+  .cv-admin .cv-title-role { color: #2563eb; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; margin-top: 4px; }
+  .cv-admin .cv-contact { text-align: right; color: #475569; font-size: 9px; }
+  .cv-admin .cv-section { margin-bottom: 17px; }
+  .cv-admin .cv-section-title { background: #dbeafe; color: #1e3a8a; padding: 6px 9px; border-radius: 8px; font-weight: 800; text-transform: uppercase; font-size: 10px; letter-spacing: .08em; margin-bottom: 9px; }
+  .cv-admin .cv-entry-title { font-weight: 800; font-size: 11px; }
+  .cv-admin .cv-entry-date { color: #2563eb; font-family: 'JetBrains Mono', monospace; font-size: 9px; }
+  .cv-admin .cv-entry { margin-bottom: 12px; }
+  .cv-admin .cv-skills-inline span { background:#eff6ff; color:#1e3a8a; border-radius:999px; padding:3px 8px; margin:3px; display:inline-block; }
+
+  /* ========== TEMPLATE: VENDAS ========== */
+  .cv-vendas {
+    padding: 44px 50px;
+    font-family: 'Inter', sans-serif;
+    color: #111827;
+    font-size: 10px;
+    line-height: 1.55;
+  }
+  .cv-vendas .cv-header { background: linear-gradient(135deg, #22c55e, #16a34a); color: #052e16; padding: 24px; border-radius: 18px; margin-bottom: 22px; }
+  .cv-vendas .cv-name { font-size: 32px; font-weight: 900; letter-spacing: -.03em; line-height:1; }
+  .cv-vendas .cv-title-role { font-weight: 900; text-transform: uppercase; letter-spacing: .08em; margin-top: 6px; }
+  .cv-vendas .cv-contact { margin-top: 10px; font-size: 9px; display: flex; gap: 10px; flex-wrap: wrap; }
+  .cv-vendas .cv-section-title { color:#16a34a; font-size: 13px; font-weight: 900; text-transform: uppercase; margin-bottom: 8px; border-left: 4px solid #22c55e; padding-left: 8px; }
+  .cv-vendas .cv-section { margin-bottom: 18px; }
+  .cv-vendas .cv-entry { margin-bottom: 13px; }
+  .cv-vendas .cv-entry-title { font-weight: 900; }
+  .cv-vendas .cv-entry-date { color:#16a34a; font-weight:700; font-size:9px; }
+  .cv-vendas .cv-skills-inline span { border:1px solid #bbf7d0; background:#f0fdf4; border-radius:8px; padding:3px 7px; margin:3px; display:inline-block; }
+
+  /* ========== TEMPLATE: PRIMEIRO EMPREGO ========== */
+  .cv-primeiro {
+    padding: 44px 50px;
+    font-family: 'Inter', sans-serif;
+    color: #0f172a;
+    font-size: 10px;
+    line-height: 1.6;
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  }
+  .cv-primeiro .cv-header { text-align:center; border: 2px solid #bbf7d0; border-radius: 22px; padding: 22px; margin-bottom: 22px; }
+  .cv-primeiro .cv-name { font-family:'Fraunces', serif; font-size:34px; font-weight:600; }
+  .cv-primeiro .cv-title-role { color:#16a34a; font-weight:800; text-transform:uppercase; letter-spacing:.1em; }
+  .cv-primeiro .cv-contact { color:#475569; font-size:9px; margin-top:8px; display:flex; justify-content:center; gap:10px; flex-wrap:wrap; }
+  .cv-primeiro .cv-section { margin-bottom:18px; }
+  .cv-primeiro .cv-section-title { font-size:12px; font-weight:900; color:#052e16; margin-bottom:8px; }
+  .cv-primeiro .cv-section-title::before { content:'✓ '; color:#22c55e; }
+  .cv-primeiro .cv-entry { background:#f0fdf4; border:1px solid #dcfce7; border-radius:14px; padding:10px; margin-bottom:10px; }
+  .cv-primeiro .cv-entry-title { font-weight:800; }
+  .cv-primeiro .cv-skills-inline span { background:#e0f2fe; color:#1e3a8a; border-radius:999px; padding:3px 8px; margin:3px; display:inline-block; }
+
+  /* ========== TEMPLATE: EXECUTIVO ========== */
+  .cv-executivo {
+    padding: 46px 54px;
+    font-family: Georgia, 'Times New Roman', serif;
+    color: #111827;
+    font-size: 10.5px;
+    line-height: 1.55;
+  }
+  .cv-executivo .cv-header { border-bottom: 3px double #111827; padding-bottom: 18px; margin-bottom: 22px; }
+  .cv-executivo .cv-name { font-size: 34px; font-weight: 700; letter-spacing:-.02em; }
+  .cv-executivo .cv-title-role { font-family: Arial, sans-serif; color:#2563eb; font-weight:800; text-transform:uppercase; letter-spacing:.12em; margin-top:4px; }
+  .cv-executivo .cv-contact { font-family: Arial, sans-serif; color:#4b5563; font-size:9px; margin-top:8px; }
+  .cv-executivo .cv-section { margin-bottom:17px; }
+  .cv-executivo .cv-section-title { font-family: Arial, sans-serif; text-transform:uppercase; letter-spacing:.12em; font-size:10px; font-weight:900; color:#2563eb; border-bottom:1px solid #d1d5db; padding-bottom:4px; margin-bottom:9px; }
+  .cv-executivo .cv-entry { margin-bottom:12px; }
+  .cv-executivo .cv-entry-title { font-weight:700; font-size:11.5px; }
+  .cv-executivo .cv-entry-date { font-family: Arial, sans-serif; color:#2563eb; font-size:9px; }
+  .cv-executivo .cv-skills-inline span { display:inline-block; margin-right:10px; }
+
   /* ========== FOOTER ========== */
   footer {
     padding: 60px 40px 40px;
@@ -1176,6 +1472,10 @@
     }
     .hero-visual { height: 400px; }
     .features-grid { grid-template-columns: 1fr; gap: 40px; }
+  }
+
+  @media (max-width: 900px) {
+    .palette-selector { grid-template-columns: repeat(2, 1fr); }
   }
 
   @media (max-width: 640px) {
@@ -1251,7 +1551,7 @@
     }
 
     /* Garante que os templates internos preencham a página toda */
-    .cv-classic, .cv-modern, .cv-editorial {
+    .cv-classic, .cv-modern, .cv-editorial, .cv-ats, .cv-admin, .cv-vendas, .cv-primeiro, .cv-executivo {
       width: 210mm !important;
       overflow: visible !important;
       page-break-inside: auto !important;
@@ -1276,19 +1576,19 @@
 
 <!-- NAVEGAÇÃO -->
 <nav class="nav">
-  <div class="logo">Atelier<span>CV</span></div>
-  <div class="nav-meta">Edição 2026 / PT-BR</div>
+  <div class="logo">Currículo<span>Conquista</span></div>
+  <div class="nav-actions"><div class="nav-meta">Bônus grátis / Online</div><a class="nav-checkout" href="https://pay.kiwify.com.br/2iHn7Gz">Ver ebook</a></div>
 </nav>
 
 <!-- HERO -->
 <section class="hero">
   <div class="hero-content">
-    <div class="hero-label">Gerador de Currículo</div>
-    <h1>Seu currículo,<br>feito com <em>ofício.</em></h1>
-    <p>Construa um currículo profissional que atende os padrões atuais do mercado — compatível com ATS, visualmente impecável e pronto para exportar em PDF.</p>
+    <div class="hero-label">Bônus do Ebook</div>
+    <h1>Crie seu currículo<br>com visual de <em>conquista.</em></h1>
+    <p>Use este gerador grátis e online para aplicar o método do ebook Currículo que Conquista: preencha seus dados, escolha um modelo e salve em PDF.</p>
     <div class="hero-cta">
-      <button class="btn-primary" onclick="document.getElementById('builder').scrollIntoView({behavior:'smooth'})">Começar agora</button>
-      <button class="btn-ghost" onclick="document.getElementById('builder').scrollIntoView({behavior:'smooth'})">Editar agora</button>
+      <button class="btn-primary" onclick="document.getElementById('builder').scrollIntoView({behavior:'smooth'})">Criar currículo agora</button>
+      <button class="btn-ghost" onclick="document.getElementById('builder').scrollIntoView({behavior:'smooth'})">Ver modelos</button>
     </div>
   </div>
   <div class="hero-visual">
@@ -1324,9 +1624,9 @@
       <p>Estrutura limpa e texto selecionável que os sistemas de recrutamento conseguem ler sem erros.</p>
     </div>
     <div class="feature-item">
-      <div class="feature-num">02 / Três Templates</div>
+      <div class="feature-num">02 / Mais modelos</div>
       <h3>Escolha o tom certo para a vaga.</h3>
-      <p>Clássico, Moderno e Editorial — cada um pensado para contextos e áreas distintas.</p>
+      <p>Clássico, Moderno, Editorial, ATS Simples, Administrativo, Vendas, Primeiro Emprego e Executivo.</p>
     </div>
     <div class="feature-item">
       <div class="feature-num">03 / Exportação PDF</div>
@@ -1339,8 +1639,8 @@
 <!-- BUILDER -->
 <section class="builder-section" id="builder">
   <div class="section-header">
-    <div class="section-label">O Construtor</div>
-    <h2 class="section-title">Preencha à esquerda.<br>Veja <em>pronto</em> à direita.</h2>
+    <div class="section-label">Gerador bônus</div>
+    <h2 class="section-title">Escolha o modelo ideal.<br>Veja <em>pronto</em> à direita.</h2>
   </div>
 
   <div class="builder-layout">
@@ -1476,10 +1776,25 @@
     <!-- VISUALIZAÇÃO -->
     <div class="cv-preview-wrapper">
       <div class="preview-toolbar">
+        <div class="palette-panel">
+          <div class="palette-title">Escolha a paleta do currículo</div>
+          <div class="palette-selector">
+            <button class="palette-btn active" data-palette="conquista"><span class="palette-swatch"><span style="background:#020617"></span><span style="background:#2563eb"></span><span style="background:#22c55e"></span></span>Conquista</button>
+            <button class="palette-btn" data-palette="executiva"><span class="palette-swatch"><span style="background:#111827"></span><span style="background:#334155"></span><span style="background:#d97706"></span></span>Executiva</button>
+            <button class="palette-btn" data-palette="minimalista"><span class="palette-swatch"><span style="background:#18181b"></span><span style="background:#71717a"></span><span style="background:#a1a1aa"></span></span>Minimalista</button>
+            <button class="palette-btn" data-palette="criativa"><span class="palette-swatch"><span style="background:#3b0764"></span><span style="background:#7e22ce"></span><span style="background:#f97316"></span></span>Criativa</button>
+            <button class="palette-btn" data-palette="verde"><span class="palette-swatch"><span style="background:#064e3b"></span><span style="background:#0f766e"></span><span style="background:#84cc16"></span></span>Verde RH</button>
+          </div>
+        </div>
         <div class="template-selector">
           <button class="template-btn active" data-template="classic">Clássico</button>
           <button class="template-btn" data-template="modern">Moderno</button>
           <button class="template-btn" data-template="editorial">Editorial</button>
+          <button class="template-btn" data-template="ats">ATS Simples</button>
+          <button class="template-btn" data-template="admin">Administrativo</button>
+          <button class="template-btn" data-template="vendas">Vendas</button>
+          <button class="template-btn" data-template="primeiro">Primeiro Emprego</button>
+          <button class="template-btn" data-template="executivo">Executivo</button>
         </div>
         <div class="toolbar-actions">
           <button class="utility-btn" onclick="clearData()">Limpar dados</button>
@@ -1494,8 +1809,8 @@
 
 <!-- FOOTER -->
 <footer>
-  <div class="logo">Atelier<span>CV</span></div>
-  <p>Feito com atenção aos detalhes. Seus dados ficam apenas no seu navegador.</p>
+  <div class="logo">Currículo<span>Conquista</span></div>
+  <p>Bônus gratuito para aplicar o método do ebook. Seus dados ficam apenas no seu navegador.</p>
 </footer>
 
 <script>
@@ -1505,6 +1820,7 @@ const STORAGE_KEY = 'ateliercv-draft-v1';
 function createInitialState() {
   return {
     template: 'classic',
+    palette: 'conquista',
     foto: '',
     nome: '',
     cargo: '',
@@ -1551,6 +1867,46 @@ function saveState() {
   }
 }
 
+
+const PALETTES = {
+  conquista: {
+    ink: '#0f172a', paper: '#f8fafc', cream: '#e0f2fe', accent: '#22c55e', accentSoft: '#bbf7d0', muted: '#475569', line: '#1e293b', sage: '#2563eb', blue: '#2563eb', navy: '#020617'
+  },
+  executiva: {
+    ink: '#111827', paper: '#f9fafb', cream: '#f3f4f6', accent: '#d97706', accentSoft: '#fed7aa', muted: '#4b5563', line: '#1f2937', sage: '#334155', blue: '#475569', navy: '#020617'
+  },
+  minimalista: {
+    ink: '#18181b', paper: '#fafafa', cream: '#f4f4f5', accent: '#71717a', accentSoft: '#e4e4e7', muted: '#52525b', line: '#27272a', sage: '#3f3f46', blue: '#52525b', navy: '#09090b'
+  },
+  criativa: {
+    ink: '#2e1065', paper: '#fff7ed', cream: '#f3e8ff', accent: '#f97316', accentSoft: '#fed7aa', muted: '#6b21a8', line: '#581c87', sage: '#7e22ce', blue: '#9333ea', navy: '#1e1b4b'
+  },
+  verde: {
+    ink: '#064e3b', paper: '#f7fee7', cream: '#dcfce7', accent: '#84cc16', accentSoft: '#d9f99d', muted: '#365314', line: '#14532d', sage: '#0f766e', blue: '#047857', navy: '#052e16'
+  }
+};
+
+function applyPalette(paletteName) {
+  const palette = PALETTES[paletteName] || PALETTES.conquista;
+  const root = document.documentElement;
+  root.style.setProperty('--ink', palette.ink);
+  root.style.setProperty('--paper', palette.paper);
+  root.style.setProperty('--cream', palette.cream);
+  root.style.setProperty('--accent', palette.accent);
+  root.style.setProperty('--accent-soft', palette.accentSoft);
+  root.style.setProperty('--muted', palette.muted);
+  root.style.setProperty('--line', palette.line);
+  root.style.setProperty('--sage', palette.sage);
+  root.style.setProperty('--blue', palette.blue);
+  root.style.setProperty('--navy', palette.navy);
+}
+
+function setActivePalette(paletteName) {
+  document.querySelectorAll('.palette-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.palette === paletteName);
+  });
+}
+
 function setActiveTemplate(template) {
   document.querySelectorAll('.template-btn').forEach(btn => {
     btn.classList.toggle('active', btn.dataset.template === template);
@@ -1582,6 +1938,8 @@ function clearData() {
   renderAllDynamicForms();
   updatePhotoPreview();
   setActiveTemplate(state.template);
+  setActivePalette(state.palette);
+  applyPalette(state.palette);
   render();
 }
 
@@ -1602,6 +1960,15 @@ document.querySelectorAll('.template-btn').forEach(btn => {
     document.querySelectorAll('.template-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     state.template = btn.dataset.template;
+    render();
+  });
+});
+
+document.querySelectorAll('.palette-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    state.palette = btn.dataset.palette;
+    applyPalette(state.palette);
+    setActivePalette(state.palette);
     render();
   });
 });
@@ -1959,10 +2326,17 @@ function nivelNum(nivel) {
 
 // ========== RENDERIZAÇÃO DO CV ==========
 function render() {
+  applyPalette(state.palette);
   const preview = document.getElementById('cvPreview');
   if (state.template === 'classic') preview.innerHTML = renderClassic();
   else if (state.template === 'modern') preview.innerHTML = renderModern();
-  else preview.innerHTML = renderEditorial();
+  else if (state.template === 'editorial') preview.innerHTML = renderEditorial();
+  else if (state.template === 'ats') preview.innerHTML = renderATS();
+  else if (state.template === 'admin') preview.innerHTML = renderAdmin();
+  else if (state.template === 'vendas') preview.innerHTML = renderVendas();
+  else if (state.template === 'primeiro') preview.innerHTML = renderPrimeiro();
+  else if (state.template === 'executivo') preview.innerHTML = renderExecutivo();
+  else preview.innerHTML = renderClassic();
   saveState();
 }
 
@@ -2271,6 +2645,161 @@ function renderEditorial() {
   `;
 }
 
+
+function getContatoArray() {
+  const contato = [];
+  if (state.email) contato.push(state.email);
+  if (state.telefone) contato.push(state.telefone);
+  if (state.localizacao) contato.push(state.localizacao);
+  if (state.linkedin) contato.push(state.linkedin);
+  if (state.site) contato.push(state.site);
+  return contato;
+}
+
+function renderSimpleTemplate(className, labels = {}) {
+  const nome = state.nome || 'Seu Nome Completo';
+  const cargo = state.cargo || 'Seu Cargo';
+  const contato = getContatoArray();
+  const tituloResumo = labels.resumo || 'Resumo Profissional';
+  const tituloExperiencia = labels.experiencia || 'Experiência Profissional';
+  const tituloFormacao = labels.formacao || 'Formação';
+  const tituloHabilidades = labels.habilidades || 'Habilidades';
+  const tituloIdiomas = labels.idiomas || 'Idiomas';
+  const tituloCertificacoes = labels.certificacoes || 'Certificações';
+
+  return `
+    <div class="${className}">
+      <div class="cv-header">
+        <div>
+          <div class="cv-name">${escapeHtml(nome)}</div>
+          <div class="cv-title-role">${escapeHtml(cargo)}</div>
+          <div class="cv-contact">${contato.map(c => `<span>${linkifyContato(c)}</span>`).join(' · ')}</div>
+        </div>
+      </div>
+
+      ${state.resumo ? `
+        <div class="cv-section">
+          <div class="cv-section-title">${tituloResumo}</div>
+          <div class="cv-summary">${escapeHtml(state.resumo)}</div>
+        </div>
+      ` : ''}
+
+      ${state.experiencias.length ? `
+        <div class="cv-section">
+          <div class="cv-section-title">${tituloExperiencia}</div>
+          ${state.experiencias.map(e => `
+            <div class="cv-entry">
+              <div class="cv-entry-header">
+                <div class="cv-entry-title">${escapeHtml(e.cargo || 'Cargo')}</div>
+                <div class="cv-entry-date">${escapeHtml(e.inicio)} ${e.inicio && e.fim ? '—' : ''} ${escapeHtml(e.fim)}</div>
+              </div>
+              <div class="cv-entry-sub">${escapeHtml(e.empresa)}${e.local ? ' · ' + escapeHtml(e.local) : ''}</div>
+              <div class="cv-entry-desc">${escapeHtml(e.descricao).replace(/\n/g, '<br>')}</div>
+            </div>
+          `).join('')}
+        </div>
+      ` : ''}
+
+      ${state.formacao.length ? `
+        <div class="cv-section">
+          <div class="cv-section-title">${tituloFormacao}</div>
+          ${state.formacao.map(f => `
+            <div class="cv-entry">
+              <div class="cv-entry-header">
+                <div class="cv-entry-title">${escapeHtml(f.curso)}</div>
+                <div class="cv-entry-date">${escapeHtml(f.inicio)} ${f.inicio && f.fim ? '—' : ''} ${escapeHtml(f.fim)}</div>
+              </div>
+              <div class="cv-entry-sub">${escapeHtml(f.instituicao)}</div>
+              ${f.descricao ? `<div class="cv-entry-desc">${escapeHtml(f.descricao)}</div>` : ''}
+            </div>
+          `).join('')}
+        </div>
+      ` : ''}
+
+      ${state.habilidades.length ? `
+        <div class="cv-section">
+          <div class="cv-section-title">${tituloHabilidades}</div>
+          <div class="cv-skills-inline">
+            ${state.habilidades.map(h => `<span>${escapeHtml(h.nome)}${className === 'cv-ats' || className === 'cv-executivo' ? ' — ' + escapeHtml(h.nivel) : ''}</span>`).join('')}
+          </div>
+        </div>
+      ` : ''}
+
+      ${state.idiomas.length ? `
+        <div class="cv-section">
+          <div class="cv-section-title">${tituloIdiomas}</div>
+          <div class="cv-skills-inline">
+            ${state.idiomas.map(i => `<span>${escapeHtml(i.nome)} · ${escapeHtml(i.nivel)}</span>`).join('')}
+          </div>
+        </div>
+      ` : ''}
+
+      ${state.certificacoes.length ? `
+        <div class="cv-section">
+          <div class="cv-section-title">${tituloCertificacoes}</div>
+          ${state.certificacoes.map(c => `
+            <div class="cv-entry">
+              <div class="cv-entry-header">
+                <div class="cv-entry-title">${escapeHtml(c.nome)}</div>
+                <div class="cv-entry-date">${escapeHtml(c.ano)}</div>
+              </div>
+              <div class="cv-entry-sub">${escapeHtml(c.instituicao)}</div>
+            </div>
+          `).join('')}
+        </div>
+      ` : ''}
+    </div>
+  `;
+}
+
+function renderATS() {
+  return renderSimpleTemplate('cv-ats', {
+    resumo: 'Perfil Profissional',
+    experiencia: 'Experiência',
+    formacao: 'Educação',
+    habilidades: 'Competências',
+    certificacoes: 'Cursos e Certificados'
+  });
+}
+
+function renderAdmin() {
+  return renderSimpleTemplate('cv-admin', {
+    resumo: 'Resumo Administrativo',
+    experiencia: 'Rotinas e Experiências',
+    formacao: 'Formação e Cursos',
+    habilidades: 'Competências Administrativas'
+  });
+}
+
+function renderVendas() {
+  return renderSimpleTemplate('cv-vendas', {
+    resumo: 'Perfil Comercial',
+    experiencia: 'Resultados em Atendimento e Vendas',
+    formacao: 'Formação',
+    habilidades: 'Habilidades de Venda'
+  });
+}
+
+function renderPrimeiro() {
+  return renderSimpleTemplate('cv-primeiro', {
+    resumo: 'Sobre mim',
+    experiencia: 'Atividades, Projetos ou Experiências',
+    formacao: 'Estudos e Cursos',
+    habilidades: 'Pontos Fortes',
+    certificacoes: 'Cursos Complementares'
+  });
+}
+
+function renderExecutivo() {
+  return renderSimpleTemplate('cv-executivo', {
+    resumo: 'Resumo Executivo',
+    experiencia: 'Experiência de Liderança',
+    formacao: 'Formação Acadêmica',
+    habilidades: 'Competências Estratégicas'
+  });
+}
+
+
 // ========== EXPORTAR PDF (via impressão nativa do navegador) ==========
 function exportPDF() {
   // Garante que o conteúdo atual esteja renderizado
@@ -2288,6 +2817,8 @@ syncFormFields();
 renderAllDynamicForms();
 updatePhotoPreview();
 setActiveTemplate(state.template);
+setActivePalette(state.palette);
+applyPalette(state.palette);
 render();
 </script>
 
