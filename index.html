@@ -1438,6 +1438,274 @@
   .cv-executivo .cv-entry-date { font-family: Arial, sans-serif; color:#2563eb; font-size:9px; }
   .cv-executivo .cv-skills-inline span { display:inline-block; margin-right:10px; }
 
+
+
+  /* ========== CAPTURA / OFERTA / CONVERSÃO ========== */
+  .lead-section,
+  .offer-section,
+  .trust-section {
+    padding: 90px 40px;
+    background: #f8fafc;
+  }
+
+  .lead-card,
+  .offer-card,
+  .trust-grid {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .lead-card {
+    display: grid;
+    grid-template-columns: 1.1fr .9fr;
+    gap: 36px;
+    align-items: center;
+    background: linear-gradient(135deg, #020617, #0f172a);
+    color: #f8fafc;
+    border-radius: 28px;
+    padding: 42px;
+    box-shadow: 0 28px 70px rgba(15, 23, 42, .18);
+  }
+
+  .lead-card h2,
+  .offer-card h2 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(32px, 4vw, 54px);
+    line-height: 1.04;
+    letter-spacing: -0.03em;
+    font-weight: 500;
+    margin-bottom: 16px;
+  }
+
+  .lead-card p,
+  .offer-card p {
+    color: #cbd5e1;
+    font-size: 17px;
+    max-width: 620px;
+  }
+
+  .lead-form {
+    background: rgba(248, 250, 252, .08);
+    border: 1px solid rgba(248, 250, 252, .16);
+    border-radius: 22px;
+    padding: 22px;
+  }
+
+  .lead-form input {
+    margin-bottom: 12px;
+    background: #ffffff;
+  }
+
+  .lead-form .btn-primary {
+    width: 100%;
+    border-radius: 12px;
+    padding: 15px 18px;
+  }
+
+  .lead-note,
+  .conversion-note {
+    font-size: 12px;
+    color: #94a3b8;
+    margin-top: 10px;
+    line-height: 1.45;
+  }
+
+  .lead-success {
+    display: none;
+    margin-top: 12px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: rgba(34, 197, 94, .12);
+    border: 1px solid rgba(34, 197, 94, .28);
+    color: #bbf7d0;
+    font-weight: 700;
+    font-size: 13px;
+  }
+
+  .offer-section {
+    background:
+      radial-gradient(circle at top left, rgba(34, 197, 94, .10), transparent 26%),
+      radial-gradient(circle at bottom right, rgba(37, 99, 235, .12), transparent 26%),
+      #ffffff;
+  }
+
+  .offer-card {
+    background: #ffffff;
+    border: 1px solid rgba(15, 23, 42, .10);
+    border-radius: 30px;
+    padding: 48px;
+    box-shadow: 0 24px 70px rgba(15, 23, 42, .10);
+  }
+
+  .offer-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #dcfce7;
+    color: #052e16;
+    border-radius: 999px;
+    padding: 9px 14px;
+    font-size: 12px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    margin-bottom: 18px;
+  }
+
+  .offer-card p { color: var(--muted); }
+
+  .offer-content {
+    display: grid;
+    grid-template-columns: 1fr .78fr;
+    gap: 36px;
+    align-items: start;
+    margin-top: 26px;
+  }
+
+  .benefit-list {
+    list-style: none;
+    display: grid;
+    gap: 12px;
+  }
+
+  .benefit-list li {
+    padding: 14px 16px;
+    border-radius: 16px;
+    background: #f8fafc;
+    border: 1px solid rgba(15, 23, 42, .08);
+    font-weight: 700;
+    color: #0f172a;
+  }
+
+  .benefit-list li::before {
+    content: '✓';
+    color: var(--accent);
+    font-weight: 900;
+    margin-right: 10px;
+  }
+
+  .price-box {
+    background: linear-gradient(135deg, #0f172a, #020617);
+    color: #f8fafc;
+    border-radius: 24px;
+    padding: 28px;
+    position: sticky;
+    top: 110px;
+  }
+
+  .price-box h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 28px;
+    line-height: 1.1;
+    margin-bottom: 10px;
+  }
+
+  .price-box p { color: #cbd5e1; font-size: 14px; }
+
+  .price-actions {
+    display: grid;
+    gap: 12px;
+    margin-top: 20px;
+  }
+
+  .price-actions .btn-primary,
+  .price-actions .btn-ghost {
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 14px;
+  }
+
+  .trust-section { padding-top: 40px; }
+
+  .trust-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+  }
+
+  .trust-card {
+    background: #ffffff;
+    border: 1px solid rgba(15, 23, 42, .10);
+    border-radius: 22px;
+    padding: 24px;
+    box-shadow: 0 12px 32px rgba(15, 23, 42, .06);
+  }
+
+  .trust-card strong {
+    display: block;
+    margin-bottom: 8px;
+    color: #0f172a;
+  }
+
+  .trust-card span {
+    color: var(--muted);
+    font-size: 14px;
+  }
+
+  .post-export-offer {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+    background: rgba(2, 6, 23, .72);
+    padding: 20px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .post-export-offer.active { display: flex; }
+
+  .post-export-card {
+    max-width: 520px;
+    width: 100%;
+    background: #ffffff;
+    color: #0f172a;
+    border-radius: 26px;
+    padding: 30px;
+    box-shadow: 0 28px 80px rgba(0, 0, 0, .28);
+  }
+
+  .post-export-card h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 34px;
+    line-height: 1.05;
+    margin-bottom: 12px;
+  }
+
+  .post-export-card p {
+    color: var(--muted);
+    margin-bottom: 18px;
+  }
+
+  .modal-actions {
+    display: grid;
+    gap: 10px;
+  }
+
+  .modal-actions a,
+  .modal-actions button {
+    text-align: center;
+    text-decoration: none;
+    border-radius: 14px;
+  }
+
+  .modal-close {
+    background: transparent;
+    color: var(--muted);
+    border: 1px solid rgba(15, 23, 42, .16);
+    padding: 13px 16px;
+    cursor: pointer;
+    font-weight: 700;
+  }
+
+  @media (max-width: 900px) {
+    .lead-card,
+    .offer-content,
+    .trust-grid { grid-template-columns: 1fr; }
+    .price-box { position: static; }
+  }
+
   /* ========== FOOTER ========== */
   footer {
     padding: 60px 40px 40px;
@@ -1577,7 +1845,7 @@
 <!-- NAVEGAÇÃO -->
 <nav class="nav">
   <div class="logo">Currículo<span>Conquista</span></div>
-  <div class="nav-actions"><div class="nav-meta">Bônus grátis / Online</div><a class="nav-checkout" href="https://pay.kiwify.com.br/2iHn7Gz">Ver ebook</a></div>
+  <div class="nav-actions"><div class="nav-meta">Bônus grátis / Online</div><a class="nav-checkout" href="https://pay.kiwify.com.br/2iHn7Gz">Melhorar meu currículo</a></div>
 </nav>
 
 <!-- HERO -->
@@ -1585,10 +1853,10 @@
   <div class="hero-content">
     <div class="hero-label">Bônus do Ebook</div>
     <h1>Crie seu currículo<br>com visual de <em>conquista.</em></h1>
-    <p>Use este gerador grátis e online para aplicar o método do ebook Currículo que Conquista: preencha seus dados, escolha um modelo e salve em PDF.</p>
+    <p>Use este gerador grátis para montar seu currículo em PDF. Depois, aprenda no ebook como escrever cada seção do jeito que chama atenção de recrutadores.</p>
     <div class="hero-cta">
       <button class="btn-primary" onclick="document.getElementById('builder').scrollIntoView({behavior:'smooth'})">Criar currículo agora</button>
-      <button class="btn-ghost" onclick="document.getElementById('builder').scrollIntoView({behavior:'smooth'})">Ver modelos</button>
+      <button class="btn-ghost" onclick="document.getElementById('oferta').scrollIntoView({behavior:'smooth'})">Ver método completo</button>
     </div>
   </div>
   <div class="hero-visual">
@@ -1807,10 +2075,79 @@
   </div>
 </section>
 
+
+<!-- CAPTURA DE LEADS -->
+<section class="lead-section" id="lead">
+  <div class="lead-card">
+    <div>
+      <div class="offer-badge">Material grátis</div>
+      <h2>Receba frases prontas para turbinar seu currículo.</h2>
+      <p>Deixe seu e-mail para salvar seu interesse e receber um checklist com ideias de resumo profissional, experiências e palavras-chave para vagas.</p>
+    </div>
+    <form class="lead-form" onsubmit="handleLeadSubmit(event)">
+      <input type="text" id="leadNome" placeholder="Seu nome" required>
+      <input type="email" id="leadEmail" placeholder="Seu melhor e-mail" required>
+      <button class="btn-primary" type="submit">Quero receber o checklist</button>
+      <p class="lead-note">Seus dados ficam salvos apenas neste navegador. Para automação real, conecte este formulário a uma ferramenta de e-mail marketing.</p>
+      <div class="lead-success" id="leadSuccess">Pronto! Seu interesse foi salvo. Agora veja o método completo abaixo.</div>
+    </form>
+  </div>
+</section>
+
+<!-- OFERTA DO EBOOK -->
+<section class="offer-section" id="oferta">
+  <div class="offer-card">
+    <div class="offer-badge">Método completo</div>
+    <h2>O gerador monta o visual. O ebook ensina o que escrever para conquistar entrevistas.</h2>
+    <p>Use o currículo pronto como ponto de partida e aplique o método Currículo que Conquista para deixar cada seção mais clara, estratégica e convincente.</p>
+
+    <div class="offer-content">
+      <ul class="benefit-list">
+        <li>Modelos de resumo profissional para adaptar ao seu perfil</li>
+        <li>Frases prontas para descrever experiências e resultados</li>
+        <li>Checklist para melhorar leitura por recrutadores e filtros ATS</li>
+        <li>Orientações para primeiro emprego, área administrativa, vendas e carreira executiva</li>
+        <li>Passo a passo para enviar seu currículo com mais segurança</li>
+      </ul>
+
+      <aside class="price-box">
+        <h3>Leve o método junto com seu currículo.</h3>
+        <p>Depois de montar o PDF, aprenda como transformar informações simples em argumentos fortes para a vaga.</p>
+        <div class="price-actions">
+          <a class="btn-primary" href="https://pay.kiwify.com.br/2iHn7Gz">Comprar ebook agora</a>
+          <a class="btn-ghost" href="#builder">Voltar ao gerador</a>
+        </div>
+        <p class="conversion-note">Dica: adicione na Kiwify um order bump com frases prontas, checklist extra ou modelos premium para aumentar o valor por compra.</p>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- PROVAS / BENEFÍCIOS -->
+<section class="trust-section">
+  <div class="trust-grid">
+    <div class="trust-card"><strong>Grátis para começar</strong><span>O visitante gera valor antes de receber a oferta, o que aumenta confiança.</span></div>
+    <div class="trust-card"><strong>Oferta no momento certo</strong><span>A chamada aparece quando a pessoa já está pensando em melhorar o currículo.</span></div>
+    <div class="trust-card"><strong>Esteira de produtos</strong><span>Você pode vender ebook, templates premium, revisão de currículo e consultoria.</span></div>
+  </div>
+</section>
+
+<!-- MODAL APÓS EXPORTAR -->
+<div class="post-export-offer" id="postExportOffer" role="dialog" aria-modal="true" aria-labelledby="postExportTitle">
+  <div class="post-export-card">
+    <h3 id="postExportTitle">Seu currículo está quase pronto.</h3>
+    <p>Antes de enviar, veja o ebook com frases, exemplos e o método para deixar seu currículo mais forte para recrutadores.</p>
+    <div class="modal-actions">
+      <a class="btn-primary" href="https://pay.kiwify.com.br/2iHn7Gz">Ver ebook agora</a>
+      <button class="modal-close" onclick="closePostExportOffer()">Continuar para salvar PDF</button>
+    </div>
+  </div>
+</div>
+
 <!-- FOOTER -->
 <footer>
   <div class="logo">Currículo<span>Conquista</span></div>
-  <p>Bônus gratuito para aplicar o método do ebook. Seus dados ficam apenas no seu navegador.</p>
+  <p>Bônus gratuito para aplicar o método do ebook. Seus dados ficam apenas no seu navegador. Para vender mais, conecte captura de leads e checkout na Kiwify.</p>
 </footer>
 
 <script>
@@ -2801,14 +3138,38 @@ function renderExecutivo() {
 
 
 // ========== EXPORTAR PDF (via impressão nativa do navegador) ==========
+function openPostExportOffer() {
+  const modal = document.getElementById('postExportOffer');
+  if (modal) modal.classList.add('active');
+}
+
+function closePostExportOffer() {
+  const modal = document.getElementById('postExportOffer');
+  if (modal) modal.classList.remove('active');
+  setTimeout(() => { window.print(); }, 100);
+}
+
+function handleLeadSubmit(event) {
+  event.preventDefault();
+  const lead = {
+    nome: document.getElementById('leadNome').value.trim(),
+    email: document.getElementById('leadEmail').value.trim(),
+    data: new Date().toISOString()
+  };
+  localStorage.setItem('curriculo-conquista-lead', JSON.stringify(lead));
+  const success = document.getElementById('leadSuccess');
+  if (success) success.style.display = 'block';
+  setTimeout(() => {
+    document.getElementById('oferta').scrollIntoView({ behavior: 'smooth' });
+  }, 500);
+}
+
 function exportPDF() {
   // Garante que o conteúdo atual esteja renderizado
   render();
 
-  // Pequeno delay para garantir renderização antes da impressão
-  setTimeout(() => {
-    window.print();
-  }, 100);
+  // Mostra a oferta antes da impressão, sem impedir o usuário de salvar o PDF.
+  openPostExportOffer();
 }
 
 // ========== INICIALIZAÇÃO ==========
