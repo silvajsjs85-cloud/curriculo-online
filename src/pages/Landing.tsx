@@ -2,11 +2,8 @@ import { Link } from "react-router-dom";
 import { FileText, Download, Zap, Shield, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { useAuth } from "@/hooks/useAuth";
 
 export default function Landing() {
-  const { user } = useAuth();
-
   return (
     <div className="flex flex-col min-h-screen">
       {/* Hero */}
@@ -26,14 +23,10 @@ export default function Landing() {
           </p>
           <div className="flex gap-4 justify-center flex-wrap">
             <Button size="lg" asChild className="text-base px-8">
-              <Link to={user ? "/dashboard" : "/auth"}>
-                Criar meu currículo
-              </Link>
+              <Link to="/dashboard">Criar meu currículo</Link>
             </Button>
             <Button size="lg" variant="outline" asChild className="text-base px-8">
-              <Link to={user ? "/dashboard" : "/auth"}>
-                Ver modelos
-              </Link>
+              <Link to="/dashboard">Ver modelos</Link>
             </Button>
           </div>
         </div>
@@ -64,7 +57,7 @@ export default function Landing() {
               {
                 icon: <Shield className="h-7 w-7 text-purple-500" />,
                 title: "Salvamento automático",
-                desc: "Seus dados ficam salvos na nuvem com segurança. Acesse de qualquer dispositivo.",
+                desc: "Seus dados ficam salvos com segurança. Acesse de qualquer dispositivo.",
               },
               {
                 icon: <Star className="h-7 w-7 text-orange-500" />,
@@ -94,7 +87,7 @@ export default function Landing() {
         <h2 className="text-3xl font-bold mb-4">Pronto para criar seu currículo?</h2>
         <p className="text-primary-foreground/80 mb-8 text-lg">Comece agora gratuitamente</p>
         <Button size="lg" variant="secondary" asChild className="text-base px-8">
-          <Link to={user ? "/dashboard" : "/auth"}>Começar agora</Link>
+          <Link to="/dashboard">Começar agora</Link>
         </Button>
       </section>
 
