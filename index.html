@@ -21,6 +21,15 @@
   <meta property="og:description" content="Crie currículos profissionais em minutos com o Currículo Fácil. Modelos modernos, download em PDF e salvamento automático.">
   <meta name="twitter:description" content="Crie currículos profissionais em minutos com o Currículo Fácil. Modelos modernos, download em PDF e salvamento automático.">
   <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <script>
+      // SPA redirect: restore the path encoded by 404.html
+      (function () {
+        var p = new URLSearchParams(window.location.search).get("p");
+        if (p) {
+          window.history.replaceState(null, null, "/" + p.replace(/&/, "?"));
+        }
+      })();
+    </script>
 </head>
 
   <body>
