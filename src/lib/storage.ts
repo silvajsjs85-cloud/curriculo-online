@@ -35,6 +35,20 @@ export function createResume(): Resume {
   return resume;
 }
 
+export function duplicateResume(id: string): Resume | null {
+  const original = getResume(id);
+  if (!original) return null;
+  const copy: Resume = {
+    ...original,
+    id: crypto.randomUUID(),
+    title: `${original.title} (cópia)`,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  };
+  saveResume(copy);
+  return copy;
+}
+
 export function deleteResume(id: string): void {
   const resumes = getResumes().filter((r) => r.id !== id);
   localStorage.setItem(KEY, JSON.stringify(resumes));

@@ -1,6 +1,6 @@
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import { ArrowLeft, Download, Save, Plus, Trash2, Camera, X } from "lucide-react";
+import { ArrowLeft, Download, Save, Plus, Trash2, Camera, X, CheckCircle } from "lucide-react";
 import { toast } from "sonner";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
@@ -14,7 +14,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { ResumePreview } from "@/components/ResumePreview";
 import { getResume, saveResume } from "@/lib/storage";
-import type { Resume, ResumeData, Experience, Education, Skill } from "@/types/resume";
+import type { Resume, ResumeData, Experience, Education, Skill, Language } from "@/types/resume";
 import { defaultResumeData } from "@/types/resume";
 
 export default function Builder() {
@@ -23,7 +23,14 @@ export default function Builder() {
 
   const [resume, setResume] = useState<Resume>(() => {
     const found = id ? getResume(id) : null;
-    return found ?? {
+    if (found) {
+      // migrate old resumes that don't have languages yet
+      if (!found.data.languages) {
+        found.data.languages = [];
+      }
+      return found;
+    }
+    return {
       id: id ?? crypto.randomUUID(),
       user_id: "local",
       title: "Novo Currículo",
@@ -34,9 +41,23 @@ export default function Builder() {
     };
   });
 
-  const [saving, setSaving] = useState(false);
+  const [autoSaved, setAutoSaved] = useState(false);
   const [exporting, setExporting] = useState(false);
   const photoInputRef = useRef<HTMLInputElement>(null);
+  const autoSaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Auto-save with 1.5s debounce
+  useEffect(() => {
+    if (autoSaveTimer.current) clearTimeout(autoSaveTimer.current);
+    autoSaveTimer.current = setTimeout(() => {
+      saveResume(resume);
+      setAutoSaved(true);
+      setTimeout(() => setAutoSaved(false), 2000);
+    }, 1500);
+    return () => {
+      if (autoSaveTimer.current) clearTimeout(autoSaveTimer.current);
+    };
+  }, [resume]);
 
   const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -54,12 +75,8 @@ export default function Builder() {
   }, []);
 
   const handleSave = () => {
-    setSaving(true);
     saveResume(resume);
-    setTimeout(() => {
-      setSaving(false);
-      toast.success("Currículo salvo!");
-    }, 300);
+    toast.success("Currículo salvo!");
   };
 
   const handleExportPDF = async () => {
@@ -141,7 +158,23 @@ export default function Builder() {
     updateData({ skills: resume.data.skills.filter((s) => s.id !== id) });
   };
 
+  const addLanguage = () => {
+    const lang: Language = { id: crypto.randomUUID(), name: "", level: "Intermediário" };
+    updateData({ languages: [...(resume.data.languages ?? []), lang] });
+  };
+
+  const updateLanguage = (id: string, patch: Partial<Language>) => {
+    updateData({
+      languages: (resume.data.languages ?? []).map((l) => (l.id === id ? { ...l, ...patch } : l)),
+    });
+  };
+
+  const removeLanguage = (id: string) => {
+    updateData({ languages: (resume.data.languages ?? []).filter((l) => l.id !== id) });
+  };
+
   const pi = resume.data.personalInfo;
+  const languages = resume.data.languages ?? [];
 
   return (
     <div className="flex flex-col h-screen overflow-hidden">
@@ -168,10 +201,16 @@ export default function Builder() {
             <SelectItem value="minimal">Minimalista</SelectItem>
           </SelectContent>
         </Select>
-        <div className="ml-auto flex gap-2">
-          <Button variant="outline" size="sm" onClick={handleSave} disabled={saving} className="gap-1">
+        <div className="ml-auto flex items-center gap-2">
+          {autoSaved && (
+            <span className="text-xs text-green-600 flex items-center gap-1 animate-fade-in">
+              <CheckCircle className="h-3.5 w-3.5" />
+              Salvo
+            </span>
+          )}
+          <Button variant="outline" size="sm" onClick={handleSave} className="gap-1">
             <Save className="h-4 w-4" />
-            {saving ? "Salvando..." : "Salvar"}
+            Salvar
           </Button>
           <Button size="sm" onClick={handleExportPDF} disabled={exporting} className="gap-1">
             <Download className="h-4 w-4" />
@@ -185,11 +224,12 @@ export default function Builder() {
         {/* Form */}
         <div className="w-full lg:w-[420px] shrink-0 overflow-y-auto border-r bg-gray-50">
           <Tabs defaultValue="pessoal" className="p-4">
-            <TabsList className="w-full grid grid-cols-4 mb-4">
+            <TabsList className="w-full grid grid-cols-5 mb-4">
               <TabsTrigger value="pessoal">Pessoal</TabsTrigger>
               <TabsTrigger value="experiencia">Exp.</TabsTrigger>
               <TabsTrigger value="formacao">Form.</TabsTrigger>
               <TabsTrigger value="habilidades">Hab.</TabsTrigger>
+              <TabsTrigger value="idiomas">Idiomas</TabsTrigger>
             </TabsList>
 
             {/* Pessoal */}
@@ -248,6 +288,7 @@ export default function Builder() {
                       placeholder="Breve descrição sobre você e seus objetivos..."
                       rows={4}
                     />
+                    <p className="text-xs text-muted-foreground text-right">{pi.summary.length} caracteres</p>
                   </Field>
                 </CardContent>
               </Card>
@@ -364,6 +405,43 @@ export default function Builder() {
                   {resume.data.skills.length > 0 && <Separator className="my-2" />}
                   <Button variant="outline" className="w-full gap-2" onClick={addSkill}>
                     <Plus className="h-4 w-4" /> Adicionar habilidade
+                  </Button>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            {/* Idiomas */}
+            <TabsContent value="idiomas" className="space-y-3 mt-0">
+              <Card>
+                <CardContent className="pt-4 space-y-2">
+                  {languages.map((lang) => (
+                    <div key={lang.id} className="flex gap-2 items-center">
+                      <Input
+                        value={lang.name}
+                        onChange={(e) => updateLanguage(lang.id, { name: e.target.value })}
+                        placeholder="Ex: Inglês"
+                        className="flex-1"
+                      />
+                      <Select value={lang.level} onValueChange={(v) => updateLanguage(lang.id, { level: v as Language["level"] })}>
+                        <SelectTrigger className="w-36">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="Básico">Básico</SelectItem>
+                          <SelectItem value="Intermediário">Intermediário</SelectItem>
+                          <SelectItem value="Avançado">Avançado</SelectItem>
+                          <SelectItem value="Fluente">Fluente</SelectItem>
+                          <SelectItem value="Nativo">Nativo</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <Button variant="ghost" size="sm" className="text-destructive h-9 w-9 p-0 shrink-0" onClick={() => removeLanguage(lang.id)}>
+                        <Trash2 className="h-3.5 w-3.5" />
+                      </Button>
+                    </div>
+                  ))}
+                  {languages.length > 0 && <Separator className="my-2" />}
+                  <Button variant="outline" className="w-full gap-2" onClick={addLanguage}>
+                    <Plus className="h-4 w-4" /> Adicionar idioma
                   </Button>
                 </CardContent>
               </Card>

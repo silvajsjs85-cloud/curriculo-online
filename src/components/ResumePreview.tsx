@@ -1,4 +1,4 @@
-import type { ResumeData } from "@/types/resume";
+import type { ResumeData, Language } from "@/types/resume";
 import { Mail, Phone, MapPin, Linkedin, Globe } from "lucide-react";
 
 interface ResumePreviewProps {
@@ -13,8 +13,31 @@ export function ResumePreview({ data, template = "modern", id = "resume-preview"
   return <ModernTemplate id={id} data={data} />;
 }
 
+const SKILL_LEVEL_WIDTH: Record<string, string> = {
+  "Básico": "25%",
+  "Intermediário": "50%",
+  "Avançado": "75%",
+  "Especialista": "100%",
+  "Fluente": "90%",
+  "Nativo": "100%",
+};
+
+function SkillBar({ name, level, color }: { name: string; level: string; color: string }) {
+  return (
+    <div style={{ marginBottom: 6 }}>
+      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 2 }}>
+        <span style={{ fontSize: 11, fontWeight: 500 }}>{name}</span>
+        <span style={{ fontSize: 10, color: "#888" }}>{level}</span>
+      </div>
+      <div style={{ height: 4, backgroundColor: "#e5e7eb", borderRadius: 4, overflow: "hidden" }}>
+        <div style={{ height: "100%", width: SKILL_LEVEL_WIDTH[level] ?? "50%", backgroundColor: color, borderRadius: 4 }} />
+      </div>
+    </div>
+  );
+}
+
 function ModernTemplate({ id, data }: { id: string; data: ResumeData }) {
-  const { personalInfo: pi, experiences, education, skills } = data;
+  const { personalInfo: pi, experiences, education, skills, languages = [] } = data;
   return (
     <div id={id} className="bg-white text-gray-800 font-sans text-sm" style={{ width: "210mm", minHeight: "297mm", padding: "20mm" }}>
       {/* Header */}
@@ -82,24 +105,33 @@ function ModernTemplate({ id, data }: { id: string; data: ResumeData }) {
         </section>
       )}
 
-      {skills.length > 0 && (
-        <section>
-          <h2 className="text-sm font-bold uppercase text-blue-600 tracking-wider mb-3">Habilidades</h2>
-          <div className="flex flex-wrap gap-2">
-            {skills.map((skill) => (
-              <span key={skill.id} className="bg-blue-50 text-blue-700 px-2 py-1 rounded text-xs font-medium">
-                {skill.name} · {skill.level}
-              </span>
+      <div className="flex gap-8">
+        {skills.length > 0 && (
+          <section className="flex-1">
+            <h2 className="text-sm font-bold uppercase text-blue-600 tracking-wider mb-3">Habilidades</h2>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0 16px" }}>
+              {skills.map((skill) => (
+                <SkillBar key={skill.id} name={skill.name} level={skill.level} color="#2563eb" />
+              ))}
+            </div>
+          </section>
+        )}
+
+        {languages.length > 0 && (
+          <section style={{ minWidth: 130 }}>
+            <h2 className="text-sm font-bold uppercase text-blue-600 tracking-wider mb-3">Idiomas</h2>
+            {languages.map((lang) => (
+              <SkillBar key={lang.id} name={lang.name} level={lang.level} color="#7c3aed" />
             ))}
-          </div>
-        </section>
-      )}
+          </section>
+        )}
+      </div>
     </div>
   );
 }
 
 function ClassicTemplate({ id, data }: { id: string; data: ResumeData }) {
-  const { personalInfo: pi, experiences, education, skills } = data;
+  const { personalInfo: pi, experiences, education, skills, languages = [] } = data;
   return (
     <div id={id} className="bg-white text-gray-800 font-serif text-sm" style={{ width: "210mm", minHeight: "297mm", padding: "20mm" }}>
       {/* Header */}
@@ -154,18 +186,33 @@ function ClassicTemplate({ id, data }: { id: string; data: ResumeData }) {
         </section>
       )}
 
-      {skills.length > 0 && (
-        <section>
-          <h2 className="font-bold uppercase tracking-widest border-b border-gray-400 pb-1 mb-2">Habilidades</h2>
-          <p>{skills.map((s) => `${s.name} (${s.level})`).join(" · ")}</p>
-        </section>
-      )}
+      <div className="flex gap-8">
+        {skills.length > 0 && (
+          <section className="flex-1">
+            <h2 className="font-bold uppercase tracking-widest border-b border-gray-400 pb-1 mb-3">Habilidades</h2>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0 16px" }}>
+              {skills.map((skill) => (
+                <SkillBar key={skill.id} name={skill.name} level={skill.level} color="#374151" />
+              ))}
+            </div>
+          </section>
+        )}
+
+        {languages.length > 0 && (
+          <section style={{ minWidth: 130 }}>
+            <h2 className="font-bold uppercase tracking-widest border-b border-gray-400 pb-1 mb-3">Idiomas</h2>
+            {languages.map((lang) => (
+              <SkillBar key={lang.id} name={lang.name} level={lang.level} color="#6b7280" />
+            ))}
+          </section>
+        )}
+      </div>
     </div>
   );
 }
 
 function MinimalTemplate({ id, data }: { id: string; data: ResumeData }) {
-  const { personalInfo: pi, experiences, education, skills } = data;
+  const { personalInfo: pi, experiences, education, skills, languages = [] } = data;
   return (
     <div id={id} className="bg-white text-gray-900 font-sans text-sm" style={{ width: "210mm", minHeight: "297mm", padding: "20mm" }}>
       {/* Header */}
@@ -225,16 +272,25 @@ function MinimalTemplate({ id, data }: { id: string; data: ResumeData }) {
         </section>
       )}
 
-      {skills.length > 0 && (
-        <section>
-          <h2 className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-3">Habilidades</h2>
-          <div className="flex flex-wrap gap-2">
-            {skills.map((s) => (
-              <span key={s.id} className="text-xs border border-gray-200 px-2 py-0.5 rounded">{s.name}</span>
+      <div className="flex gap-10">
+        {skills.length > 0 && (
+          <section className="flex-1">
+            <h2 className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-3">Habilidades</h2>
+            {skills.map((skill) => (
+              <SkillBar key={skill.id} name={skill.name} level={skill.level} color="#111827" />
             ))}
-          </div>
-        </section>
-      )}
+          </section>
+        )}
+
+        {languages.length > 0 && (
+          <section style={{ minWidth: 130 }}>
+            <h2 className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-3">Idiomas</h2>
+            {languages.map((lang) => (
+              <SkillBar key={lang.id} name={lang.name} level={lang.level} color="#6b7280" />
+            ))}
+          </section>
+        )}
+      </div>
     </div>
   );
 }

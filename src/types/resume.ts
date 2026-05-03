@@ -35,11 +35,18 @@ export interface Skill {
   level: "Básico" | "Intermediário" | "Avançado" | "Especialista";
 }
 
+export interface Language {
+  id: string;
+  name: string;
+  level: "Básico" | "Intermediário" | "Avançado" | "Fluente" | "Nativo";
+}
+
 export interface ResumeData {
   personalInfo: PersonalInfo;
   experiences: Experience[];
   education: Education[];
   skills: Skill[];
+  languages: Language[];
 }
 
 export interface Resume {
@@ -66,4 +73,5 @@ export const defaultResumeData: ResumeData = {
   experiences: [],
   education: [],
   skills: [],
+  languages: [],
 };
