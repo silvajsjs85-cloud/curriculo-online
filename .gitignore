@@ -1,1 +1,7 @@
 node_modules
+
+.vite/
+.vscode/
+dist/
+vite-dev.log
+vite-dev.err.log
