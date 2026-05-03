@@ -8,32 +8,36 @@ interface ResumePreviewProps {
 }
 
 export function ResumePreview({ data, template = "modern", id = "resume-preview" }: ResumePreviewProps) {
-  const { personalInfo, experiences, education, skills } = data;
-
   if (template === "classic") return <ClassicTemplate id={id} data={data} />;
   if (template === "minimal") return <MinimalTemplate id={id} data={data} />;
   return <ModernTemplate id={id} data={data} />;
 }
 
 function ModernTemplate({ id, data }: { id: string; data: ResumeData }) {
-  const { personalInfo, experiences, education, skills } = data;
+  const { personalInfo: pi, experiences, education, skills } = data;
   return (
     <div id={id} className="bg-white text-gray-800 font-sans text-sm" style={{ width: "210mm", minHeight: "297mm", padding: "20mm" }}>
-      <div className="border-b-4 border-blue-600 pb-4 mb-6">
-        <h1 className="text-3xl font-bold text-gray-900">{personalInfo.name || "Seu Nome"}</h1>
-        <div className="flex flex-wrap gap-3 mt-2 text-xs text-gray-500">
-          {personalInfo.email && <span className="flex items-center gap-1"><Mail size={12} />{personalInfo.email}</span>}
-          {personalInfo.phone && <span className="flex items-center gap-1"><Phone size={12} />{personalInfo.phone}</span>}
-          {personalInfo.location && <span className="flex items-center gap-1"><MapPin size={12} />{personalInfo.location}</span>}
-          {personalInfo.linkedin && <span className="flex items-center gap-1"><Linkedin size={12} />{personalInfo.linkedin}</span>}
-          {personalInfo.website && <span className="flex items-center gap-1"><Globe size={12} />{personalInfo.website}</span>}
+      {/* Header */}
+      <div className="border-b-4 border-blue-600 pb-4 mb-6 flex items-start justify-between gap-4">
+        <div className="flex-1">
+          <h1 className="text-3xl font-bold text-gray-900">{pi.name || "Seu Nome"}</h1>
+          <div className="flex flex-wrap gap-3 mt-2 text-xs text-gray-500">
+            {pi.email && <span className="flex items-center gap-1"><Mail size={12} />{pi.email}</span>}
+            {pi.phone && <span className="flex items-center gap-1"><Phone size={12} />{pi.phone}</span>}
+            {pi.location && <span className="flex items-center gap-1"><MapPin size={12} />{pi.location}</span>}
+            {pi.linkedin && <span className="flex items-center gap-1"><Linkedin size={12} />{pi.linkedin}</span>}
+            {pi.website && <span className="flex items-center gap-1"><Globe size={12} />{pi.website}</span>}
+          </div>
         </div>
+        {pi.photo && (
+          <img src={pi.photo} alt="Foto" className="rounded-full object-cover shrink-0" style={{ width: 80, height: 80 }} />
+        )}
       </div>
 
-      {personalInfo.summary && (
+      {pi.summary && (
         <section className="mb-5">
           <h2 className="text-sm font-bold uppercase text-blue-600 tracking-wider mb-2">Resumo Profissional</h2>
-          <p className="text-gray-700 leading-relaxed">{personalInfo.summary}</p>
+          <p className="text-gray-700 leading-relaxed">{pi.summary}</p>
         </section>
       )}
 
@@ -95,22 +99,27 @@ function ModernTemplate({ id, data }: { id: string; data: ResumeData }) {
 }
 
 function ClassicTemplate({ id, data }: { id: string; data: ResumeData }) {
-  const { personalInfo, experiences, education, skills } = data;
+  const { personalInfo: pi, experiences, education, skills } = data;
   return (
     <div id={id} className="bg-white text-gray-800 font-serif text-sm" style={{ width: "210mm", minHeight: "297mm", padding: "20mm" }}>
+      {/* Header */}
       <div className="text-center border-b-2 border-gray-800 pb-4 mb-6">
-        <h1 className="text-3xl font-bold tracking-widest uppercase">{personalInfo.name || "Seu Nome"}</h1>
+        {pi.photo && (
+          <img src={pi.photo} alt="Foto" className="rounded-full object-cover mx-auto mb-3" style={{ width: 90, height: 90 }} />
+        )}
+        <h1 className="text-3xl font-bold tracking-widest uppercase">{pi.name || "Seu Nome"}</h1>
         <div className="flex flex-wrap justify-center gap-3 mt-2 text-xs text-gray-600">
-          {personalInfo.email && <span>{personalInfo.email}</span>}
-          {personalInfo.phone && <span>| {personalInfo.phone}</span>}
-          {personalInfo.location && <span>| {personalInfo.location}</span>}
+          {pi.email && <span>{pi.email}</span>}
+          {pi.phone && <span>| {pi.phone}</span>}
+          {pi.location && <span>| {pi.location}</span>}
+          {pi.linkedin && <span>| {pi.linkedin}</span>}
         </div>
       </div>
 
-      {personalInfo.summary && (
+      {pi.summary && (
         <section className="mb-5">
           <h2 className="font-bold uppercase tracking-widest border-b border-gray-400 pb-1 mb-2">Objetivo</h2>
-          <p className="leading-relaxed">{personalInfo.summary}</p>
+          <p className="leading-relaxed">{pi.summary}</p>
         </section>
       )}
 
@@ -156,22 +165,28 @@ function ClassicTemplate({ id, data }: { id: string; data: ResumeData }) {
 }
 
 function MinimalTemplate({ id, data }: { id: string; data: ResumeData }) {
-  const { personalInfo, experiences, education, skills } = data;
+  const { personalInfo: pi, experiences, education, skills } = data;
   return (
     <div id={id} className="bg-white text-gray-900 font-sans text-sm" style={{ width: "210mm", minHeight: "297mm", padding: "20mm" }}>
-      <div className="mb-8">
-        <h1 className="text-4xl font-light tracking-tight">{personalInfo.name || "Seu Nome"}</h1>
-        <div className="flex flex-wrap gap-4 mt-3 text-xs text-gray-500">
-          {personalInfo.email && <span>{personalInfo.email}</span>}
-          {personalInfo.phone && <span>{personalInfo.phone}</span>}
-          {personalInfo.location && <span>{personalInfo.location}</span>}
-          {personalInfo.linkedin && <span>{personalInfo.linkedin}</span>}
+      {/* Header */}
+      <div className="flex items-start justify-between mb-8">
+        <div>
+          <h1 className="text-4xl font-light tracking-tight">{pi.name || "Seu Nome"}</h1>
+          <div className="flex flex-wrap gap-4 mt-3 text-xs text-gray-500">
+            {pi.email && <span>{pi.email}</span>}
+            {pi.phone && <span>{pi.phone}</span>}
+            {pi.location && <span>{pi.location}</span>}
+            {pi.linkedin && <span>{pi.linkedin}</span>}
+          </div>
         </div>
+        {pi.photo && (
+          <img src={pi.photo} alt="Foto" className="rounded-lg object-cover shrink-0" style={{ width: 75, height: 75 }} />
+        )}
       </div>
 
-      {personalInfo.summary && (
+      {pi.summary && (
         <section className="mb-6">
-          <p className="text-gray-600 leading-relaxed border-l-2 border-gray-200 pl-4">{personalInfo.summary}</p>
+          <p className="text-gray-600 leading-relaxed border-l-2 border-gray-200 pl-4">{pi.summary}</p>
         </section>
       )}
 

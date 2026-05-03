@@ -1,6 +1,6 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import { ArrowLeft, Download, Save, Plus, Trash2 } from "lucide-react";
+import { ArrowLeft, Download, Save, Plus, Trash2, Camera, X } from "lucide-react";
 import { toast } from "sonner";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
@@ -36,6 +36,18 @@ export default function Builder() {
 
   const [saving, setSaving] = useState(false);
   const [exporting, setExporting] = useState(false);
+  const photoInputRef = useRef<HTMLInputElement>(null);
+
+  const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      const photo = ev.target?.result as string;
+      updateData({ personalInfo: { ...resume.data.personalInfo, photo } });
+    };
+    reader.readAsDataURL(file);
+  };
 
   const updateData = useCallback((patch: Partial<ResumeData>) => {
     setResume((r) => ({ ...r, data: { ...r.data, ...patch } }));
@@ -184,6 +196,33 @@ export default function Builder() {
             <TabsContent value="pessoal" className="space-y-3 mt-0">
               <Card>
                 <CardContent className="pt-4 space-y-3">
+                  {/* Foto */}
+                  <div className="space-y-1">
+                    <Label className="text-xs text-muted-foreground">Foto de perfil</Label>
+                    <div className="flex items-center gap-3">
+                      <div className="h-20 w-20 rounded-full border-2 border-dashed border-gray-300 flex items-center justify-center overflow-hidden bg-gray-50 shrink-0">
+                        {pi.photo ? (
+                          <img src={pi.photo} alt="Foto" className="h-full w-full object-cover" />
+                        ) : (
+                          <Camera className="h-7 w-7 text-gray-300" />
+                        )}
+                      </div>
+                      <div className="flex flex-col gap-2">
+                        <Button type="button" variant="outline" size="sm" className="gap-1" onClick={() => photoInputRef.current?.click()}>
+                          <Camera className="h-3.5 w-3.5" />
+                          {pi.photo ? "Trocar foto" : "Adicionar foto"}
+                        </Button>
+                        {pi.photo && (
+                          <Button type="button" variant="ghost" size="sm" className="gap-1 text-destructive" onClick={() => updateData({ personalInfo: { ...pi, photo: "" } })}>
+                            <X className="h-3.5 w-3.5" />
+                            Remover
+                          </Button>
+                        )}
+                      </div>
+                      <input ref={photoInputRef} type="file" accept="image/*" className="hidden" onChange={handlePhotoUpload} />
+                    </div>
+                  </div>
+                  <Separator />
                   <Field label="Nome completo">
                     <Input value={pi.name} onChange={(e) => updateData({ personalInfo: { ...pi, name: e.target.value } })} placeholder="João Silva" />
                   </Field>
