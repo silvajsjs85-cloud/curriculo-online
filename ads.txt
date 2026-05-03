@@ -1,5 +1,0 @@
-# ads.txt - Authorized Digital Sellers
-# Substitua SEU-PUBLISHER-ID pelo seu ID do Google AdSense (ex: pub-1234567890123456)
-# Obtenha seu ID em: https://adsense.google.com > Conta > Informacoes da conta
-
-google.com, SEU-PUBLISHER-ID, DIRECT, f08c47fec0942fa0
