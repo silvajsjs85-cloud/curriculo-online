@@ -5,3 +5,9 @@ node_modules
 dist/
 vite-dev.log
 vite-dev.err.log
+
+.vite/
+.vscode/
+dist/
+vite-dev.log
+vite-dev.err.log
