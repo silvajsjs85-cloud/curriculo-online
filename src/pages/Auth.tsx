@@ -8,6 +8,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Layout, Chrome } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
+import { getErrorMessage } from "@/lib/utils";
 
 const Auth = () => {
   const [email, setEmail] = useState("");
@@ -23,11 +24,11 @@ const Auth = () => {
       // Nota: No painel do Supabase, você deve ativar o provedor Google em Authentication > Providers > Google
       // Configure o Client ID, Client Secret e a Redirect URL correta.
       await signInWithGoogle();
-    } catch (error: any) {
+    } catch (error) {
       toast({
         variant: "destructive",
         title: "Erro ao entrar com Google",
-        description: error.message || "Tente novamente mais tarde.",
+        description: getErrorMessage(error, "Tente novamente mais tarde."),
       });
       setIsLoading(false);
     }

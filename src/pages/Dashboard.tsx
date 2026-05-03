@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -8,6 +8,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { Tables } from "@/integrations/supabase/types";
+import { getErrorMessage } from "@/lib/utils";
 
 const Dashboard = () => {
   const { toast } = useToast();
@@ -16,13 +17,7 @@ const Dashboard = () => {
   const [resumes, setResumes] = useState<Tables<"resumes">[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    if (user) {
-      fetchResumes();
-    }
-  }, [user]);
-
-  const fetchResumes = async () => {
+  const fetchResumes = useCallback(async () => {
     try {
       const { data, error } = await supabase
         .from("resumes")
@@ -31,16 +26,26 @@ const Dashboard = () => {
 
       if (error) throw error;
       setResumes(data || []);
-    } catch (error: any) {
+    } catch (error) {
       toast({
         variant: "destructive",
         title: "Erro ao carregar currículos",
-        description: error.message,
+        description: getErrorMessage(error),
       });
     } finally {
       setLoading(false);
     }
-  };
+  }, [toast]);
+
+  useEffect(() => {
+    if (user) {
+      fetchResumes();
+      return;
+    }
+
+    setResumes([]);
+    setLoading(false);
+  }, [fetchResumes, user]);
 
   const handleDelete = async (id: string) => {
     if (!confirm("Tem certeza que deseja excluir este currículo?")) return;
@@ -50,11 +55,11 @@ const Dashboard = () => {
       if (error) throw error;
       setResumes(resumes.filter((r) => r.id !== id));
       toast({ title: "Excluído", description: "Currículo removido com sucesso." });
-    } catch (error: any) {
+    } catch (error) {
       toast({
         variant: "destructive",
         title: "Erro ao excluir",
-        description: error.message,
+        description: getErrorMessage(error),
       });
     }
   };
@@ -64,11 +69,11 @@ const Dashboard = () => {
       await signOut();
       toast({ title: "Até logo!", description: "Você saiu com sucesso." });
       navigate("/auth");
-    } catch (error: any) {
+    } catch (error) {
       toast({
         variant: "destructive",
         title: "Erro ao sair",
-        description: error.message,
+        description: getErrorMessage(error),
       });
     }
   };

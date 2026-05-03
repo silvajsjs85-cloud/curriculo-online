@@ -13,6 +13,7 @@ import Auth from "./pages/Auth.tsx";
 import Modelos from "./pages/Modelos.tsx";
 
 const queryClient = new QueryClient();
+const routerBasename = window.location.pathname.startsWith("/dist") ? "/dist" : "/";
 
 const AuthRedirect = ({ children }: { children: React.ReactNode }) => {
   const { session, loading } = useAuth();
@@ -55,7 +56,7 @@ const App = () => (
       <AuthProvider>
         <Toaster />
         <Sonner />
-        <BrowserRouter>
+        <BrowserRouter basename={routerBasename}>
           <AppRoutes />
         </BrowserRouter>
       </AuthProvider>

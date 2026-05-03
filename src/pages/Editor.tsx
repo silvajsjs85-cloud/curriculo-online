@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { ResumeData } from "@/types/resume";
 import { defaultResumeData } from "@/lib/constants";
 import { ResumeForm } from "@/components/editor/ResumeForm";
@@ -9,8 +9,8 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
-import html2canvas from "html2canvas";
-import jsPDF from "jspdf";
+import type { Json, TablesInsert } from "@/integrations/supabase/types";
+import { getErrorMessage } from "@/lib/utils";
 
 const sampleData: ResumeData = {
   ...defaultResumeData,
@@ -70,15 +70,9 @@ const Editor = () => {
   const [isLoading, setIsLoading] = useState(!!id);
   const { toast } = useToast();
 
-  useEffect(() => {
-    if (id) {
-      fetchResume();
-    } else {
-      setData(sampleData);
-    }
-  }, [id]);
+  const fetchResume = useCallback(async () => {
+    if (!id) return;
 
-  const fetchResume = async () => {
     try {
       const { data: resume, error } = await supabase
         .from("resumes")
@@ -90,17 +84,26 @@ const Editor = () => {
       if (resume) {
         setData(resume.content as unknown as ResumeData);
       }
-    } catch (error: any) {
+    } catch (error) {
       toast({
         variant: "destructive",
         title: "Erro ao carregar",
-        description: error.message,
+        description: getErrorMessage(error),
       });
       navigate("/dashboard");
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [id, navigate, toast]);
+
+  useEffect(() => {
+    if (id) {
+      fetchResume();
+    } else {
+      setData(sampleData);
+      setIsLoading(false);
+    }
+  }, [fetchResume, id]);
 
   const handleUpdate = (newData: Partial<ResumeData>) => {
     setData((prev) => ({ ...prev, ...newData }));
@@ -117,9 +120,9 @@ const Editor = () => {
 
     setIsSaving(true);
     try {
-      const resumePayload = {
+      const resumePayload: TablesInsert<"resumes"> = {
         title: data.personalInfo.fullName || "Novo Currículo",
-        content: data as any,
+        content: data as unknown as Json,
         template: data.template || "modern",
         user_id: user.id,
       };
@@ -144,11 +147,11 @@ const Editor = () => {
         title: "Currículo salvo!",
         description: "Suas alterações foram sincronizadas com o banco de dados.",
       });
-    } catch (error: any) {
+    } catch (error) {
       toast({
         variant: "destructive",
         title: "Erro ao salvar",
-        description: error.message,
+        description: getErrorMessage(error),
       });
     } finally {
       setIsSaving(false);
@@ -166,6 +169,11 @@ const Editor = () => {
     });
 
     try {
+      const [{ default: html2canvas }, { default: jsPDF }] = await Promise.all([
+        import("html2canvas"),
+        import("jspdf"),
+      ]);
+
       // Create canvas from the resume preview element
       const canvas = await html2canvas(element, {
         scale: 2, // Better quality

@@ -141,7 +141,7 @@ const LandingPage = () => {
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
-              {[
+              {([
                 { 
                   id: "modern", 
                   name: "Moderno", 
@@ -166,7 +166,7 @@ const LandingPage = () => {
                   color: "#8b5cf6",
                   featured: false
                 }
-              ].map((modelo, i) => (
+              ] as const).map((modelo, i) => (
                 <div 
                   key={i} 
                   className={cn(
@@ -191,7 +191,7 @@ const LandingPage = () => {
                         <ResumePreview 
                           data={{ 
                             ...sampleResumeData, 
-                            template: modelo.id as any,
+                            template: modelo.id,
                             themeColor: modelo.color
                           }} 
                           className="shadow-none border-none p-0"

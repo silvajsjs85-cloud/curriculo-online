@@ -47,7 +47,7 @@ const ModelosPage = () => {
 
           {/* Grid of Models */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
-            {[
+            {([
               { 
                 id: "modern", 
                 name: "Moderno", 
@@ -72,7 +72,7 @@ const ModelosPage = () => {
                 color: "#8b5cf6",
                 featured: false
               }
-            ].map((modelo, i) => (
+            ] as const).map((modelo, i) => (
               <div 
                 key={i} 
                 className={cn(
@@ -97,7 +97,7 @@ const ModelosPage = () => {
                       <ResumePreview 
                         data={{ 
                           ...sampleResumeData, 
-                          template: modelo.id as any,
+                          template: modelo.id,
                           themeColor: modelo.color
                         }} 
                         className="shadow-none border-none p-0"

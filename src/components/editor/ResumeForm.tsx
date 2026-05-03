@@ -17,6 +17,12 @@ interface ResumeFormProps {
   onUpdate: (data: Partial<ResumeData>) => void;
 }
 
+const resumeTemplates = [
+  { id: "modern", name: "Moderno", desc: "Design elegante com cores suaves." },
+  { id: "classic", name: "Clássico", desc: "Formal, limpo e direto." },
+  { id: "creative", name: "Criativo", desc: "Ousado, com fundo escuro no topo." },
+] as const;
+
 export const ResumeForm = ({ data, onUpdate }: ResumeFormProps) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -285,23 +291,19 @@ export const ResumeForm = ({ data, onUpdate }: ResumeFormProps) => {
         <TabsContent value="modelos" className="space-y-6">
           <h3 className="text-lg font-semibold mb-4 text-center">Escolha um Modelo</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              { id: "modern", name: "Moderno", desc: "Design elegante com cores suaves." },
-              { id: "classic", name: "Clássico", desc: "Formal, limpo e direto." },
-              { id: "creative", name: "Criativo", desc: "Ousado, com fundo escuro no topo." }
-            ].map((temp) => (
+            {resumeTemplates.map((temp) => (
               <div key={temp.id} className="flex flex-col gap-4">
                 <button
                   className={cn(
                     "relative aspect-[1/1.414] w-full border-2 rounded-xl overflow-hidden transition-all text-left group shadow-lg bg-white",
                     data.template === temp.id ? "border-primary ring-4 ring-primary/20 scale-[1.02]" : "border-border hover:border-primary/50"
                   )}
-                  onClick={() => onUpdate({ template: temp.id as any })}
+                  onClick={() => onUpdate({ template: temp.id })}
                 >
                   {/* Real mini-preview using the ResumePreview component */}
                   <div className="absolute inset-0 pointer-events-none origin-top-left" style={{ width: '400%', height: '400%', transform: 'scale(0.25)' }}>
                     <ResumePreview 
-                      data={{ ...data, template: temp.id as any }} 
+                      data={{ ...data, template: temp.id }} 
                       className="shadow-none border-none p-0"
                     />
                   </div>
