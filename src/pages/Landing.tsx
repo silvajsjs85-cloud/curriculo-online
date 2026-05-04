@@ -150,26 +150,26 @@ const STEPS = [
   {
     icon: <MousePointer className="h-5 w-5" />,
     step: "01",
-    title: "Escolha um modelo",
-    desc: "Selecione o template que combina com você e com a vaga desejada.",
+    title: "Escolha o modelo",
+    desc: "Temos opções para vagas técnicas, administrativas, criativas e executivas.",
   },
   {
     icon: <User className="h-5 w-5" />,
     step: "02",
-    title: "Preencha seus dados",
-    desc: "Informe experiências, formação, habilidades e idiomas de forma simples.",
+    title: "Preencha os dados",
+    desc: "Experiências, formação, habilidades e idiomas — campos simples e diretos.",
   },
   {
     icon: <Eye className="h-5 w-5" />,
     step: "03",
     title: "Veja o resultado",
-    desc: "O preview atualiza em tempo real enquanto você edita.",
+    desc: "O currículo monta enquanto você digita. Sem surpresas na hora de baixar.",
   },
   {
     icon: <Download className="h-5 w-5" />,
     step: "04",
     title: "Baixe em PDF",
-    desc: "Exporte em PDF de alta qualidade, pronto para enviar.",
+    desc: "Um clique. PDF de alta resolução, sem marca d'água, pronto para enviar.",
   },
 ];
 
@@ -177,7 +177,7 @@ const TESTIMONIALS = [
   {
     name: "Ana Carvalho",
     role: "Analista de Marketing",
-    text: "Criei meu currículo em menos de 15 minutos. O resultado ficou tão profissional que recebi elogios dos próprios recrutadores!",
+    text: "Fiz em 20 minutos e já fui chamada para entrevista dois dias depois. A qualidade do PDF impressionou até o próprio RH.",
     initials: "AC",
     avatarColor: "#0D9488",
     company: "Contratada na Magazord",
@@ -185,7 +185,7 @@ const TESTIMONIALS = [
   {
     name: "Lucas Mendes",
     role: "Desenvolvedor Júnior",
-    text: "Fácil de usar e visual impecável. Consegui meu primeiro emprego na área de TI logo depois de atualizar meu currículo aqui.",
+    text: "Eu mandava currículo e não recebia nem resposta. Depois de usar esse template, tive 3 chamadas em uma semana.",
     initials: "LM",
     avatarColor: "#2563eb",
     company: "Contratado na Stefanini",
@@ -193,7 +193,7 @@ const TESTIMONIALS = [
   {
     name: "Fernanda Oliveira",
     role: "Assistente Administrativo",
-    text: "Nunca imaginei que fazer um currículo seria tão simples. O template clássico me deu exatamente o visual formal que eu precisava.",
+    text: "Usei o modelo clássico, mandei para 5 vagas e já tenho 2 entrevistas marcadas. Simples, rápido e sem precisar criar conta.",
     initials: "FO",
     avatarColor: "#7c3aed",
     company: "Contratada na Unimed",
@@ -203,23 +203,23 @@ const TESTIMONIALS = [
 const TIPS = [
   {
     q: "Quantas páginas deve ter meu currículo?",
-    a: "Para profissionais com até 10 anos de experiência, uma página é o ideal. Seja objetivo e destaque apenas o mais relevante para a vaga.",
+    a: "Para a maioria das vagas, uma página basta. Se você tem mais de 10 anos de experiência relevante, duas páginas é o máximo. Menos é mais.",
   },
   {
-    q: "Devo incluir foto no currículo?",
-    a: "No Brasil, incluir foto é opcional, mas pode ser positivo para cargos que envolvem atendimento ao público. Opte por foto profissional e fundo neutro.",
+    q: "Devo colocar foto no currículo?",
+    a: "No Brasil é opcional. Em cargos de atendimento ou comerciais, uma foto profissional pode ajudar. Nos demais, foque no conteúdo.",
   },
   {
-    q: "Como listar habilidades de forma eficaz?",
-    a: "Priorize habilidades técnicas exigidas pela vaga. Evite listas genéricas e use termos específicos do setor em que está se candidatando.",
+    q: "Como descrever minhas habilidades?",
+    a: "Seja específico. 'Google Ads e Meta Ads' convence mais do que 'domínio de marketing digital'. Use os termos exatos da vaga.",
   },
   {
-    q: "Qual o melhor formato para enviar o currículo?",
-    a: "PDF é o formato mais indicado — mantém a formatação intacta em qualquer dispositivo e demonstra atenção ao detalhe.",
+    q: "Por que baixar em PDF e não Word?",
+    a: "PDF preserva a formatação em qualquer dispositivo. Word pode desconfigurar tudo ao abrir em versões diferentes — não arrisque.",
   },
 ];
 
-const COMPANIES = ["Nubank", "iFood", "Mercado Livre", "Loft", "Gympass", "Totvs"];
+const COMPANIES = ["Nubank", "iFood", "Mercado Livre", "Ambev", "Gympass", "Totvs"];
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 export default function Landing() {
@@ -245,28 +245,28 @@ export default function Landing() {
             <div className="animate-fade-in">
               <div className="inline-flex items-center gap-2 bg-teal-50 border border-teal-100 text-teal-700 text-xs font-bold px-4 py-1.5 rounded-full mb-8 tracking-wide uppercase">
                 <Sparkles className="h-3 w-3" />
-                100% gratuito · Sem limite de downloads
+                100% gratuito · Sem cadastro · Sem marca d'água
               </div>
 
               <h1
                 className="text-[2.75rem] sm:text-5xl lg:text-[3.5rem] font-extrabold tracking-tight leading-[1.08] mb-6"
                 style={{ color: "#0F2744" }}
               >
-                Seu currículo<br />
-                <span style={{ color: "#0D9488" }}>profissional</span><br />
-                em minutos
+                O currículo que<br />
+                <span style={{ color: "#0D9488" }}>chama atenção</span><br />
+                do recrutador
               </h1>
 
               <p className="text-lg text-gray-600 mb-8 leading-relaxed max-w-[420px]">
-                Crie, personalize e baixe seu currículo com modelos modernos,
-                preview em tempo real e exportação em PDF sem marca d'água.
+                Monte um currículo profissional em minutos — sem cadastro obrigatório.
+                Edite, visualize ao vivo e baixe em PDF direto no navegador.
               </p>
 
               <ul className="space-y-2.5 mb-10">
                 {[
-                  "Modelos validados por recrutadores profissionais",
-                  "Preview instantâneo enquanto você digita",
-                  "Download em PDF sem marca d'água, sempre grátis",
+                  "Modelos aprovados por recrutadores de grandes empresas",
+                  "Preview ao vivo — veja cada mudança na hora",
+                  "PDF sem marca d'água, grátis para sempre",
                 ].map((b) => (
                   <li key={b} className="flex items-start gap-3 text-gray-700 text-sm">
                     <span
@@ -425,7 +425,7 @@ export default function Landing() {
       <section className="py-10 px-4 bg-white border-y border-gray-100">
         <div className="container mx-auto max-w-4xl">
           <p className="text-center text-[11px] text-gray-400 uppercase tracking-[0.2em] font-semibold mb-7">
-            Usuários já foram contratados em empresas como
+            Nossos usuários foram contratados em
           </p>
           <div className="flex flex-wrap justify-center items-center gap-x-10 gap-y-3">
             {COMPANIES.map((c) => (
@@ -446,17 +446,17 @@ export default function Landing() {
         <div className="container mx-auto max-w-6xl">
           <div className="text-center mb-14">
             <span className="text-teal-600 font-bold text-xs uppercase tracking-[0.18em]">
-              Modelos Prontos
+              Templates Profissionais
             </span>
             <h2
               className="text-3xl sm:text-[2.6rem] font-extrabold mt-3 mb-4 tracking-tight"
               style={{ color: "#0F2744" }}
             >
-              Escolha o seu estilo ideal
+              Escolha o modelo certo para a sua vaga
             </h2>
             <p className="text-gray-600 max-w-md mx-auto leading-relaxed">
-              Todos os modelos são validados por especialistas em recrutamento
-              e otimizados para sistemas ATS.
+              Cada template é estruturado para passar pelos filtros automáticos (ATS)
+              e impressionar o recrutador na primeira olhada.
             </p>
           </div>
 
@@ -488,16 +488,16 @@ export default function Landing() {
         <div className="container mx-auto max-w-5xl">
           <div className="text-center mb-14">
             <span className="text-teal-600 font-bold text-xs uppercase tracking-[0.18em]">
-              Simples assim
+              Em 4 passos
             </span>
             <h2
               className="text-3xl sm:text-[2.6rem] font-extrabold mt-3 mb-4 tracking-tight"
               style={{ color: "#0F2744" }}
             >
-              Como funciona?
+              Tão simples que parece mágica
             </h2>
             <p className="text-gray-600 max-w-sm mx-auto leading-relaxed">
-              Quatro passos simples. Sem cadastro obrigatório, sem complicação.
+              Sem cadastro, sem instalação, sem complicação. Só você e o seu novo currículo.
             </p>
           </div>
 
@@ -553,25 +553,24 @@ export default function Landing() {
             {/* Text */}
             <div className="lg:col-span-3 p-10 lg:p-14 relative">
               <div className="inline-flex items-center gap-2 bg-teal-500/15 border border-teal-500/20 text-teal-300 text-[11px] font-bold px-3 py-1.5 rounded-full mb-7 uppercase tracking-wider">
-                <Shield className="h-3 w-3" /> Diferencial exclusivo
+                <Shield className="h-3 w-3" /> Para quem busca emprego de verdade
               </div>
 
               <h2 className="text-3xl sm:text-4xl font-extrabold text-white leading-tight mb-5 tracking-tight">
-                Currículo otimizado para<br />
-                <span style={{ color: "#2DD4BF" }}>aprovação por ATS</span>
+                Seu currículo passa pelos<br />
+                <span style={{ color: "#2DD4BF" }}>filtros automáticos das empresas</span>
               </h2>
 
               <p className="text-gray-300 mb-8 leading-relaxed text-[15px] max-w-md">
-                Nossos modelos são estruturados para passar pelos sistemas de triagem
-                automática das grandes empresas — garantindo que seu currículo chega
-                até o recrutador humano.
+                Mais de 90% das grandes empresas usam sistemas de triagem automática (ATS)
+                antes de um humano ver seu currículo. Nossos modelos são construídos exatamente para isso.
               </p>
 
               <ul className="space-y-3 mb-10">
                 {[
-                  "Formato reconhecido por sistemas ATS",
-                  "Palavras-chave estratégicas por área profissional",
-                  "Hierarquia visual clara e layout profissional",
+                  "Estrutura legível por qualquer sistema de triagem ATS",
+                  "Hierarquia de informação que facilita a leitura do recrutador",
+                  "Layout limpo que imprime e digitaliza sem distorções",
                 ].map((f) => (
                   <li key={f} className="flex items-center gap-3 text-gray-300 text-[15px]">
                     <span
@@ -592,7 +591,7 @@ export default function Landing() {
                 style={{ height: "52px", padding: "0 2rem", boxShadow: "0 4px 20px rgba(13,148,136,0.4)" }}
               >
                 <Link to="/dashboard" className="flex items-center gap-2">
-                  Experimentar agora
+                  Criar meu currículo grátis
                   <ArrowRight className="h-4 w-4" />
                 </Link>
               </Button>
@@ -667,16 +666,16 @@ export default function Landing() {
         <div className="container mx-auto max-w-5xl">
           <div className="text-center mb-14">
             <span className="text-teal-600 font-bold text-xs uppercase tracking-[0.18em]">
-              Depoimentos
+              Quem já usou aprovou
             </span>
             <h2
               className="text-3xl sm:text-[2.6rem] font-extrabold mt-3 mb-4 tracking-tight"
               style={{ color: "#0F2744" }}
             >
-              O que dizem nossos usuários
+              Resultados que falam por si
             </h2>
             <p className="text-gray-600 max-w-sm mx-auto leading-relaxed">
-              Histórias reais de pessoas que conseguiram o emprego dos sonhos.
+              Veja o que dizem quem já criou o currículo e conseguiu a vaga.
             </p>
           </div>
 
@@ -748,16 +747,16 @@ export default function Landing() {
         <div className="container mx-auto max-w-3xl">
           <div className="text-center mb-14">
             <span className="text-teal-600 font-bold text-xs uppercase tracking-[0.18em]">
-              Dicas de carreira
+              Dúvidas frequentes
             </span>
             <h2
               className="text-3xl sm:text-[2.6rem] font-extrabold mt-3 mb-4 tracking-tight"
               style={{ color: "#0F2744" }}
             >
-              Perguntas frequentes
+              Tudo que você precisa saber
             </h2>
             <p className="text-gray-600 leading-relaxed">
-              Tudo que você precisa saber para criar um currículo que converte.
+              Respostas rápidas para não perder tempo e criar um currículo que funciona.
             </p>
           </div>
 
@@ -833,7 +832,7 @@ export default function Landing() {
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </Button>
-            <p className="mt-3 text-sm text-gray-500">Grátis · Sem cadastro obrigatório · Seus dados ficam no seu dispositivo</p>
+            <p className="mt-3 text-sm text-gray-500">Grátis · Sem cadastro · Seus dados ficam só no seu dispositivo</p>
           </div>
         </div>
       </section>
@@ -855,8 +854,8 @@ export default function Landing() {
                 Currículo Fácil
               </Link>
               <p className="text-gray-400 text-sm leading-relaxed max-w-xs">
-                A forma mais simples de criar um currículo profissional e
-                conquistar sua próxima vaga de trabalho.
+                A ferramenta mais direta para criar um currículo profissional
+                e conquistar a próxima oportunidade — sem complicação.
               </p>
             </div>
 
