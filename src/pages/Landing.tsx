@@ -6,6 +6,71 @@ import {
   Users, TrendingUp, Shield,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ResumePreview } from "@/components/ResumePreview";
+import type { ResumeData } from "@/types/resume";
+
+// ─── Preview constants ────────────────────────────────────────────────────────
+const PREVIEW_SCALE = 0.335;
+const RESUME_WIDTH_PX = 794; // 210mm ≈ 794px at 96 dpi
+
+// ─── Static demo data for all template previews ───────────────────────────────
+const ANA_RESUME_DATA: ResumeData = {
+  personalInfo: {
+    name: "Ana Carvalho",
+    email: "ana@email.com",
+    phone: "(11) 99999-9999",
+    location: "São Paulo, SP",
+    linkedin: "",
+    website: "",
+    summary:
+      "Profissional com experiência em marketing digital, campanhas e análise de desempenho. Focada em resultados mensuráveis e crescimento de marca.",
+    photo: "",
+  },
+  experiences: [
+    {
+      id: "1",
+      position: "Analista de Marketing",
+      company: "Empresa X",
+      startDate: "Jan 2021",
+      endDate: "",
+      current: true,
+      description:
+        "Gestão de campanhas digitais, análise de métricas e coordenação de ações de conteúdo e mídia paga.",
+    },
+    {
+      id: "2",
+      position: "Assistente de Marketing",
+      company: "Agência Y",
+      startDate: "Mar 2019",
+      endDate: "Dez 2020",
+      current: false,
+      description:
+        "Apoio na criação de materiais e monitoramento de campanhas em redes sociais.",
+    },
+  ],
+  education: [
+    {
+      id: "1",
+      degree: "Bacharelado",
+      field: "Administração",
+      institution: "Universidade Y",
+      startDate: "2015",
+      endDate: "2019",
+      current: false,
+    },
+  ],
+  skills: [
+    { id: "1", name: "Marketing Digital", level: "Avançado" },
+    { id: "2", name: "Google Ads", level: "Avançado" },
+    { id: "3", name: "Excel", level: "Intermediário" },
+    { id: "4", name: "Comunicação", level: "Especialista" },
+    { id: "5", name: "Gestão de Campanhas", level: "Avançado" },
+  ],
+  languages: [
+    { id: "1", name: "Inglês", level: "Intermediário" },
+    { id: "2", name: "Espanhol", level: "Básico" },
+  ],
+};
 
 // ─── Template card ────────────────────────────────────────────────────────────
 function TemplateCard({
@@ -21,138 +86,94 @@ function TemplateCard({
 }) {
   return (
     <div
-      className="relative bg-white rounded-2xl overflow-hidden cursor-pointer group transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl"
+      className="relative bg-white rounded-2xl overflow-hidden cursor-pointer group"
       style={{
-        boxShadow: "0 4px 24px rgba(15,39,68,0.08), 0 1px 4px rgba(15,39,68,0.04)",
+        boxShadow: "0 2px 16px rgba(15,39,68,0.08), 0 1px 4px rgba(15,39,68,0.04)",
+        border: "1px solid rgba(15,39,68,0.08)",
+        transition: "transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease",
+      }}
+      onMouseEnter={(e) => {
+        const el = e.currentTarget as HTMLDivElement;
+        el.style.transform = "translateY(-7px)";
+        el.style.boxShadow = "0 22px 52px rgba(15,39,68,0.15), 0 4px 16px rgba(15,39,68,0.08)";
+        el.style.borderColor = `${accent}33`;
+      }}
+      onMouseLeave={(e) => {
+        const el = e.currentTarget as HTMLDivElement;
+        el.style.transform = "";
+        el.style.boxShadow = "";
+        el.style.borderColor = "";
       }}
     >
+      {/* Badge */}
       {tag && (
-        <div className="absolute top-3 right-3 z-10">
+        <div className="absolute top-3 right-3 z-20">
           <span
-            className={`text-[11px] font-bold px-2.5 py-0.5 rounded-full tracking-wide ${
+            className={`text-[10px] font-extrabold px-2.5 py-1 rounded-full tracking-wide ${
               tag === "Popular"
-                ? "bg-teal-50 text-teal-700 border border-teal-100"
-                : "bg-amber-50 text-amber-700 border border-amber-100"
+                ? "bg-teal-500 text-white"
+                : "bg-amber-400 text-amber-900"
             }`}
+            style={{ boxShadow: "0 1px 5px rgba(0,0,0,0.18)" }}
           >
-            {tag}
+            {tag === "Popular" ? "★ Popular" : "✦ Novo"}
           </span>
         </div>
       )}
 
-      {/* Accent strip */}
-      <div className="h-1 w-full" style={{ backgroundColor: accent }} />
+      {/* Real resume thumbnail */}
+      <div className="relative overflow-hidden bg-white" style={{ height: "296px" }}>
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            left: "50%",
+            width: `${RESUME_WIDTH_PX}px`,
+            transform: `translateX(-50%) scale(${PREVIEW_SCALE})`,
+            transformOrigin: "top center",
+            pointerEvents: "none",
+            userSelect: "none",
+          }}
+        >
+          <ResumePreview data={ANA_RESUME_DATA} template={layout} />
+        </div>
 
-      <div className="p-5 flex flex-col" style={{ minHeight: "12.5rem" }}>
-        {layout === "executive" ? (
-          <div className="flex h-full overflow-hidden rounded-xl border border-gray-100">
-            <div className="w-[34%] p-3 flex flex-col gap-2" style={{ backgroundColor: "#0F2744" }}>
-              <div className="h-8 w-8 rounded-xl mb-1" style={{ backgroundColor: "#2DD4BF" }} />
-              <div className="h-1.5 w-12 rounded bg-teal-300" />
-              <div className="h-1 w-full rounded bg-white/25" />
-              <div className="h-1 w-4/5 rounded bg-white/20" />
-              <div className="mt-2 h-1.5 w-11 rounded bg-teal-300" />
-              <div className="h-1 w-full rounded bg-white/20" />
-              <div className="h-1 w-3/4 rounded bg-white/20" />
-            </div>
-            <div className="flex-1 p-3 flex flex-col gap-1.5 bg-white">
-              <div className="h-3 w-16 rounded bg-[#0F2744]" />
-              <div className="h-1.5 w-12 rounded bg-teal-400 mb-2" />
-              <div className="h-1.5 w-14 rounded bg-[#0F2744]" />
-              <div className="h-1 w-full rounded bg-gray-100" />
-              <div className="h-1 w-5/6 rounded bg-gray-100" />
-              <div className="mt-2 h-1.5 w-14 rounded bg-[#0F2744]" />
-              <div className="h-1 w-full rounded bg-gray-100" />
-              <div className="h-1 w-4/6 rounded bg-gray-100" />
-            </div>
-          </div>
-        ) : layout === "classic" ? (
-          <div className="h-full flex flex-col items-center text-center">
-            <div className="h-2.5 w-24 rounded bg-[#0F2744] mb-1.5" />
-            <div className="h-1.5 w-20 rounded bg-gray-300 mb-3" />
-            <div className="h-px w-4/5 mb-3" style={{ backgroundColor: "#0F2744" }} />
-            {[62, 92, 78].map((w, i) => (
-              <div key={i} className="w-full mb-3">
-                <div className="h-1.5 mx-auto rounded mb-1.5" style={{ width: w, backgroundColor: "#0F2744" }} />
-                <div className="space-y-1">
-                  <div className="h-1 w-full rounded bg-gray-100" />
-                  <div className="h-1 w-5/6 mx-auto rounded bg-gray-100" />
-                </div>
-              </div>
-            ))}
-            <div className="mt-auto h-px w-full bg-gray-200" />
-          </div>
-        ) : layout === "minimal" ? (
-          <div className="h-full flex flex-col gap-3">
-            <div>
-              <div className="h-1.5 w-20 rounded mb-2" style={{ backgroundColor: accent }} />
-              <div className="h-3 w-28 rounded bg-[#0F2744] mb-2" />
-              <div className="flex gap-2">
-                <div className="h-1 w-12 rounded bg-gray-300" />
-                <div className="h-1 w-10 rounded bg-gray-300" />
-              </div>
-            </div>
-            <div className="pl-3 border-l-2" style={{ borderColor: accent }}>
-              <div className="h-1.5 w-full rounded bg-gray-100 mb-1" />
-              <div className="h-1.5 w-4/5 rounded bg-gray-100" />
-            </div>
-            {[0, 1].map((i) => (
-              <div key={i} className="grid grid-cols-[36px_1fr] gap-3">
-                <div className="h-1.5 w-8 rounded bg-gray-200 mt-1" />
-                <div className="space-y-1">
-                  <div className="h-1.5 w-16 rounded bg-[#0F2744]" />
-                  <div className="h-1 w-full rounded bg-gray-100" />
-                  <div className="h-1 w-3/4 rounded bg-gray-100" />
-                </div>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <>
-            <div className="flex items-start justify-between mb-4">
-              <div>
-                <div className="flex gap-1.5 mb-2">
-                  <div className="h-1.5 w-8 rounded-full" style={{ backgroundColor: accent }} />
-                  <div className="h-1.5 w-1.5 rounded-full bg-blue-500" />
-                </div>
-                <div className="h-3 w-28 rounded mb-1.5" style={{ backgroundColor: "#0F2744" }} />
-                <div className="h-1.5 w-20 rounded" style={{ backgroundColor: accent }} />
-              </div>
-              <div className="h-9 w-9 rounded-2xl" style={{ backgroundColor: `${accent}22`, border: `1px solid ${accent}33` }} />
-            </div>
-            <div className="h-1.5 w-20 rounded mb-1.5" style={{ backgroundColor: accent }} />
-            <div className="space-y-1 mb-3">
-              <div className="h-1.5 w-full rounded bg-gray-100" />
-              <div className="h-1.5 w-5/6 rounded bg-gray-100" />
-              <div className="h-1.5 w-4/6 rounded bg-gray-100" />
-            </div>
-            <div className="h-1.5 w-24 rounded mb-1.5" style={{ backgroundColor: accent }} />
-            <div className="space-y-1 mb-3">
-              <div className="h-1.5 w-full rounded bg-gray-100" />
-              <div className="h-1.5 w-3/4 rounded bg-gray-100" />
-            </div>
-            <div className="flex gap-1 flex-wrap mt-auto">
-              {[48, 52, 40].map((w, i) => (
-                <div key={i} className="h-4 rounded-full" style={{ width: w, backgroundColor: `${accent}14`, border: `1px solid ${accent}30` }} />
-              ))}
-            </div>
-          </>
-        )}
+        {/* Bottom gradient fade */}
+        <div
+          className="absolute bottom-0 left-0 right-0 pointer-events-none"
+          style={{
+            height: "80px",
+            background: "linear-gradient(to bottom, transparent, white)",
+          }}
+        />
+
+        {/* Subtle hover tint */}
+        <div
+          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
+          style={{ background: `linear-gradient(to bottom, ${accent}08, transparent 60%)` }}
+        />
       </div>
 
       {/* Footer */}
       <div
-        className="px-5 py-3.5 flex items-center justify-between border-t"
-        style={{ backgroundColor: "#fafafa", borderColor: "#f1f1f1" }}
+        className="px-4 py-3.5 flex items-center justify-between"
+        style={{ borderTop: "1px solid rgba(15,39,68,0.07)", backgroundColor: "#fafafa" }}
       >
-        <span className="text-base font-bold" style={{ color: "#0F2744" }}>
-          {name}
-        </span>
+        <div className="leading-tight">
+          <span className="text-[15px] font-extrabold block" style={{ color: "#0F2744" }}>
+            {name}
+          </span>
+          <span className="text-[11px] text-gray-400 font-medium">Template profissional</span>
+        </div>
         <span
-          className="text-sm font-bold flex items-center gap-1.5 transition-opacity group-hover:opacity-100 opacity-70"
-          style={{ color: accent }}
+          className="text-[12px] font-bold flex items-center gap-1.5 px-3 py-1.5 rounded-xl opacity-70 group-hover:opacity-100 transition-opacity duration-200"
+          style={{
+            color: accent,
+            backgroundColor: `${accent}15`,
+            border: `1px solid ${accent}28`,
+          }}
         >
-          Usar <ArrowRight className="h-3.5 w-3.5" />
+          Usar modelo <ArrowRight className="h-3 w-3" />
         </span>
       </div>
     </div>
