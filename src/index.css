@@ -60,16 +60,39 @@
 @layer base {
   * {
     @apply border-border;
+    box-sizing: border-box;
   }
   html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
+    overflow-y: auto;
+    width: 100%;
   }
   body {
     @apply bg-background text-foreground;
+    overflow-x: hidden;
+    overflow-y: auto;
+    touch-action: pan-y;
+    position: relative;
+    min-height: 100%;
+    width: 100%;
+  }
+  #root {
+    overflow-x: hidden;
+    overflow-y: visible;
+    min-height: 100%;
   }
 }
 
 @layer components {
+  /* Template card hover — done in CSS so it doesn't interfere with mobile touch scroll */
+  @media (hover: hover) {
+    .template-card:hover {
+      transform: translateY(-7px);
+      box-shadow: 0 22px 52px rgba(15, 39, 68, 0.15), 0 4px 16px rgba(15, 39, 68, 0.08) !important;
+    }
+  }
+
   /* Teal CTA button — hover/focus/active that works even with inline style bg */
   .btn-cta {
     background-color: #0D9488 !important;

@@ -86,23 +86,14 @@ function TemplateCard({
 }) {
   return (
     <div
-      className="relative bg-white rounded-2xl overflow-hidden cursor-pointer group"
+      className="template-card relative bg-white rounded-2xl cursor-pointer group"
       style={{
+        overflow: "hidden",
+        maxWidth: "100%",
         boxShadow: "0 2px 16px rgba(15,39,68,0.08), 0 1px 4px rgba(15,39,68,0.04)",
         border: "1px solid rgba(15,39,68,0.08)",
         transition: "transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease",
-      }}
-      onMouseEnter={(e) => {
-        const el = e.currentTarget as HTMLDivElement;
-        el.style.transform = "translateY(-7px)";
-        el.style.boxShadow = "0 22px 52px rgba(15,39,68,0.15), 0 4px 16px rgba(15,39,68,0.08)";
-        el.style.borderColor = `${accent}33`;
-      }}
-      onMouseLeave={(e) => {
-        const el = e.currentTarget as HTMLDivElement;
-        el.style.transform = "";
-        el.style.boxShadow = "";
-        el.style.borderColor = "";
+        WebkitTransform: "translateZ(0)", // force GPU layer on iOS
       }}
     >
       {/* Badge */}
@@ -121,8 +112,16 @@ function TemplateCard({
         </div>
       )}
 
-      {/* Real resume thumbnail */}
-      <div className="relative overflow-hidden bg-white" style={{ height: "296px" }}>
+      {/* Real resume thumbnail — isolated container so the 794px resume never leaks to page layout */}
+      <div
+        style={{
+          position: "relative",
+          overflow: "hidden",
+          height: "296px",
+          maxWidth: "100%",
+          contain: "layout style paint",
+        }}
+      >
         <div
           style={{
             position: "absolute",
@@ -133,6 +132,7 @@ function TemplateCard({
             transformOrigin: "top center",
             pointerEvents: "none",
             userSelect: "none",
+            willChange: "transform",
           }}
         >
           <ResumePreview data={ANA_RESUME_DATA} template={layout} />
@@ -140,10 +140,14 @@ function TemplateCard({
 
         {/* Bottom gradient fade */}
         <div
-          className="absolute bottom-0 left-0 right-0 pointer-events-none"
           style={{
+            position: "absolute",
+            bottom: 0,
+            left: 0,
+            right: 0,
             height: "80px",
             background: "linear-gradient(to bottom, transparent, white)",
+            pointerEvents: "none",
           }}
         />
 
