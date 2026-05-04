@@ -1,4 +1,4 @@
-import type { ResumeData, Language } from "@/types/resume";
+import type { ResumeData } from "@/types/resume";
 import { Mail, Phone, MapPin, Linkedin, Globe } from "lucide-react";
 
 interface ResumePreviewProps {
@@ -24,94 +24,155 @@ const SKILL_LEVEL_WIDTH: Record<string, string> = {
 
 function SkillBar({ name, level, color }: { name: string; level: string; color: string }) {
   return (
-    <div style={{ marginBottom: 6 }}>
-      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 2 }}>
-        <span style={{ fontSize: 11, fontWeight: 500 }}>{name}</span>
-        <span style={{ fontSize: 10, color: "#888" }}>{level}</span>
+    <div style={{ marginBottom: 8 }}>
+      <div style={{ display: "flex", justifyContent: "space-between", gap: 12, marginBottom: 4 }}>
+        <span style={{ fontSize: 11, fontWeight: 700, color: "#0F2744" }}>{name || "Habilidade"}</span>
+        <span style={{ fontSize: 10, color: "#64748b", whiteSpace: "nowrap" }}>{level}</span>
       </div>
-      <div style={{ height: 4, backgroundColor: "#e5e7eb", borderRadius: 4, overflow: "hidden" }}>
+      <div style={{ height: 5, backgroundColor: "#e8edf2", borderRadius: 999, overflow: "hidden" }}>
         <div style={{ height: "100%", width: SKILL_LEVEL_WIDTH[level] ?? "50%", backgroundColor: color, borderRadius: 4 }} />
       </div>
     </div>
   );
 }
 
+function SectionTitle({ children, color = "#0D9488" }: { children: string; color?: string }) {
+  return (
+    <h2
+      style={{
+        color,
+        fontSize: 12,
+        fontWeight: 800,
+        letterSpacing: "0.12em",
+        textTransform: "uppercase",
+        marginBottom: 10,
+      }}
+    >
+      {children}
+    </h2>
+  );
+}
+
+function EmptyLine({ width = "100%" }: { width?: string }) {
+  return <span style={{ display: "block", width, height: 7, borderRadius: 999, backgroundColor: "#eef2f5" }} />;
+}
+
 function ModernTemplate({ id, data }: { id: string; data: ResumeData }) {
   const { personalInfo: pi, experiences, education, skills, languages = [] } = data;
+  const contactItems = [
+    { icon: Mail, value: pi.email, placeholder: "email@exemplo.com" },
+    { icon: Phone, value: pi.phone, placeholder: "(00) 00000-0000" },
+    { icon: MapPin, value: pi.location, placeholder: "Cidade, UF" },
+  ];
+
   return (
-    <div id={id} className="bg-white text-gray-800 font-sans text-sm" style={{ width: "210mm", minHeight: "297mm", padding: "20mm" }}>
-      {/* Header */}
-      <div className="border-b-4 border-blue-600 pb-4 mb-6 flex items-start justify-between gap-4">
+    <div
+      id={id}
+      className="bg-white font-sans text-sm"
+      style={{ width: "210mm", minHeight: "297mm", padding: "19mm 20mm", color: "#1f2937" }}
+    >
+      <div className="mb-6 flex items-start justify-between gap-5 pb-5" style={{ borderBottom: "3px solid #0D9488" }}>
         <div className="flex-1">
-          <h1 className="text-3xl font-bold text-gray-900">{pi.name || "Seu Nome"}</h1>
-          <div className="flex flex-wrap gap-3 mt-2 text-xs text-gray-500">
-            {pi.email && <span className="flex items-center gap-1"><Mail size={12} />{pi.email}</span>}
-            {pi.phone && <span className="flex items-center gap-1"><Phone size={12} />{pi.phone}</span>}
-            {pi.location && <span className="flex items-center gap-1"><MapPin size={12} />{pi.location}</span>}
-            {pi.linkedin && <span className="flex items-center gap-1"><Linkedin size={12} />{pi.linkedin}</span>}
-            {pi.website && <span className="flex items-center gap-1"><Globe size={12} />{pi.website}</span>}
+          <h1 className="text-4xl font-extrabold leading-tight" style={{ color: "#0F2744", letterSpacing: "0.01em" }}>
+            {pi.name || "Seu Nome"}
+          </h1>
+          <div className="mt-3 flex flex-wrap gap-x-4 gap-y-2 text-xs">
+            {contactItems.map(({ icon: Icon, value, placeholder }) => (
+              <span
+                key={placeholder}
+                className="flex items-center gap-1.5"
+                style={{ color: value ? "#475569" : "#94a3b8", opacity: value ? 1 : 0.75 }}
+              >
+                <Icon size={12} style={{ color: "#0D9488" }} />
+                {value || placeholder}
+              </span>
+            ))}
+            {pi.linkedin && <span className="flex items-center gap-1.5 text-slate-600"><Linkedin size={12} style={{ color: "#0D9488" }} />{pi.linkedin}</span>}
+            {pi.website && <span className="flex items-center gap-1.5 text-slate-600"><Globe size={12} style={{ color: "#0D9488" }} />{pi.website}</span>}
           </div>
         </div>
         {pi.photo && (
-          <img src={pi.photo} alt="Foto" className="rounded-full object-cover shrink-0" style={{ width: 80, height: 80 }} />
+          <img
+            src={pi.photo}
+            alt="Foto"
+            className="shrink-0 rounded-full object-cover"
+            style={{ width: 86, height: 86, boxShadow: "0 0 0 4px #ccfbf1" }}
+          />
         )}
       </div>
 
-      {pi.summary && (
-        <section className="mb-5">
-          <h2 className="text-sm font-bold uppercase text-blue-600 tracking-wider mb-2">Resumo Profissional</h2>
-          <p className="text-gray-700 leading-relaxed">{pi.summary}</p>
-        </section>
-      )}
+      <section className="mb-5">
+        <SectionTitle>Resumo Profissional</SectionTitle>
+        {pi.summary ? (
+          <p className="leading-relaxed" style={{ color: "#475569" }}>{pi.summary}</p>
+        ) : (
+          <div className="space-y-2">
+            <EmptyLine />
+            <EmptyLine width="88%" />
+            <EmptyLine width="64%" />
+          </div>
+        )}
+      </section>
 
-      {experiences.length > 0 && (
-        <section className="mb-5">
-          <h2 className="text-sm font-bold uppercase text-blue-600 tracking-wider mb-3">Experiência Profissional</h2>
+      <section className="mb-5">
+        <SectionTitle>Experiência Profissional</SectionTitle>
+        {experiences.length > 0 ? (
           <div className="space-y-4">
             {experiences.map((exp) => (
               <div key={exp.id}>
                 <div className="flex justify-between items-start">
                   <div>
-                    <h3 className="font-semibold text-gray-900">{exp.position}</h3>
-                    <p className="text-blue-600 font-medium">{exp.company}</p>
+                    <h3 className="font-bold" style={{ color: "#0F2744" }}>{exp.position || "Cargo"}</h3>
+                    <p className="font-semibold" style={{ color: "#0D9488" }}>{exp.company || "Empresa"}</p>
                   </div>
                   <span className="text-xs text-gray-500 whitespace-nowrap">
-                    {exp.startDate} – {exp.current ? "Atual" : exp.endDate}
+                    {exp.startDate || "Início"} - {exp.current ? "Atual" : exp.endDate || "Fim"}
                   </span>
                 </div>
                 {exp.description && <p className="mt-1 text-gray-600 leading-relaxed">{exp.description}</p>}
               </div>
             ))}
           </div>
-        </section>
-      )}
+        ) : (
+          <div className="space-y-2">
+            <EmptyLine width="72%" />
+            <EmptyLine width="96%" />
+            <EmptyLine width="80%" />
+          </div>
+        )}
+      </section>
 
-      {education.length > 0 && (
-        <section className="mb-5">
-          <h2 className="text-sm font-bold uppercase text-blue-600 tracking-wider mb-3">Formação Acadêmica</h2>
+      <section className="mb-5">
+        <SectionTitle>Formação Acadêmica</SectionTitle>
+        {education.length > 0 ? (
           <div className="space-y-3">
             {education.map((edu) => (
               <div key={edu.id} className="flex justify-between items-start">
                 <div>
-                  <h3 className="font-semibold text-gray-900">{edu.degree} em {edu.field}</h3>
-                  <p className="text-gray-600">{edu.institution}</p>
+                  <h3 className="font-bold" style={{ color: "#0F2744" }}>{edu.degree || "Grau"} em {edu.field || "Curso"}</h3>
+                  <p className="text-gray-600">{edu.institution || "Instituição"}</p>
                 </div>
                 <span className="text-xs text-gray-500 whitespace-nowrap">
-                  {edu.startDate} – {edu.current ? "Atual" : edu.endDate}
+                  {edu.startDate || "Início"} - {edu.current ? "Atual" : edu.endDate || "Fim"}
                 </span>
               </div>
             ))}
           </div>
-        </section>
-      )}
+        ) : (
+          <div className="space-y-2">
+            <EmptyLine width="68%" />
+            <EmptyLine width="45%" />
+          </div>
+        )}
+      </section>
 
       <div className="flex gap-8">
         {skills.length > 0 && (
           <section className="flex-1">
-            <h2 className="text-sm font-bold uppercase text-blue-600 tracking-wider mb-3">Habilidades</h2>
+            <SectionTitle>Habilidades</SectionTitle>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0 16px" }}>
               {skills.map((skill) => (
-                <SkillBar key={skill.id} name={skill.name} level={skill.level} color="#2563eb" />
+                <SkillBar key={skill.id} name={skill.name} level={skill.level} color="#0D9488" />
               ))}
             </div>
           </section>
@@ -119,7 +180,7 @@ function ModernTemplate({ id, data }: { id: string; data: ResumeData }) {
 
         {languages.length > 0 && (
           <section style={{ minWidth: 130 }}>
-            <h2 className="text-sm font-bold uppercase text-blue-600 tracking-wider mb-3">Idiomas</h2>
+            <SectionTitle>Idiomas</SectionTitle>
             {languages.map((lang) => (
               <SkillBar key={lang.id} name={lang.name} level={lang.level} color="#7c3aed" />
             ))}
@@ -133,31 +194,30 @@ function ModernTemplate({ id, data }: { id: string; data: ResumeData }) {
 function ClassicTemplate({ id, data }: { id: string; data: ResumeData }) {
   const { personalInfo: pi, experiences, education, skills, languages = [] } = data;
   return (
-    <div id={id} className="bg-white text-gray-800 font-serif text-sm" style={{ width: "210mm", minHeight: "297mm", padding: "20mm" }}>
-      {/* Header */}
-      <div className="text-center border-b-2 border-gray-800 pb-4 mb-6">
+    <div id={id} className="bg-white text-gray-800 font-serif text-sm" style={{ width: "210mm", minHeight: "297mm", padding: "20mm", color: "#1f2937" }}>
+      <div className="text-center pb-5 mb-6" style={{ borderBottom: "2px solid #0F2744" }}>
         {pi.photo && (
-          <img src={pi.photo} alt="Foto" className="rounded-full object-cover mx-auto mb-3" style={{ width: 90, height: 90 }} />
+          <img src={pi.photo} alt="Foto" className="rounded-full object-cover mx-auto mb-3" style={{ width: 90, height: 90, boxShadow: "0 0 0 4px #f1f5f9" }} />
         )}
-        <h1 className="text-3xl font-bold tracking-widest uppercase">{pi.name || "Seu Nome"}</h1>
+        <h1 className="text-3xl font-bold tracking-widest uppercase" style={{ color: "#0F2744" }}>{pi.name || "Seu Nome"}</h1>
         <div className="flex flex-wrap justify-center gap-3 mt-2 text-xs text-gray-600">
-          {pi.email && <span>{pi.email}</span>}
-          {pi.phone && <span>| {pi.phone}</span>}
-          {pi.location && <span>| {pi.location}</span>}
+          <span>{pi.email || "email@exemplo.com"}</span>
+          <span>| {pi.phone || "(00) 00000-0000"}</span>
+          <span>| {pi.location || "Cidade, UF"}</span>
           {pi.linkedin && <span>| {pi.linkedin}</span>}
         </div>
       </div>
 
       {pi.summary && (
         <section className="mb-5">
-          <h2 className="font-bold uppercase tracking-widest border-b border-gray-400 pb-1 mb-2">Objetivo</h2>
+          <h2 className="font-bold uppercase tracking-widest border-b border-gray-300 pb-1 mb-2" style={{ color: "#0F2744" }}>Objetivo</h2>
           <p className="leading-relaxed">{pi.summary}</p>
         </section>
       )}
 
       {experiences.length > 0 && (
         <section className="mb-5">
-          <h2 className="font-bold uppercase tracking-widest border-b border-gray-400 pb-1 mb-3">Experiência</h2>
+          <h2 className="font-bold uppercase tracking-widest border-b border-gray-300 pb-1 mb-3" style={{ color: "#0F2744" }}>Experiência</h2>
           {experiences.map((exp) => (
             <div key={exp.id} className="mb-3">
               <div className="flex justify-between">
@@ -173,7 +233,7 @@ function ClassicTemplate({ id, data }: { id: string; data: ResumeData }) {
 
       {education.length > 0 && (
         <section className="mb-5">
-          <h2 className="font-bold uppercase tracking-widest border-b border-gray-400 pb-1 mb-3">Formação</h2>
+          <h2 className="font-bold uppercase tracking-widest border-b border-gray-300 pb-1 mb-3" style={{ color: "#0F2744" }}>Formação</h2>
           {education.map((edu) => (
             <div key={edu.id} className="mb-2 flex justify-between">
               <div>
@@ -189,7 +249,7 @@ function ClassicTemplate({ id, data }: { id: string; data: ResumeData }) {
       <div className="flex gap-8">
         {skills.length > 0 && (
           <section className="flex-1">
-            <h2 className="font-bold uppercase tracking-widest border-b border-gray-400 pb-1 mb-3">Habilidades</h2>
+            <h2 className="font-bold uppercase tracking-widest border-b border-gray-300 pb-1 mb-3" style={{ color: "#0F2744" }}>Habilidades</h2>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0 16px" }}>
               {skills.map((skill) => (
                 <SkillBar key={skill.id} name={skill.name} level={skill.level} color="#374151" />
@@ -200,7 +260,7 @@ function ClassicTemplate({ id, data }: { id: string; data: ResumeData }) {
 
         {languages.length > 0 && (
           <section style={{ minWidth: 130 }}>
-            <h2 className="font-bold uppercase tracking-widest border-b border-gray-400 pb-1 mb-3">Idiomas</h2>
+            <h2 className="font-bold uppercase tracking-widest border-b border-gray-300 pb-1 mb-3" style={{ color: "#0F2744" }}>Idiomas</h2>
             {languages.map((lang) => (
               <SkillBar key={lang.id} name={lang.name} level={lang.level} color="#6b7280" />
             ))}
@@ -214,15 +274,14 @@ function ClassicTemplate({ id, data }: { id: string; data: ResumeData }) {
 function MinimalTemplate({ id, data }: { id: string; data: ResumeData }) {
   const { personalInfo: pi, experiences, education, skills, languages = [] } = data;
   return (
-    <div id={id} className="bg-white text-gray-900 font-sans text-sm" style={{ width: "210mm", minHeight: "297mm", padding: "20mm" }}>
-      {/* Header */}
+    <div id={id} className="bg-white text-gray-900 font-sans text-sm" style={{ width: "210mm", minHeight: "297mm", padding: "20mm", color: "#111827" }}>
       <div className="flex items-start justify-between mb-8">
         <div>
-          <h1 className="text-4xl font-light tracking-tight">{pi.name || "Seu Nome"}</h1>
+          <h1 className="text-4xl font-light tracking-tight" style={{ color: "#0F2744" }}>{pi.name || "Seu Nome"}</h1>
           <div className="flex flex-wrap gap-4 mt-3 text-xs text-gray-500">
-            {pi.email && <span>{pi.email}</span>}
-            {pi.phone && <span>{pi.phone}</span>}
-            {pi.location && <span>{pi.location}</span>}
+            <span>{pi.email || "email@exemplo.com"}</span>
+            <span>{pi.phone || "(00) 00000-0000"}</span>
+            <span>{pi.location || "Cidade, UF"}</span>
             {pi.linkedin && <span>{pi.linkedin}</span>}
           </div>
         </div>
@@ -233,7 +292,7 @@ function MinimalTemplate({ id, data }: { id: string; data: ResumeData }) {
 
       {pi.summary && (
         <section className="mb-6">
-          <p className="text-gray-600 leading-relaxed border-l-2 border-gray-200 pl-4">{pi.summary}</p>
+          <p className="text-gray-600 leading-relaxed border-l-2 pl-4" style={{ borderColor: "#0D9488" }}>{pi.summary}</p>
         </section>
       )}
 

@@ -1,30 +1,132 @@
-import { useState, useCallback, useRef, useEffect } from "react";
-import { useParams, useNavigate, Link } from "react-router-dom";
-import { ArrowLeft, Download, Save, Plus, Trash2, Camera, X, CheckCircle } from "lucide-react";
+import { useState, useCallback, useRef, useEffect, type ReactNode } from "react";
+import { useParams, Link } from "react-router-dom";
+import {
+  ArrowLeft,
+  Briefcase,
+  Camera,
+  CheckCircle,
+  ChevronRight,
+  Download,
+  Eye,
+  Globe,
+  GraduationCap,
+  Languages,
+  LayoutTemplate,
+  Linkedin,
+  Mail,
+  MapPin,
+  Monitor,
+  PanelLeft,
+  Phone,
+  Plus,
+  Save,
+  Sparkles,
+  Trash2,
+  User,
+  Wrench,
+  X,
+  type LucideIcon,
+} from "lucide-react";
 import { toast } from "sonner";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Input, type InputProps } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
 import { ResumePreview } from "@/components/ResumePreview";
 import { getResume, saveResume } from "@/lib/storage";
 import type { Resume, ResumeData, Experience, Education, Skill, Language } from "@/types/resume";
 import { defaultResumeData } from "@/types/resume";
 
+type StepId = "pessoal" | "experiencia" | "formacao" | "habilidades" | "idiomas";
+type MobileView = "form" | "preview";
+type PreviewZoom = "fit" | "75" | "100";
+
+const STEPS: Array<{
+  id: StepId;
+  label: string;
+  shortLabel: string;
+  title: string;
+  subtitle: string;
+  tip: string;
+  icon: LucideIcon;
+}> = [
+  {
+    id: "pessoal",
+    label: "Pessoal",
+    shortLabel: "Pessoal",
+    title: "Informações pessoais",
+    subtitle: "Preencha seus dados principais para montar o cabeçalho do currículo.",
+    tip: "Mantenha seus dados atualizados para facilitar o contato dos recrutadores.",
+    icon: User,
+  },
+  {
+    id: "experiencia",
+    label: "Experiência",
+    shortLabel: "Exp.",
+    title: "Experiência profissional",
+    subtitle: "Destaque cargos, empresas e resultados relevantes para a vaga.",
+    tip: "Prefira descrições objetivas, com responsabilidades e conquistas mensuráveis.",
+    icon: Briefcase,
+  },
+  {
+    id: "formacao",
+    label: "Formação",
+    shortLabel: "Form.",
+    title: "Formação acadêmica",
+    subtitle: "Adicione cursos, instituições e períodos de estudo.",
+    tip: "Inclua formações que reforcem sua aderência à oportunidade.",
+    icon: GraduationCap,
+  },
+  {
+    id: "habilidades",
+    label: "Habilidades",
+    shortLabel: "Hab.",
+    title: "Habilidades",
+    subtitle: "Liste competências técnicas e comportamentais importantes.",
+    tip: "Use termos parecidos com os encontrados na descrição da vaga.",
+    icon: Wrench,
+  },
+  {
+    id: "idiomas",
+    label: "Idiomas",
+    shortLabel: "Idiomas",
+    title: "Idiomas",
+    subtitle: "Mostre os idiomas que você domina e o nível de proficiência.",
+    tip: "Seja honesto no nível informado para evitar ruído nas entrevistas.",
+    icon: Languages,
+  },
+];
+
+const CONTROL_CLASS =
+  "h-11 rounded-xl border-slate-200 bg-white text-[#0F2744] shadow-sm placeholder:text-slate-400 focus-visible:ring-teal-500 focus-visible:ring-offset-0";
+
+const TEXTAREA_CLASS =
+  "min-h-[120px] rounded-xl border-slate-200 bg-white text-[#0F2744] shadow-sm placeholder:text-slate-400 focus-visible:ring-teal-500 focus-visible:ring-offset-0";
+
+const SELECT_TRIGGER_CLASS =
+  "h-11 rounded-xl border-slate-200 bg-white text-[#0F2744] shadow-sm focus:ring-teal-500";
+
+const PREVIEW_SCALE: Record<PreviewZoom, number> = {
+  fit: 0.72,
+  "75": 0.75,
+  "100": 1,
+};
+
+function getPdfFileName(title: string) {
+  const fileName = title.replace(/[<>:"/\\|?*]+/g, "").trim();
+  return fileName || "curriculo";
+}
+
 export default function Builder() {
   const { id } = useParams<{ id: string }>();
-  const navigate = useNavigate();
 
   const [resume, setResume] = useState<Resume>(() => {
     const found = id ? getResume(id) : null;
     if (found) {
-      // migrate old resumes that don't have languages yet
       if (!found.data.languages) {
         found.data.languages = [];
       }
@@ -41,12 +143,14 @@ export default function Builder() {
     };
   });
 
+  const [activeStep, setActiveStep] = useState<StepId>("pessoal");
+  const [mobileView, setMobileView] = useState<MobileView>("form");
+  const [previewZoom, setPreviewZoom] = useState<PreviewZoom>("fit");
   const [autoSaved, setAutoSaved] = useState(false);
   const [exporting, setExporting] = useState(false);
   const photoInputRef = useRef<HTMLInputElement>(null);
   const autoSaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Auto-save with 1.5s debounce
   useEffect(() => {
     if (autoSaveTimer.current) clearTimeout(autoSaveTimer.current);
     autoSaveTimer.current = setTimeout(() => {
@@ -59,6 +163,10 @@ export default function Builder() {
     };
   }, [resume]);
 
+  const updateData = useCallback((patch: Partial<ResumeData>) => {
+    setResume((r) => ({ ...r, data: { ...r.data, ...patch } }));
+  }, []);
+
   const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -70,25 +178,22 @@ export default function Builder() {
     reader.readAsDataURL(file);
   };
 
-  const updateData = useCallback((patch: Partial<ResumeData>) => {
-    setResume((r) => ({ ...r, data: { ...r.data, ...patch } }));
-  }, []);
-
   const handleSave = () => {
     saveResume(resume);
+    setAutoSaved(true);
     toast.success("Currículo salvo!");
   };
 
   const handleExportPDF = async () => {
     setExporting(true);
     try {
-      const element = document.getElementById("resume-preview");
-      if (!element) return;
+      const element = document.getElementById("resume-preview-export");
+      if (!element) throw new Error("Preview do currículo não encontrado");
       const canvas = await html2canvas(element, { scale: 2, useCORS: true });
       const imgData = canvas.toDataURL("image/png");
       const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
       pdf.addImage(imgData, "PNG", 0, 0, 210, 297);
-      pdf.save(`${resume.title}.pdf`);
+      pdf.save(`${getPdfFileName(resume.title)}.pdf`);
       toast.success("PDF exportado!");
     } catch {
       toast.error("Erro ao exportar PDF");
@@ -175,219 +280,346 @@ export default function Builder() {
 
   const pi = resume.data.personalInfo;
   const languages = resume.data.languages ?? [];
+  const currentStepIndex = STEPS.findIndex((step) => step.id === activeStep);
+  const currentStep = STEPS[currentStepIndex] ?? STEPS[0];
+  const previewScale = PREVIEW_SCALE[previewZoom];
+  const missingName = !pi.name.trim();
+  const missingEmail = !pi.email.trim();
+
+  const goToNextStep = () => {
+    const nextStep = STEPS[currentStepIndex + 1];
+    if (nextStep) {
+      setActiveStep(nextStep.id);
+      return;
+    }
+    setMobileView("preview");
+  };
 
   return (
-    <div className="flex flex-col h-screen overflow-hidden">
-      {/* Top bar */}
-      <header className="flex items-center gap-3 px-4 py-3 border-b bg-white shrink-0">
-        <Button variant="ghost" size="sm" asChild>
-          <Link to="/dashboard"><ArrowLeft className="h-4 w-4" /></Link>
-        </Button>
-        <Input
-          value={resume.title}
-          onChange={(e) => setResume((r) => ({ ...r, title: e.target.value }))}
-          className="max-w-xs font-medium"
-        />
-        <Select
-          value={resume.template}
-          onValueChange={(v) => setResume((r) => ({ ...r, template: v as Resume["template"] }))}
-        >
-          <SelectTrigger className="w-36">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="modern">Moderno</SelectItem>
-            <SelectItem value="classic">Clássico</SelectItem>
-            <SelectItem value="minimal">Minimalista</SelectItem>
-          </SelectContent>
-        </Select>
-        <div className="ml-auto flex items-center gap-2">
-          {autoSaved && (
-            <span className="text-xs text-green-600 flex items-center gap-1 animate-fade-in">
-              <CheckCircle className="h-3.5 w-3.5" />
-              Salvo
+    <div className="flex h-screen flex-col overflow-hidden bg-[#F7F6F3] text-[#0F2744]">
+      <header className="shrink-0 border-b border-white/80 bg-[#F7F6F3]/95 px-3 py-3 shadow-sm backdrop-blur sm:px-5">
+        <div className="flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between">
+          <div className="flex min-w-0 flex-1 flex-col gap-3 sm:flex-row sm:items-center">
+            <Button
+              variant="ghost"
+              size="icon"
+              asChild
+              className="h-10 w-10 shrink-0 rounded-full text-slate-600 hover:bg-white hover:text-[#0F2744]"
+            >
+              <Link to="/dashboard" aria-label="Voltar para meus currículos">
+                <ArrowLeft className="h-4 w-4" />
+              </Link>
+            </Button>
+
+            <div className="grid min-w-0 flex-1 gap-3 sm:grid-cols-[minmax(220px,360px)_180px]">
+              <div>
+                <Label className="mb-1.5 block text-[11px] font-bold uppercase tracking-[0.14em] text-slate-500">
+                  Nome do currículo
+                </Label>
+                <Input
+                  value={resume.title}
+                  onChange={(e) => setResume((r) => ({ ...r, title: e.target.value }))}
+                  className={`${CONTROL_CLASS} text-base font-bold`}
+                  placeholder="Novo currículo"
+                />
+              </div>
+
+              <div>
+                <Label className="mb-1.5 block text-[11px] font-bold uppercase tracking-[0.14em] text-slate-500">
+                  Modelo
+                </Label>
+                <Select
+                  value={resume.template}
+                  onValueChange={(v) => setResume((r) => ({ ...r, template: v as Resume["template"] }))}
+                >
+                  <SelectTrigger className={SELECT_TRIGGER_CLASS}>
+                    <span className="flex items-center gap-2">
+                      <LayoutTemplate className="h-4 w-4 text-teal-600" />
+                      <SelectValue />
+                    </span>
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="modern">Modelo moderno</SelectItem>
+                    <SelectItem value="classic">Modelo clássico</SelectItem>
+                    <SelectItem value="minimal">Modelo minimalista</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2 sm:justify-end">
+            <span className="inline-flex h-10 items-center gap-2 rounded-xl border border-teal-100 bg-white px-3 text-xs font-semibold text-teal-700 shadow-sm">
+              <CheckCircle className="h-4 w-4" />
+              {autoSaved ? "Alterações salvas" : "Salvo automaticamente"}
             </span>
-          )}
-          <Button variant="outline" size="sm" onClick={handleSave} className="gap-1">
-            <Save className="h-4 w-4" />
-            Salvar
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleSave}
+              className="h-10 rounded-xl border-slate-200 bg-white px-4 font-semibold text-[#0F2744] shadow-sm hover:border-teal-200 hover:bg-teal-50 hover:text-teal-700"
+            >
+              <Save className="h-4 w-4" />
+              Salvar
+            </Button>
+            <Button
+              size="sm"
+              onClick={handleExportPDF}
+              disabled={exporting}
+              className="btn-cta h-10 rounded-xl px-4 font-bold"
+              style={{ boxShadow: "0 4px 16px rgba(13,148,136,0.28)" }}
+            >
+              <Download className="h-4 w-4" />
+              {exporting ? "Exportando..." : "Baixar PDF"}
+            </Button>
+          </div>
+        </div>
+
+        <div className="mt-3 grid grid-cols-2 gap-2 lg:hidden">
+          <Button
+            type="button"
+            variant={mobileView === "form" ? "default" : "outline"}
+            onClick={() => setMobileView("form")}
+            className={
+              mobileView === "form"
+                ? "h-10 rounded-xl bg-[#0F2744] font-bold text-white hover:bg-[#0b1d32]"
+                : "h-10 rounded-xl border-slate-200 bg-white font-semibold text-slate-600 hover:bg-teal-50 hover:text-teal-700"
+            }
+          >
+            <PanelLeft className="h-4 w-4" />
+            Editar
           </Button>
-          <Button size="sm" onClick={handleExportPDF} disabled={exporting} className="gap-1">
-            <Download className="h-4 w-4" />
-            {exporting ? "Exportando..." : "PDF"}
+          <Button
+            type="button"
+            variant={mobileView === "preview" ? "default" : "outline"}
+            onClick={() => setMobileView("preview")}
+            className={
+              mobileView === "preview"
+                ? "h-10 rounded-xl bg-[#0F2744] font-bold text-white hover:bg-[#0b1d32]"
+                : "h-10 rounded-xl border-slate-200 bg-white font-semibold text-slate-600 hover:bg-teal-50 hover:text-teal-700"
+            }
+          >
+            <Eye className="h-4 w-4" />
+            Ver preview
           </Button>
         </div>
       </header>
 
-      {/* Body */}
-      <div className="flex flex-1 overflow-hidden">
-        {/* Form */}
-        <div className="w-full lg:w-[420px] shrink-0 overflow-y-auto border-r bg-gray-50">
-          <Tabs defaultValue="pessoal" className="p-4">
-            <TabsList className="w-full grid grid-cols-5 mb-4">
-              <TabsTrigger value="pessoal">Pessoal</TabsTrigger>
-              <TabsTrigger value="experiencia">Exp.</TabsTrigger>
-              <TabsTrigger value="formacao">Form.</TabsTrigger>
-              <TabsTrigger value="habilidades">Hab.</TabsTrigger>
-              <TabsTrigger value="idiomas">Idiomas</TabsTrigger>
-            </TabsList>
+      <div className="flex min-h-0 flex-1 flex-col overflow-hidden lg:flex-row">
+        <aside
+          className={`min-h-0 w-full shrink-0 border-r border-white/80 bg-[#F7F6F3] p-3 sm:p-4 lg:flex lg:w-[430px] ${
+            mobileView === "preview" ? "hidden" : "flex"
+          }`}
+        >
+          <Tabs
+            value={activeStep}
+            onValueChange={(value) => setActiveStep(value as StepId)}
+            className="flex min-h-0 w-full flex-col overflow-hidden rounded-3xl border border-white/80 bg-white shadow-[0_18px_55px_rgba(15,39,68,0.08)]"
+          >
+            <div className="border-b border-slate-100 p-3">
+              <TabsList className="grid h-auto w-full grid-cols-5 gap-1 rounded-2xl bg-slate-50 p-1">
+                {STEPS.map((step) => {
+                  const Icon = step.icon;
+                  return (
+                    <TabsTrigger
+                      key={step.id}
+                      value={step.id}
+                      className="min-w-0 rounded-xl px-1.5 py-2 text-[11px] font-bold text-slate-500 transition-all data-[state=active]:bg-[#0D9488] data-[state=active]:text-white data-[state=active]:shadow-sm"
+                    >
+                      <Icon className="h-3.5 w-3.5 sm:mr-1" />
+                      <span className="hidden sm:inline">{step.shortLabel}</span>
+                    </TabsTrigger>
+                  );
+                })}
+              </TabsList>
+            </div>
 
-            {/* Pessoal */}
-            <TabsContent value="pessoal" className="space-y-3 mt-0">
-              <Card>
-                <CardContent className="pt-4 space-y-3">
-                  {/* Foto */}
-                  <div className="space-y-1">
-                    <Label className="text-xs text-muted-foreground">Foto de perfil</Label>
-                    <div className="flex items-center gap-3">
-                      <div className="h-20 w-20 rounded-full border-2 border-dashed border-gray-300 flex items-center justify-center overflow-hidden bg-gray-50 shrink-0">
-                        {pi.photo ? (
-                          <img src={pi.photo} alt="Foto" className="h-full w-full object-cover" />
-                        ) : (
-                          <Camera className="h-7 w-7 text-gray-300" />
-                        )}
-                      </div>
-                      <div className="flex flex-col gap-2">
-                        <Button type="button" variant="outline" size="sm" className="gap-1" onClick={() => photoInputRef.current?.click()}>
-                          <Camera className="h-3.5 w-3.5" />
-                          {pi.photo ? "Trocar foto" : "Adicionar foto"}
-                        </Button>
-                        {pi.photo && (
-                          <Button type="button" variant="ghost" size="sm" className="gap-1 text-destructive" onClick={() => updateData({ personalInfo: { ...pi, photo: "" } })}>
-                            <X className="h-3.5 w-3.5" />
-                            Remover
-                          </Button>
-                        )}
-                      </div>
-                      <input ref={photoInputRef} type="file" accept="image/*" className="hidden" onChange={handlePhotoUpload} />
+            <div className="min-h-0 flex-1 overflow-y-auto px-4 py-5 sm:px-5">
+              <SectionHeader step={currentStep} index={currentStepIndex} />
+
+              <TabsContent value="pessoal" className="mt-5 space-y-4">
+                <div className="rounded-2xl border border-teal-100 bg-teal-50/70 p-4">
+                  <Label className="mb-3 block text-xs font-bold uppercase tracking-[0.14em] text-teal-700">
+                    Foto de perfil
+                  </Label>
+                  <div className="flex items-center gap-4">
+                    <div className="flex h-24 w-24 shrink-0 items-center justify-center overflow-hidden rounded-full border border-teal-100 bg-white shadow-sm">
+                      {pi.photo ? (
+                        <img src={pi.photo} alt="Foto" className="h-full w-full object-cover" />
+                      ) : (
+                        <Camera className="h-8 w-8 text-teal-500" />
+                      )}
                     </div>
+                    <div className="min-w-0 flex-1 space-y-2">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        className="h-10 rounded-xl border-teal-100 bg-white font-semibold text-teal-700 hover:bg-teal-50"
+                        onClick={() => photoInputRef.current?.click()}
+                      >
+                        <Camera className="h-4 w-4" />
+                        {pi.photo ? "Trocar foto" : "Adicionar foto"}
+                      </Button>
+                      {pi.photo && (
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          className="h-9 rounded-xl text-red-500 hover:bg-red-50 hover:text-red-600"
+                          onClick={() => updateData({ personalInfo: { ...pi, photo: "" } })}
+                        >
+                          <X className="h-4 w-4" />
+                          Remover
+                        </Button>
+                      )}
+                      <p className="text-xs leading-relaxed text-slate-500">
+                        Use uma foto profissional e bem iluminada.
+                      </p>
+                    </div>
+                    <input ref={photoInputRef} type="file" accept="image/*" className="hidden" onChange={handlePhotoUpload} />
                   </div>
-                  <Separator />
-                  <Field label="Nome completo">
-                    <Input value={pi.name} onChange={(e) => updateData({ personalInfo: { ...pi, name: e.target.value } })} placeholder="João Silva" />
-                  </Field>
-                  <Field label="E-mail">
-                    <Input value={pi.email} onChange={(e) => updateData({ personalInfo: { ...pi, email: e.target.value } })} placeholder="joao@email.com" />
-                  </Field>
-                  <Field label="Telefone">
-                    <Input value={pi.phone} onChange={(e) => updateData({ personalInfo: { ...pi, phone: e.target.value } })} placeholder="(11) 99999-9999" />
-                  </Field>
-                  <Field label="Localização">
-                    <Input value={pi.location} onChange={(e) => updateData({ personalInfo: { ...pi, location: e.target.value } })} placeholder="São Paulo, SP" />
-                  </Field>
-                  <Field label="LinkedIn">
-                    <Input value={pi.linkedin} onChange={(e) => updateData({ personalInfo: { ...pi, linkedin: e.target.value } })} placeholder="linkedin.com/in/joao" />
-                  </Field>
-                  <Field label="Site / Portfólio">
-                    <Input value={pi.website} onChange={(e) => updateData({ personalInfo: { ...pi, website: e.target.value } })} placeholder="joao.dev" />
-                  </Field>
-                  <Field label="Resumo profissional">
-                    <Textarea
-                      value={pi.summary}
-                      onChange={(e) => updateData({ personalInfo: { ...pi, summary: e.target.value } })}
-                      placeholder="Breve descrição sobre você e seus objetivos..."
-                      rows={4}
-                    />
-                    <p className="text-xs text-muted-foreground text-right">{pi.summary.length} caracteres</p>
-                  </Field>
-                </CardContent>
-              </Card>
-            </TabsContent>
+                </div>
 
-            {/* Experiência */}
-            <TabsContent value="experiencia" className="space-y-3 mt-0">
-              {resume.data.experiences.map((exp, i) => (
-                <Card key={exp.id}>
-                  <CardHeader className="pb-2 pt-4 flex flex-row items-center justify-between">
-                    <CardTitle className="text-sm">Experiência {i + 1}</CardTitle>
-                    <Button variant="ghost" size="sm" className="text-destructive h-7 w-7 p-0" onClick={() => removeExperience(exp.id)}>
-                      <Trash2 className="h-3.5 w-3.5" />
-                    </Button>
-                  </CardHeader>
-                  <CardContent className="space-y-3 pb-4">
+                <Field label="Nome completo" required invalid={missingName} hint={missingName ? "Esse nome aparece no topo do currículo." : undefined}>
+                  <IconInput
+                    icon={User}
+                    value={pi.name}
+                    onChange={(e) => updateData({ personalInfo: { ...pi, name: e.target.value } })}
+                    placeholder="João Silva"
+                  />
+                </Field>
+                <Field label="E-mail" required invalid={missingEmail} hint="Dica: use um e-mail profissional.">
+                  <IconInput
+                    icon={Mail}
+                    value={pi.email}
+                    onChange={(e) => updateData({ personalInfo: { ...pi, email: e.target.value } })}
+                    placeholder="joao@email.com"
+                  />
+                </Field>
+                <Field label="Telefone">
+                  <IconInput
+                    icon={Phone}
+                    value={pi.phone}
+                    onChange={(e) => updateData({ personalInfo: { ...pi, phone: e.target.value } })}
+                    placeholder="(11) 99999-9999"
+                  />
+                </Field>
+                <Field label="Localização">
+                  <IconInput
+                    icon={MapPin}
+                    value={pi.location}
+                    onChange={(e) => updateData({ personalInfo: { ...pi, location: e.target.value } })}
+                    placeholder="São Paulo, SP"
+                  />
+                </Field>
+                <Field label="LinkedIn">
+                  <IconInput
+                    icon={Linkedin}
+                    value={pi.linkedin}
+                    onChange={(e) => updateData({ personalInfo: { ...pi, linkedin: e.target.value } })}
+                    placeholder="linkedin.com/in/joao"
+                  />
+                </Field>
+                <Field label="Site / Portfólio">
+                  <IconInput
+                    icon={Globe}
+                    value={pi.website}
+                    onChange={(e) => updateData({ personalInfo: { ...pi, website: e.target.value } })}
+                    placeholder="joao.dev"
+                  />
+                </Field>
+                <Field label="Resumo profissional" hint="Dica: escreva um resumo com 3 a 4 linhas.">
+                  <Textarea
+                    value={pi.summary}
+                    onChange={(e) => updateData({ personalInfo: { ...pi, summary: e.target.value } })}
+                    placeholder="Breve descrição sobre você, sua experiência e seus objetivos..."
+                    className={TEXTAREA_CLASS}
+                    rows={5}
+                  />
+                  <p className="text-right text-xs font-medium text-slate-400">{pi.summary.length} caracteres</p>
+                </Field>
+              </TabsContent>
+
+              <TabsContent value="experiencia" className="mt-5 space-y-4">
+                {resume.data.experiences.length === 0 && (
+                  <EmptyEditorState icon={Briefcase} text="Adicione sua primeira experiência profissional." />
+                )}
+                {resume.data.experiences.map((exp, i) => (
+                  <EditorItem key={exp.id} title={`Experiência ${i + 1}`} onRemove={() => removeExperience(exp.id)}>
                     <Field label="Cargo">
-                      <Input value={exp.position} onChange={(e) => updateExperience(exp.id, { position: e.target.value })} placeholder="Desenvolvedor Frontend" />
+                      <Input value={exp.position} onChange={(e) => updateExperience(exp.id, { position: e.target.value })} placeholder="Desenvolvedor Frontend" className={CONTROL_CLASS} />
                     </Field>
                     <Field label="Empresa">
-                      <Input value={exp.company} onChange={(e) => updateExperience(exp.id, { company: e.target.value })} placeholder="Empresa LTDA" />
+                      <Input value={exp.company} onChange={(e) => updateExperience(exp.id, { company: e.target.value })} placeholder="Empresa LTDA" className={CONTROL_CLASS} />
                     </Field>
-                    <div className="grid grid-cols-2 gap-2">
+                    <div className="grid grid-cols-2 gap-3">
                       <Field label="Início">
-                        <Input value={exp.startDate} onChange={(e) => updateExperience(exp.id, { startDate: e.target.value })} placeholder="Jan 2022" />
+                        <Input value={exp.startDate} onChange={(e) => updateExperience(exp.id, { startDate: e.target.value })} placeholder="Jan 2022" className={CONTROL_CLASS} />
                       </Field>
                       <Field label="Fim">
-                        <Input value={exp.endDate} onChange={(e) => updateExperience(exp.id, { endDate: e.target.value })} placeholder="Atual" disabled={exp.current} />
+                        <Input value={exp.endDate} onChange={(e) => updateExperience(exp.id, { endDate: e.target.value })} placeholder="Atual" disabled={exp.current} className={CONTROL_CLASS} />
                       </Field>
                     </div>
-                    <label className="flex items-center gap-2 text-sm cursor-pointer">
-                      <input type="checkbox" checked={exp.current} onChange={(e) => updateExperience(exp.id, { current: e.target.checked, endDate: "" })} />
+                    <label className="flex items-center gap-2 rounded-xl bg-slate-50 px-3 py-2 text-sm font-medium text-slate-600">
+                      <input type="checkbox" checked={exp.current} onChange={(e) => updateExperience(exp.id, { current: e.target.checked, endDate: "" })} className="h-4 w-4 accent-teal-600" />
                       Emprego atual
                     </label>
                     <Field label="Descrição">
-                      <Textarea value={exp.description} onChange={(e) => updateExperience(exp.id, { description: e.target.value })} placeholder="Descreva suas responsabilidades..." rows={3} />
+                      <Textarea value={exp.description} onChange={(e) => updateExperience(exp.id, { description: e.target.value })} placeholder="Descreva suas responsabilidades, entregas e resultados..." className={TEXTAREA_CLASS} rows={4} />
                     </Field>
-                  </CardContent>
-                </Card>
-              ))}
-              <Button variant="outline" className="w-full gap-2" onClick={addExperience}>
-                <Plus className="h-4 w-4" /> Adicionar experiência
-              </Button>
-            </TabsContent>
+                  </EditorItem>
+                ))}
+                <AddButton onClick={addExperience}>Adicionar experiência</AddButton>
+              </TabsContent>
 
-            {/* Formação */}
-            <TabsContent value="formacao" className="space-y-3 mt-0">
-              {resume.data.education.map((edu, i) => (
-                <Card key={edu.id}>
-                  <CardHeader className="pb-2 pt-4 flex flex-row items-center justify-between">
-                    <CardTitle className="text-sm">Formação {i + 1}</CardTitle>
-                    <Button variant="ghost" size="sm" className="text-destructive h-7 w-7 p-0" onClick={() => removeEducation(edu.id)}>
-                      <Trash2 className="h-3.5 w-3.5" />
-                    </Button>
-                  </CardHeader>
-                  <CardContent className="space-y-3 pb-4">
+              <TabsContent value="formacao" className="mt-5 space-y-4">
+                {resume.data.education.length === 0 && (
+                  <EmptyEditorState icon={GraduationCap} text="Adicione sua formação mais relevante." />
+                )}
+                {resume.data.education.map((edu, i) => (
+                  <EditorItem key={edu.id} title={`Formação ${i + 1}`} onRemove={() => removeEducation(edu.id)}>
                     <Field label="Instituição">
-                      <Input value={edu.institution} onChange={(e) => updateEducation(edu.id, { institution: e.target.value })} placeholder="Universidade de São Paulo" />
+                      <Input value={edu.institution} onChange={(e) => updateEducation(edu.id, { institution: e.target.value })} placeholder="Universidade de São Paulo" className={CONTROL_CLASS} />
                     </Field>
                     <Field label="Curso">
-                      <Input value={edu.field} onChange={(e) => updateEducation(edu.id, { field: e.target.value })} placeholder="Ciência da Computação" />
+                      <Input value={edu.field} onChange={(e) => updateEducation(edu.id, { field: e.target.value })} placeholder="Ciência da Computação" className={CONTROL_CLASS} />
                     </Field>
                     <Field label="Grau">
-                      <Input value={edu.degree} onChange={(e) => updateEducation(edu.id, { degree: e.target.value })} placeholder="Bacharelado" />
+                      <Input value={edu.degree} onChange={(e) => updateEducation(edu.id, { degree: e.target.value })} placeholder="Bacharelado" className={CONTROL_CLASS} />
                     </Field>
-                    <div className="grid grid-cols-2 gap-2">
+                    <div className="grid grid-cols-2 gap-3">
                       <Field label="Início">
-                        <Input value={edu.startDate} onChange={(e) => updateEducation(edu.id, { startDate: e.target.value })} placeholder="2018" />
+                        <Input value={edu.startDate} onChange={(e) => updateEducation(edu.id, { startDate: e.target.value })} placeholder="2018" className={CONTROL_CLASS} />
                       </Field>
                       <Field label="Conclusão">
-                        <Input value={edu.endDate} onChange={(e) => updateEducation(edu.id, { endDate: e.target.value })} placeholder="2022" disabled={edu.current} />
+                        <Input value={edu.endDate} onChange={(e) => updateEducation(edu.id, { endDate: e.target.value })} placeholder="2022" disabled={edu.current} className={CONTROL_CLASS} />
                       </Field>
                     </div>
-                    <label className="flex items-center gap-2 text-sm cursor-pointer">
-                      <input type="checkbox" checked={edu.current} onChange={(e) => updateEducation(edu.id, { current: e.target.checked, endDate: "" })} />
+                    <label className="flex items-center gap-2 rounded-xl bg-slate-50 px-3 py-2 text-sm font-medium text-slate-600">
+                      <input type="checkbox" checked={edu.current} onChange={(e) => updateEducation(edu.id, { current: e.target.checked, endDate: "" })} className="h-4 w-4 accent-teal-600" />
                       Em andamento
                     </label>
-                  </CardContent>
-                </Card>
-              ))}
-              <Button variant="outline" className="w-full gap-2" onClick={addEducation}>
-                <Plus className="h-4 w-4" /> Adicionar formação
-              </Button>
-            </TabsContent>
+                  </EditorItem>
+                ))}
+                <AddButton onClick={addEducation}>Adicionar formação</AddButton>
+              </TabsContent>
 
-            {/* Habilidades */}
-            <TabsContent value="habilidades" className="space-y-3 mt-0">
-              <Card>
-                <CardContent className="pt-4 space-y-2">
+              <TabsContent value="habilidades" className="mt-5 space-y-4">
+                {resume.data.skills.length === 0 && (
+                  <EmptyEditorState icon={Wrench} text="Adicione habilidades que diferenciam seu perfil." />
+                )}
+                <div className="space-y-2">
                   {resume.data.skills.map((skill) => (
-                    <div key={skill.id} className="flex gap-2 items-center">
+                    <div key={skill.id} className="grid gap-2 rounded-2xl border border-slate-100 bg-white p-3 shadow-sm sm:grid-cols-[1fr_150px_40px]">
                       <Input
                         value={skill.name}
                         onChange={(e) => updateSkill(skill.id, { name: e.target.value })}
                         placeholder="Ex: React"
-                        className="flex-1"
+                        className={CONTROL_CLASS}
                       />
                       <Select value={skill.level} onValueChange={(v) => updateSkill(skill.id, { level: v as Skill["level"] })}>
-                        <SelectTrigger className="w-36">
+                        <SelectTrigger className={SELECT_TRIGGER_CLASS}>
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
@@ -397,33 +629,28 @@ export default function Builder() {
                           <SelectItem value="Especialista">Especialista</SelectItem>
                         </SelectContent>
                       </Select>
-                      <Button variant="ghost" size="sm" className="text-destructive h-9 w-9 p-0 shrink-0" onClick={() => removeSkill(skill.id)}>
-                        <Trash2 className="h-3.5 w-3.5" />
-                      </Button>
+                      <IconRemoveButton onClick={() => removeSkill(skill.id)} />
                     </div>
                   ))}
-                  {resume.data.skills.length > 0 && <Separator className="my-2" />}
-                  <Button variant="outline" className="w-full gap-2" onClick={addSkill}>
-                    <Plus className="h-4 w-4" /> Adicionar habilidade
-                  </Button>
-                </CardContent>
-              </Card>
-            </TabsContent>
+                </div>
+                <AddButton onClick={addSkill}>Adicionar habilidade</AddButton>
+              </TabsContent>
 
-            {/* Idiomas */}
-            <TabsContent value="idiomas" className="space-y-3 mt-0">
-              <Card>
-                <CardContent className="pt-4 space-y-2">
+              <TabsContent value="idiomas" className="mt-5 space-y-4">
+                {languages.length === 0 && (
+                  <EmptyEditorState icon={Languages} text="Adicione idiomas e níveis de proficiência." />
+                )}
+                <div className="space-y-2">
                   {languages.map((lang) => (
-                    <div key={lang.id} className="flex gap-2 items-center">
+                    <div key={lang.id} className="grid gap-2 rounded-2xl border border-slate-100 bg-white p-3 shadow-sm sm:grid-cols-[1fr_150px_40px]">
                       <Input
                         value={lang.name}
                         onChange={(e) => updateLanguage(lang.id, { name: e.target.value })}
                         placeholder="Ex: Inglês"
-                        className="flex-1"
+                        className={CONTROL_CLASS}
                       />
                       <Select value={lang.level} onValueChange={(v) => updateLanguage(lang.id, { level: v as Language["level"] })}>
-                        <SelectTrigger className="w-36">
+                        <SelectTrigger className={SELECT_TRIGGER_CLASS}>
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
@@ -434,37 +661,225 @@ export default function Builder() {
                           <SelectItem value="Nativo">Nativo</SelectItem>
                         </SelectContent>
                       </Select>
-                      <Button variant="ghost" size="sm" className="text-destructive h-9 w-9 p-0 shrink-0" onClick={() => removeLanguage(lang.id)}>
-                        <Trash2 className="h-3.5 w-3.5" />
-                      </Button>
+                      <IconRemoveButton onClick={() => removeLanguage(lang.id)} />
                     </div>
                   ))}
-                  {languages.length > 0 && <Separator className="my-2" />}
-                  <Button variant="outline" className="w-full gap-2" onClick={addLanguage}>
-                    <Plus className="h-4 w-4" /> Adicionar idioma
-                  </Button>
-                </CardContent>
-              </Card>
-            </TabsContent>
-          </Tabs>
-        </div>
+                </div>
+                <AddButton onClick={addLanguage}>Adicionar idioma</AddButton>
+              </TabsContent>
+            </div>
 
-        {/* Preview */}
-        <div className="hidden lg:flex flex-1 overflow-auto bg-gray-200 items-start justify-center p-8">
-          <div className="shadow-2xl">
-            <ResumePreview data={resume.data} template={resume.template} id="resume-preview" />
+            <div className="border-t border-slate-100 bg-white p-4">
+              <div className="mb-3 rounded-2xl bg-[#0F2744] p-4 text-white">
+                <div className="mb-2 flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-teal-300">
+                  <Sparkles className="h-3.5 w-3.5" />
+                  Dica
+                </div>
+                <p className="text-sm leading-relaxed text-slate-200">{currentStep.tip}</p>
+              </div>
+              <Button
+                type="button"
+                onClick={goToNextStep}
+                className="btn-cta h-11 w-full rounded-2xl font-bold"
+                style={{ boxShadow: "0 4px 16px rgba(13,148,136,0.28)" }}
+              >
+                {currentStepIndex === STEPS.length - 1 ? "Ver preview" : "Próxima etapa"}
+                <ChevronRight className="h-4 w-4" />
+              </Button>
+            </div>
+          </Tabs>
+        </aside>
+
+        <section
+          className={`min-h-0 flex-1 flex-col overflow-hidden bg-[#eceff1]/70 ${
+            mobileView === "form" ? "hidden" : "flex"
+          } lg:flex`}
+        >
+          <div className="flex shrink-0 flex-col gap-3 border-b border-white/70 bg-[#F7F6F3]/80 px-4 py-4 backdrop-blur md:flex-row md:items-center md:justify-between">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-[0.18em] text-teal-700">Pré-visualização</p>
+              <h2 className="text-lg font-extrabold text-[#0F2744]">Currículo em tempo real</h2>
+            </div>
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="inline-flex h-10 items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 text-sm font-semibold text-slate-600 shadow-sm">
+                <Monitor className="h-4 w-4 text-teal-600" />
+                Zoom
+              </span>
+              {[
+                { value: "fit" as const, label: "Ajustar" },
+                { value: "75" as const, label: "75%" },
+                { value: "100" as const, label: "100%" },
+              ].map((option) => (
+                <Button
+                  key={option.value}
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setPreviewZoom(option.value)}
+                  className={
+                    previewZoom === option.value
+                      ? "h-10 rounded-xl border-teal-100 bg-teal-50 font-bold text-teal-700 hover:bg-teal-50"
+                      : "h-10 rounded-xl border-slate-200 bg-white font-semibold text-slate-600 hover:bg-teal-50 hover:text-teal-700"
+                  }
+                >
+                  {option.label}
+                </Button>
+              ))}
+            </div>
           </div>
+
+          <div className="min-h-0 flex-1 overflow-auto px-4 py-8 sm:px-8">
+            <div className="mx-auto flex min-h-full w-full justify-center">
+              <div
+                className="origin-top transition-transform duration-200"
+                style={{ transform: `scale(${previewScale})` }}
+              >
+                <div className="overflow-hidden rounded-[10px] bg-white shadow-[0_24px_80px_rgba(15,39,68,0.20),0_0_0_1px_rgba(15,39,68,0.06)]">
+                  <ResumePreview data={resume.data} template={resume.template} id="resume-preview" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <div className="fixed -left-[10000px] top-0 bg-white" aria-hidden="true">
+        <ResumePreview data={resume.data} template={resume.template} id="resume-preview-export" />
+      </div>
+    </div>
+  );
+}
+
+function SectionHeader({
+  step,
+  index,
+}: {
+  step: (typeof STEPS)[number];
+  index: number;
+}) {
+  const Icon = step.icon;
+
+  return (
+    <div>
+      <div className="mb-4 flex items-center justify-between gap-3">
+        <span className="inline-flex items-center gap-2 rounded-full border border-teal-100 bg-teal-50 px-3 py-1 text-xs font-bold uppercase tracking-[0.14em] text-teal-700">
+          Etapa {index + 1} de {STEPS.length}
+        </span>
+        <span className="h-2 flex-1 overflow-hidden rounded-full bg-slate-100">
+          <span
+            className="block h-full rounded-full bg-[#0D9488] transition-all"
+            style={{ width: `${((index + 1) / STEPS.length) * 100}%` }}
+          />
+        </span>
+      </div>
+      <div className="flex gap-3">
+        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[#0D9488] text-white shadow-[0_8px_20px_rgba(13,148,136,0.24)]">
+          <Icon className="h-5 w-5" />
+        </div>
+        <div>
+          <h1 className="text-xl font-extrabold tracking-tight text-[#0F2744]">{step.title}</h1>
+          <p className="mt-1 text-sm leading-relaxed text-slate-600">{step.subtitle}</p>
         </div>
       </div>
     </div>
   );
 }
 
-function Field({ label, children }: { label: string; children: React.ReactNode }) {
+function Field({
+  label,
+  children,
+  hint,
+  required,
+  invalid,
+}: {
+  label: string;
+  children: ReactNode;
+  hint?: string;
+  required?: boolean;
+  invalid?: boolean;
+}) {
   return (
-    <div className="space-y-1">
-      <Label className="text-xs text-muted-foreground">{label}</Label>
+    <div className="space-y-1.5">
+      <div className="flex items-center justify-between gap-2">
+        <Label className={`text-xs font-bold uppercase tracking-[0.12em] ${invalid ? "text-red-500" : "text-slate-500"}`}>
+          {label}
+          {required && <span className="ml-1 text-teal-600">*</span>}
+        </Label>
+      </div>
       {children}
+      {hint && (
+        <p className={`text-xs leading-relaxed ${invalid ? "text-red-500" : "text-slate-500"}`}>
+          {hint}
+        </p>
+      )}
+    </div>
+  );
+}
+
+function IconInput({ icon: Icon, className, ...props }: InputProps & { icon: LucideIcon }) {
+  return (
+    <div className="relative">
+      <Icon className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+      <Input className={`${CONTROL_CLASS} pl-9 ${className ?? ""}`} {...props} />
+    </div>
+  );
+}
+
+function EditorItem({
+  title,
+  onRemove,
+  children,
+}: {
+  title: string;
+  onRemove: () => void;
+  children: ReactNode;
+}) {
+  return (
+    <div className="rounded-2xl border border-slate-100 bg-white p-4 shadow-sm">
+      <div className="mb-4 flex items-center justify-between gap-3 border-b border-slate-100 pb-3">
+        <h3 className="text-sm font-extrabold text-[#0F2744]">{title}</h3>
+        <IconRemoveButton onClick={onRemove} />
+      </div>
+      <div className="space-y-3">{children}</div>
+    </div>
+  );
+}
+
+function IconRemoveButton({ onClick }: { onClick: () => void }) {
+  return (
+    <Button
+      type="button"
+      variant="ghost"
+      size="icon"
+      className="h-9 w-9 shrink-0 rounded-xl text-slate-400 hover:bg-red-50 hover:text-red-600"
+      onClick={onClick}
+    >
+      <Trash2 className="h-4 w-4" />
+    </Button>
+  );
+}
+
+function AddButton({ onClick, children }: { onClick: () => void; children: ReactNode }) {
+  return (
+    <Button
+      type="button"
+      variant="outline"
+      className="h-11 w-full rounded-2xl border-dashed border-teal-200 bg-teal-50/60 font-bold text-teal-700 hover:border-teal-300 hover:bg-teal-50"
+      onClick={onClick}
+    >
+      <Plus className="h-4 w-4" />
+      {children}
+    </Button>
+  );
+}
+
+function EmptyEditorState({ icon: Icon, text }: { icon: LucideIcon; text: string }) {
+  return (
+    <div className="rounded-2xl border border-dashed border-slate-200 bg-slate-50 p-5 text-center">
+      <div className="mx-auto mb-3 flex h-11 w-11 items-center justify-center rounded-2xl bg-white text-teal-600 shadow-sm">
+        <Icon className="h-5 w-5" />
+      </div>
+      <p className="text-sm font-medium text-slate-600">{text}</p>
     </div>
   );
 }
