@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { FileText, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -12,6 +12,8 @@ const NAV_LINKS = [
 
 export function Navbar() {
   const [open, setOpen] = useState(false);
+  const location = useLocation();
+  const isDashboard = location.pathname === "/dashboard";
 
   return (
     <header
@@ -56,9 +58,14 @@ export function Navbar() {
           </Button>
           <Button
             asChild
+            variant={isDashboard ? "outline" : "default"}
             size="sm"
-            className="text-white rounded-xl px-5 shadow-sm font-semibold"
-            style={{ backgroundColor: "#0D9488" }}
+            className={
+              isDashboard
+                ? "rounded-xl border-teal-100 bg-white px-4 font-semibold text-teal-700 shadow-none hover:bg-teal-50 hover:text-teal-800"
+                : "text-white rounded-xl px-5 shadow-sm font-semibold"
+            }
+            style={isDashboard ? undefined : { backgroundColor: "#0D9488" }}
           >
             <Link to="/dashboard">Criar currículo</Link>
           </Button>
@@ -99,8 +106,13 @@ export function Navbar() {
             </Button>
             <Button
               asChild
-              className="w-full text-white rounded-xl font-semibold"
-              style={{ backgroundColor: "#0D9488" }}
+              variant={isDashboard ? "outline" : "default"}
+              className={
+                isDashboard
+                  ? "w-full rounded-xl border-teal-100 bg-white font-semibold text-teal-700 hover:bg-teal-50 hover:text-teal-800"
+                  : "w-full text-white rounded-xl font-semibold"
+              }
+              style={isDashboard ? undefined : { backgroundColor: "#0D9488" }}
             >
               <Link to="/dashboard">Criar currículo</Link>
             </Button>

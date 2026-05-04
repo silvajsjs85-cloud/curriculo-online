@@ -1,10 +1,13 @@
 import { useState } from "react";
+import { flushSync } from "react-dom";
+import { createRoot } from "react-dom/client";
 import { Link, useNavigate } from "react-router-dom";
 import {
   ArrowRight,
   Briefcase,
   Calendar,
   Copy,
+  Download,
   Edit3,
   FileText,
   Lightbulb,
@@ -13,9 +16,12 @@ import {
   Trash2,
   Wrench,
 } from "lucide-react";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { ResumePreview } from "@/components/ResumePreview";
 import {
   Dialog,
   DialogContent,
@@ -77,6 +83,11 @@ function formatDate(date: string) {
     month: "short",
     year: "numeric",
   });
+}
+
+function getPdfFileName(title: string) {
+  const fileName = title.replace(/[<>:"/\\|?*]+/g, "").trim();
+  return fileName || "curriculo";
 }
 
 function ResumeMiniPreview({
@@ -210,7 +221,7 @@ function EmptyState({ onCreate }: { onCreate: () => void }) {
             Primeiro currículo
           </span>
           <h2 className="text-2xl font-extrabold tracking-tight text-[#0F2744] sm:text-3xl">
-            Nenhum currículo ainda
+            Comece seu primeiro currículo
           </h2>
           <p className="mt-3 max-w-lg text-sm leading-relaxed text-slate-600 sm:text-base">
             Crie uma versão profissional agora e volte aqui para editar, duplicar ou ajustar para cada vaga.
@@ -234,6 +245,8 @@ export default function Dashboard() {
   const navigate = useNavigate();
   const [resumes, setResumes] = useState<Resume[]>(() => getResumes());
   const [deleteId, setDeleteId] = useState<string | null>(null);
+  const [exportingId, setExportingId] = useState<string | null>(null);
+  const hasResumes = resumes.length > 0;
 
   const handleCreate = () => {
     const resume = createResume();
@@ -245,6 +258,50 @@ export default function Dashboard() {
     if (copy) {
       setResumes(getResumes());
       toast.success("Currículo duplicado!");
+    }
+  };
+
+  const handleDownloadPDF = async (resume: Resume) => {
+    setExportingId(resume.id);
+
+    const container = document.createElement("div");
+    container.style.position = "fixed";
+    container.style.left = "-10000px";
+    container.style.top = "0";
+    container.style.width = "210mm";
+    container.style.backgroundColor = "#ffffff";
+    document.body.appendChild(container);
+
+    const root = createRoot(container);
+
+    try {
+      flushSync(() => {
+        root.render(
+          <ResumePreview
+            id={`resume-export-${resume.id}`}
+            data={resume.data}
+            template={resume.template}
+          />
+        );
+      });
+
+      await new Promise((resolve) => requestAnimationFrame(resolve));
+
+      const element = container.firstElementChild as HTMLElement | null;
+      if (!element) throw new Error("Preview do currículo não encontrado");
+
+      const canvas = await html2canvas(element, { scale: 2, useCORS: true });
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
+      pdf.addImage(imgData, "PNG", 0, 0, 210, 297);
+      pdf.save(`${getPdfFileName(resume.title)}.pdf`);
+      toast.success("PDF exportado!");
+    } catch {
+      toast.error("Erro ao exportar PDF");
+    } finally {
+      root.unmount();
+      container.remove();
+      setExportingId(null);
     }
   };
 
@@ -289,7 +346,7 @@ export default function Dashboard() {
                 </span>
                 <span className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-sm font-medium text-slate-600 shadow-sm">
                   <Calendar className="h-4 w-4 text-blue-600" />
-                  Pronto para a próxima vaga
+                  {hasResumes ? "Pronto para a próxima vaga" : "Comece em poucos minutos"}
                 </span>
               </div>
             </div>
@@ -306,7 +363,7 @@ export default function Dashboard() {
           </div>
         </section>
 
-        {resumes.length === 0 ? (
+        {!hasResumes ? (
           <EmptyState onCreate={handleCreate} />
         ) : (
           <section>
@@ -366,7 +423,7 @@ export default function Dashboard() {
                         <div className="mt-4 grid gap-2 text-xs text-slate-500 sm:grid-cols-2">
                           <span className="inline-flex items-center gap-1.5">
                             <Calendar className="h-3.5 w-3.5 text-teal-600" />
-                            Atualizado em {formatDate(resume.updated_at)}
+                            Última edição em {formatDate(resume.updated_at)}
                           </span>
                           <span className="inline-flex items-center gap-1.5">
                             <Briefcase className="h-3.5 w-3.5 text-blue-600" />
@@ -378,10 +435,10 @@ export default function Dashboard() {
                           </span>
                         </div>
 
-                        <div className="mt-auto grid grid-cols-2 gap-2 pt-5 sm:flex">
+                        <div className="mt-auto space-y-2 pt-5">
                           <Button
                             asChild
-                            className="btn-cta col-span-2 h-10 flex-1 rounded-xl font-bold sm:col-span-1"
+                            className="btn-cta h-10 w-full rounded-xl font-bold"
                             style={{ boxShadow: "0 3px 12px rgba(13,148,136,0.28)" }}
                           >
                             <Link to={`/builder/${resume.id}`}>
@@ -389,26 +446,44 @@ export default function Dashboard() {
                               Editar currículo
                             </Link>
                           </Button>
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            className="h-10 rounded-xl border-slate-200 px-3 font-semibold text-[#0F2744] hover:border-teal-200 hover:bg-teal-50 hover:text-teal-700"
-                            title="Duplicar"
-                            onClick={() => handleDuplicate(resume.id)}
-                          >
-                            <Copy className="h-4 w-4" />
-                            Duplicar
-                          </Button>
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            className="h-10 rounded-xl border-slate-200 px-3 font-semibold text-slate-500 hover:border-red-100 hover:bg-red-50 hover:text-red-600"
-                            title="Excluir"
-                            onClick={() => setDeleteId(resume.id)}
-                          >
-                            <Trash2 className="h-4 w-4" />
-                            Excluir
-                          </Button>
+                          <div className="grid grid-cols-3 gap-2">
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              className="h-10 rounded-xl border-slate-200 px-2 text-xs font-semibold text-[#0F2744] hover:border-teal-200 hover:bg-teal-50 hover:text-teal-700 sm:text-sm"
+                              title="Duplicar"
+                              onClick={() => handleDuplicate(resume.id)}
+                            >
+                              <Copy className="h-4 w-4" />
+                              Duplicar
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              className="h-10 rounded-xl border-slate-200 px-2 text-xs font-semibold text-[#0F2744] hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700 sm:text-sm"
+                              title="Baixar PDF"
+                              disabled={exportingId === resume.id}
+                              onClick={() => handleDownloadPDF(resume)}
+                            >
+                              <Download className="h-4 w-4" />
+                              <span className="hidden sm:inline">
+                                {exportingId === resume.id ? "Baixando..." : "Baixar PDF"}
+                              </span>
+                              <span className="sm:hidden">
+                                {exportingId === resume.id ? "..." : "PDF"}
+                              </span>
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              className="h-10 rounded-xl border-slate-200 px-2 text-xs font-semibold text-slate-500 hover:border-red-100 hover:bg-red-50 hover:text-red-600 sm:text-sm"
+                              title="Excluir"
+                              onClick={() => setDeleteId(resume.id)}
+                            >
+                              <Trash2 className="h-4 w-4" />
+                              Excluir
+                            </Button>
+                          </div>
                         </div>
                       </div>
                     </div>
