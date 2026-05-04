@@ -7,7 +7,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-// ─── Template card — realistic mini-document preview ─────────────────────────
+// ─── Template card ────────────────────────────────────────────────────────────
 function TemplateCard({
   name,
   accent,
@@ -21,9 +21,9 @@ function TemplateCard({
 }) {
   return (
     <div
-      className="relative bg-white rounded-2xl overflow-hidden cursor-pointer group transition-all duration-300 hover:-translate-y-1.5"
+      className="relative bg-white rounded-2xl overflow-hidden cursor-pointer group transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl"
       style={{
-        boxShadow: "0 4px 24px rgba(15,39,68,0.07), 0 1px 4px rgba(15,39,68,0.04)",
+        boxShadow: "0 4px 24px rgba(15,39,68,0.08), 0 1px 4px rgba(15,39,68,0.04)",
       }}
     >
       {tag && (
@@ -44,10 +44,9 @@ function TemplateCard({
       <div className="h-1 w-full" style={{ backgroundColor: accent }} />
 
       {/* Document body */}
-      <div className="p-5 flex flex-col gap-0" style={{ minHeight: "11rem" }}>
+      <div className="p-5 flex flex-col" style={{ minHeight: "12.5rem" }}>
         {layout === "sidebar" ? (
           <div className="flex gap-3 h-full">
-            {/* Left sidebar */}
             <div className="w-1/3 flex flex-col gap-2 pr-2" style={{ borderRight: `2px solid ${accent}22` }}>
               <div className="h-8 w-8 rounded-full self-center mb-1" style={{ background: `linear-gradient(135deg, ${accent}33, ${accent}55)` }} />
               <div className="h-1.5 w-full rounded" style={{ backgroundColor: accent }} />
@@ -57,7 +56,6 @@ function TemplateCard({
               <div className="h-1 w-full rounded bg-gray-100" />
               <div className="h-1 w-5/6 rounded bg-gray-100" />
             </div>
-            {/* Right content */}
             <div className="flex-1 flex flex-col gap-1.5">
               <div className="h-2.5 w-4/5 rounded" style={{ backgroundColor: "#1e293b" }} />
               <div className="h-1.5 w-3/5 rounded bg-gray-300 mb-2" />
@@ -71,7 +69,6 @@ function TemplateCard({
           </div>
         ) : (
           <>
-            {/* Header row */}
             <div className="flex items-center justify-between mb-3">
               <div>
                 <div className="h-2.5 w-28 rounded mb-1.5" style={{ backgroundColor: "#1e293b" }} />
@@ -85,26 +82,18 @@ function TemplateCard({
                 style={{ background: `linear-gradient(135deg, ${accent}44, ${accent}88)` }}
               />
             </div>
-
-            {/* Divider */}
             <div className="h-px mb-3" style={{ backgroundColor: `${accent}44` }} />
-
-            {/* Section */}
             <div className="h-1.5 w-20 rounded mb-1.5" style={{ backgroundColor: accent }} />
             <div className="space-y-1 mb-3">
               <div className="h-1.5 w-full rounded bg-gray-100" />
               <div className="h-1.5 w-5/6 rounded bg-gray-100" />
               <div className="h-1.5 w-4/6 rounded bg-gray-100" />
             </div>
-
-            {/* Section 2 */}
             <div className="h-1.5 w-24 rounded mb-1.5" style={{ backgroundColor: accent }} />
             <div className="space-y-1 mb-3">
               <div className="h-1.5 w-full rounded bg-gray-100" />
               <div className="h-1.5 w-3/4 rounded bg-gray-100" />
             </div>
-
-            {/* Skills */}
             <div className="flex gap-1 flex-wrap mt-auto">
               {[48, 52, 40].map((w, i) => (
                 <div key={i} className="h-4 rounded-full" style={{ width: w, backgroundColor: `${accent}1a`, border: `1px solid ${accent}33` }} />
@@ -116,17 +105,17 @@ function TemplateCard({
 
       {/* Footer */}
       <div
-        className="px-5 py-3 flex items-center justify-between border-t"
+        className="px-5 py-3.5 flex items-center justify-between border-t"
         style={{ backgroundColor: "#fafafa", borderColor: "#f1f1f1" }}
       >
-        <span className="text-sm font-semibold" style={{ color: "#1e293b" }}>
+        <span className="text-base font-bold" style={{ color: "#0F2744" }}>
           {name}
         </span>
         <span
-          className="text-xs font-bold flex items-center gap-1 transition-colors"
+          className="text-sm font-bold flex items-center gap-1.5 transition-opacity group-hover:opacity-100 opacity-70"
           style={{ color: accent }}
         >
-          Usar <ArrowRight className="h-3 w-3" />
+          Usar <ArrowRight className="h-3.5 w-3.5" />
         </span>
       </div>
     </div>
@@ -136,11 +125,14 @@ function TemplateCard({
 // ─── Stat pill ────────────────────────────────────────────────────────────────
 function StatPill({ icon, value, label }: { icon: React.ReactNode; value: string; label: string }) {
   return (
-    <div className="flex items-center gap-2">
-      <span className="text-teal-500">{icon}</span>
-      <div>
-        <span className="font-extrabold text-sm" style={{ color: "#0F2744" }}>{value}</span>
-        <span className="text-xs text-gray-400 ml-1">{label}</span>
+    <div
+      className="flex items-center gap-2.5 px-4 py-2.5 rounded-xl border border-gray-200 bg-white"
+      style={{ boxShadow: "0 1px 6px rgba(15,39,68,0.05)" }}
+    >
+      <span className="text-teal-500 flex-shrink-0">{icon}</span>
+      <div className="leading-tight">
+        <span className="font-extrabold text-base" style={{ color: "#0F2744" }}>{value}</span>
+        <span className="text-sm text-gray-500 ml-1.5">{label}</span>
       </div>
     </div>
   );
@@ -148,10 +140,10 @@ function StatPill({ icon, value, label }: { icon: React.ReactNode; value: string
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
 const TEMPLATES = [
-  { name: "Moderno",      accent: "#2563eb", tag: "Popular", layout: "default"  as const },
-  { name: "Clássico",     accent: "#7c3aed", tag: undefined,  layout: "default"  as const },
-  { name: "Minimalista",  accent: "#475569", tag: undefined,  layout: "sidebar"  as const },
-  { name: "Executivo",    accent: "#0F766E", tag: "Novo",     layout: "default"  as const },
+  { name: "Moderno",     accent: "#2563eb", tag: "Popular", layout: "default" as const },
+  { name: "Clássico",    accent: "#7c3aed", tag: undefined,  layout: "default" as const },
+  { name: "Minimalista", accent: "#475569", tag: undefined,  layout: "sidebar" as const },
+  { name: "Executivo",   accent: "#0F766E", tag: "Novo",     layout: "default" as const },
 ];
 
 const STEPS = [
@@ -238,23 +230,18 @@ export default function Landing() {
 
       {/* ══ HERO ════════════════════════════════════════════════════════════════ */}
       <section
-        className="relative px-4 pt-16 pb-28 overflow-hidden"
+        className="relative px-4 pt-16 pb-20 overflow-hidden"
         style={{ backgroundColor: "#F7F6F3" }}
       >
-        {/* Decorative orbs */}
-        <div
-          className="pointer-events-none absolute -top-32 -right-32 h-96 w-96 rounded-full opacity-30"
-          style={{ background: "radial-gradient(circle, #0D948822 0%, transparent 70%)" }}
-        />
-        <div
-          className="pointer-events-none absolute top-1/2 -left-20 h-64 w-64 rounded-full opacity-20"
-          style={{ background: "radial-gradient(circle, #2563eb22 0%, transparent 70%)" }}
-        />
+        <div className="pointer-events-none absolute -top-32 -right-32 h-96 w-96 rounded-full opacity-30"
+          style={{ background: "radial-gradient(circle, #0D948822 0%, transparent 70%)" }} />
+        <div className="pointer-events-none absolute top-1/2 -left-20 h-64 w-64 rounded-full opacity-20"
+          style={{ background: "radial-gradient(circle, #2563eb22 0%, transparent 70%)" }} />
 
         <div className="container mx-auto max-w-6xl relative">
           <div className="grid lg:grid-cols-2 gap-14 items-center">
 
-            {/* ── Copy ── */}
+            {/* Copy */}
             <div className="animate-fade-in">
               <div className="inline-flex items-center gap-2 bg-teal-50 border border-teal-100 text-teal-700 text-xs font-bold px-4 py-1.5 rounded-full mb-8 tracking-wide uppercase">
                 <Sparkles className="h-3 w-3" />
@@ -266,18 +253,11 @@ export default function Landing() {
                 style={{ color: "#0F2744" }}
               >
                 Seu currículo<br />
-                <span
-                  style={{
-                    color: "#0D9488",
-                    WebkitBackgroundClip: "text",
-                  }}
-                >
-                  profissional
-                </span>
-                <br />em minutos
+                <span style={{ color: "#0D9488" }}>profissional</span><br />
+                em minutos
               </h1>
 
-              <p className="text-lg text-gray-500 mb-8 leading-relaxed max-w-[420px]">
+              <p className="text-lg text-gray-600 mb-8 leading-relaxed max-w-[420px]">
                 Crie, personalize e baixe seu currículo com modelos modernos,
                 preview em tempo real e exportação em PDF sem marca d'água.
               </p>
@@ -288,7 +268,7 @@ export default function Landing() {
                   "Preview instantâneo enquanto você digita",
                   "Download em PDF sem marca d'água, sempre grátis",
                 ].map((b) => (
-                  <li key={b} className="flex items-start gap-3 text-gray-600 text-sm">
+                  <li key={b} className="flex items-start gap-3 text-gray-700 text-sm">
                     <span
                       className="flex-shrink-0 mt-0.5 h-5 w-5 rounded-full flex items-center justify-center"
                       style={{ backgroundColor: "#0D948820" }}
@@ -304,13 +284,8 @@ export default function Landing() {
                 <Button
                   size="lg"
                   asChild
-                  className="text-base px-8 rounded-2xl h-13 font-bold"
-                  style={{
-                    backgroundColor: "#0D9488",
-                    color: "white",
-                    boxShadow: "0 4px 16px rgba(13,148,136,0.35)",
-                    height: "52px",
-                  }}
+                  className="btn-cta text-base px-8 rounded-2xl font-bold"
+                  style={{ height: "52px", boxShadow: "0 4px 16px rgba(13,148,136,0.35)" }}
                 >
                   <Link to="/dashboard" className="flex items-center gap-2">
                     Criar meu currículo grátis
@@ -321,43 +296,42 @@ export default function Landing() {
                   size="lg"
                   variant="outline"
                   asChild
-                  className="text-base px-8 rounded-2xl border-gray-200 text-gray-600 hover:bg-white hover:border-gray-300 font-medium"
+                  className="text-base px-8 rounded-2xl border-gray-200 text-gray-700 hover:bg-white hover:border-gray-300 font-medium transition-all duration-200"
                   style={{ height: "52px" }}
                 >
                   <a href="#modelos">Ver modelos</a>
                 </Button>
               </div>
 
-              {/* Stats row */}
-              <div className="flex flex-wrap gap-5 pt-6 border-t border-gray-200/70">
+              {/* Stats */}
+              <div className="flex flex-wrap gap-3">
                 <StatPill icon={<Users className="h-4 w-4" />} value="5.200+" label="currículos criados" />
-                <StatPill icon={<Star className="h-4 w-4 fill-current" />} value="4.8★" label="avaliação média" />
+                <StatPill icon={<Star className="h-4 w-4 fill-current" />} value="4.8★" label="avaliação" />
                 <StatPill icon={<TrendingUp className="h-4 w-4" />} value="100%" label="gratuito" />
               </div>
             </div>
 
-            {/* ── Browser mockup ── */}
+            {/* Browser mockup */}
             <div className="hidden lg:block animate-slide-up">
               <div
-                className="rounded-2xl overflow-hidden border border-gray-200/80"
-                style={{ boxShadow: "0 24px 64px rgba(15,39,68,0.14), 0 4px 16px rgba(15,39,68,0.07)" }}
+                className="rounded-2xl overflow-hidden border border-gray-200"
+                style={{ boxShadow: "0 20px 60px rgba(15,39,68,0.15), 0 4px 16px rgba(15,39,68,0.08)" }}
               >
                 {/* Chrome bar */}
-                <div className="bg-[#f0f0f0] border-b border-gray-200 px-4 py-2.5 flex items-center gap-1.5">
+                <div className="bg-[#ebebeb] border-b border-gray-200 px-4 py-2.5 flex items-center gap-1.5">
                   <span className="h-3 w-3 rounded-full bg-[#ff5f57]" />
                   <span className="h-3 w-3 rounded-full bg-[#ffbd2e]" />
                   <span className="h-3 w-3 rounded-full bg-[#28c840]" />
-                  <div className="ml-3 flex-1 bg-white rounded-md px-3 py-1 flex items-center gap-1.5 border border-gray-200/80">
-                    <span className="h-2.5 w-2.5 rounded-full bg-gray-300 flex-shrink-0" />
-                    <span className="text-[11px] text-gray-400 font-mono truncate">curriculos.fun/editor</span>
+                  <div className="ml-3 flex-1 bg-white rounded-md px-3 py-1 flex items-center gap-1.5 border border-gray-200">
+                    <span className="h-2 w-2 rounded-full bg-gray-300 flex-shrink-0" />
+                    <span className="text-[11px] text-gray-500 font-mono truncate">curriculos.fun/editor</span>
                   </div>
                 </div>
 
-                {/* Editor layout */}
-                <div className="flex" style={{ height: "320px" }}>
+                {/* Editor */}
+                <div className="flex" style={{ height: "316px" }}>
                   {/* Form panel */}
-                  <div className="w-[42%] border-r border-gray-100 bg-gray-50/80 p-4 flex flex-col gap-2.5">
-                    {/* Tab bar */}
+                  <div className="w-[42%] border-r border-gray-100 bg-gray-50 p-4 flex flex-col gap-2.5">
                     <div className="flex gap-1 mb-1 flex-wrap">
                       {["Pessoal", "Exp.", "Form.", "Hab."].map((t, i) => (
                         <span
@@ -373,7 +347,6 @@ export default function Landing() {
                         </span>
                       ))}
                     </div>
-                    {/* Fields */}
                     {[
                       ["Nome completo", "Ana Carvalho"],
                       ["E-mail", "ana@email.com"],
@@ -381,8 +354,8 @@ export default function Landing() {
                       ["Cidade", "São Paulo, SP"],
                     ].map(([label, val]) => (
                       <div key={label}>
-                        <div className="text-[10px] text-gray-400 mb-0.5 font-medium">{label}</div>
-                        <div className="bg-white border border-gray-200 rounded-lg px-2.5 py-1.5 text-[11px] text-gray-600 shadow-sm">
+                        <div className="text-[10px] text-gray-500 mb-0.5 font-semibold">{label}</div>
+                        <div className="bg-white border border-gray-200 rounded-lg px-2.5 py-1.5 text-[11px] text-gray-700 shadow-sm">
                           {val}
                         </div>
                       </div>
@@ -391,7 +364,6 @@ export default function Landing() {
 
                   {/* Preview panel */}
                   <div className="flex-1 bg-white p-5 overflow-hidden">
-                    {/* Resume header */}
                     <div
                       className="flex items-center justify-between pb-2.5 mb-3"
                       style={{ borderBottom: "2px solid #2563eb" }}
@@ -408,11 +380,7 @@ export default function Landing() {
                         style={{ background: "linear-gradient(135deg, #99f6e4, #bfdbfe)" }}
                       />
                     </div>
-                    {/* Sections */}
-                    {[
-                      { lines: [100, 88, 72] },
-                      { lines: [100, 78] },
-                    ].map((sec, si) => (
+                    {[{ lines: [100, 88, 72] }, { lines: [100, 78] }].map((sec, si) => (
                       <div key={si} className="mb-3">
                         <div className="h-2 w-20 rounded mb-2" style={{ backgroundColor: "#2563eb" }} />
                         <div className="space-y-1">
@@ -422,14 +390,10 @@ export default function Landing() {
                         </div>
                       </div>
                     ))}
-                    {/* Skills */}
                     <div className="flex gap-1 flex-wrap">
                       {["React", "Node.js", "SQL"].map((s) => (
-                        <span
-                          key={s}
-                          className="text-[11px] px-2 py-0.5 rounded-full font-medium"
-                          style={{ backgroundColor: "#DBEAFE", color: "#2563EB" }}
-                        >
+                        <span key={s} className="text-[11px] px-2 py-0.5 rounded-full font-medium"
+                          style={{ backgroundColor: "#DBEAFE", color: "#2563EB" }}>
                           {s}
                         </span>
                       ))}
@@ -438,15 +402,13 @@ export default function Landing() {
                 </div>
 
                 {/* Status bar */}
-                <div
-                  className="bg-gray-50 border-t border-gray-100 px-4 py-2.5 flex items-center justify-between"
-                >
+                <div className="bg-gray-50 border-t border-gray-100 px-4 py-2.5 flex items-center justify-between">
                   <div className="flex items-center gap-1.5">
                     <span className="h-2 w-2 rounded-full bg-teal-400" />
-                    <span className="text-[11px] text-gray-400">Salvo automaticamente</span>
+                    <span className="text-[11px] text-gray-500">Salvo automaticamente</span>
                   </div>
                   <button
-                    className="text-[11px] font-bold text-white px-3.5 py-1.5 rounded-lg flex items-center gap-1"
+                    className="text-[11px] font-bold text-white px-3.5 py-1.5 rounded-lg flex items-center gap-1 transition-colors"
                     style={{ backgroundColor: "#0D9488" }}
                   >
                     <Download className="h-3 w-3" /> Baixar PDF
@@ -460,20 +422,17 @@ export default function Landing() {
       </section>
 
       {/* ══ SOCIAL PROOF ════════════════════════════════════════════════════════ */}
-      <section className="py-12 px-4 bg-white border-y border-gray-100">
+      <section className="py-10 px-4 bg-white border-y border-gray-100">
         <div className="container mx-auto max-w-4xl">
-          <p className="text-center text-[11px] text-gray-400 uppercase tracking-[0.2em] font-semibold mb-8">
+          <p className="text-center text-[11px] text-gray-400 uppercase tracking-[0.2em] font-semibold mb-7">
             Usuários já foram contratados em empresas como
           </p>
-          <div className="flex flex-wrap justify-center items-center gap-x-10 gap-y-4">
-            {COMPANIES.map((c, i) => (
+          <div className="flex flex-wrap justify-center items-center gap-x-10 gap-y-3">
+            {COMPANIES.map((c) => (
               <span
                 key={c}
-                className="font-black text-base select-none"
-                style={{
-                  color: i % 2 === 0 ? "#94a3b8" : "#b0bec5",
-                  letterSpacing: "-0.02em",
-                }}
+                className="font-black text-base select-none text-gray-400"
+                style={{ letterSpacing: "-0.02em" }}
               >
                 {c}
               </span>
@@ -483,9 +442,9 @@ export default function Landing() {
       </section>
 
       {/* ══ TEMPLATES ═══════════════════════════════════════════════════════════ */}
-      <section id="modelos" className="py-28 px-4" style={{ backgroundColor: "#F7F6F3" }}>
+      <section id="modelos" className="py-20 px-4" style={{ backgroundColor: "#F7F6F3" }}>
         <div className="container mx-auto max-w-6xl">
-          <div className="text-center mb-16">
+          <div className="text-center mb-14">
             <span className="text-teal-600 font-bold text-xs uppercase tracking-[0.18em]">
               Modelos Prontos
             </span>
@@ -495,7 +454,7 @@ export default function Landing() {
             >
               Escolha o seu estilo ideal
             </h2>
-            <p className="text-gray-500 max-w-md mx-auto leading-relaxed">
+            <p className="text-gray-600 max-w-md mx-auto leading-relaxed">
               Todos os modelos são validados por especialistas em recrutamento
               e otimizados para sistemas ATS.
             </p>
@@ -509,11 +468,11 @@ export default function Landing() {
             ))}
           </div>
 
-          <div className="text-center mt-12">
+          <div className="text-center mt-10">
             <Button
               asChild
               variant="outline"
-              className="rounded-2xl border-gray-200 text-gray-600 hover:bg-white hover:border-gray-300 px-8 h-11 font-medium"
+              className="rounded-2xl border-gray-200 text-gray-700 hover:bg-white hover:border-gray-300 px-8 h-11 font-medium transition-all duration-200"
             >
               <Link to="/dashboard" className="flex items-center gap-2">
                 Ver todos os modelos
@@ -525,9 +484,9 @@ export default function Landing() {
       </section>
 
       {/* ══ COMO FUNCIONA ═══════════════════════════════════════════════════════ */}
-      <section id="como-funciona" className="py-28 px-4 bg-white">
+      <section id="como-funciona" className="py-20 px-4 bg-white">
         <div className="container mx-auto max-w-5xl">
-          <div className="text-center mb-16">
+          <div className="text-center mb-14">
             <span className="text-teal-600 font-bold text-xs uppercase tracking-[0.18em]">
               Simples assim
             </span>
@@ -537,7 +496,7 @@ export default function Landing() {
             >
               Como funciona?
             </h2>
-            <p className="text-gray-500 max-w-sm mx-auto leading-relaxed">
+            <p className="text-gray-600 max-w-sm mx-auto leading-relaxed">
               Quatro passos simples. Sem cadastro obrigatório, sem complicação.
             </p>
           </div>
@@ -546,38 +505,33 @@ export default function Landing() {
             {STEPS.map((s, i) => (
               <div
                 key={s.step}
-                className="relative bg-white rounded-2xl p-6 border border-gray-100 hover:border-teal-100 transition-all duration-200 hover:-translate-y-1"
-                style={{ boxShadow: "0 2px 16px rgba(15,39,68,0.05)" }}
+                className="relative bg-white rounded-2xl p-7 border border-gray-100 hover:border-teal-100 transition-all duration-200 hover:-translate-y-1"
+                style={{ boxShadow: "0 2px 16px rgba(15,39,68,0.06)" }}
               >
-                {/* Step number watermark */}
                 <div
-                  className="absolute top-4 right-4 text-5xl font-black leading-none select-none pointer-events-none"
-                  style={{ color: "#0F274406" }}
+                  className="absolute top-5 right-5 text-5xl font-black leading-none select-none pointer-events-none"
+                  style={{ color: "#0F274408" }}
                 >
                   {s.step}
                 </div>
 
-                {/* Icon */}
                 <div
                   className="h-12 w-12 rounded-xl flex items-center justify-center text-white mb-5"
                   style={{
-                    background: `linear-gradient(135deg, #0D9488, #0891b2)`,
+                    background: "linear-gradient(135deg, #0D9488, #0891b2)",
                     boxShadow: "0 4px 12px rgba(13,148,136,0.3)",
                   }}
                 >
                   {s.icon}
                 </div>
 
-                <div
-                  className="text-[11px] font-bold mb-2 tracking-widest"
-                  style={{ color: "#0D9488" }}
-                >
+                <div className="text-[11px] font-bold mb-2 tracking-widest" style={{ color: "#0D9488" }}>
                   PASSO {i + 1}
                 </div>
-                <h3 className="font-bold text-[15px] mb-2" style={{ color: "#0F2744" }}>
+                <h3 className="font-bold text-base mb-2" style={{ color: "#0F2744" }}>
                   {s.title}
                 </h3>
-                <p className="text-gray-500 text-sm leading-relaxed">{s.desc}</p>
+                <p className="text-gray-600 text-[15px] leading-relaxed">{s.desc}</p>
               </div>
             ))}
           </div>
@@ -585,25 +539,18 @@ export default function Landing() {
       </section>
 
       {/* ══ DESTAQUE ATS ════════════════════════════════════════════════════════ */}
-      <section className="py-10 px-4">
+      <section className="py-8 px-4">
         <div className="container mx-auto max-w-6xl">
           <div
             className="rounded-3xl overflow-hidden grid lg:grid-cols-5 items-stretch relative"
-            style={{
-              background: "linear-gradient(135deg, #0F2744 0%, #0b1d32 60%, #0a1828 100%)",
-            }}
+            style={{ background: "linear-gradient(135deg, #0F2744 0%, #0b1d32 60%, #0a1828 100%)" }}
           >
-            {/* Decorative circle */}
-            <div
-              className="pointer-events-none absolute -bottom-16 -left-16 h-64 w-64 rounded-full opacity-10"
-              style={{ background: "radial-gradient(circle, #0D9488 0%, transparent 70%)" }}
-            />
-            <div
-              className="pointer-events-none absolute top-8 right-8 h-32 w-32 rounded-full opacity-[0.07]"
-              style={{ background: "radial-gradient(circle, #60a5fa 0%, transparent 70%)" }}
-            />
+            <div className="pointer-events-none absolute -bottom-16 -left-16 h-64 w-64 rounded-full opacity-10"
+              style={{ background: "radial-gradient(circle, #0D9488 0%, transparent 70%)" }} />
+            <div className="pointer-events-none absolute top-8 right-8 h-32 w-32 rounded-full opacity-[0.07]"
+              style={{ background: "radial-gradient(circle, #60a5fa 0%, transparent 70%)" }} />
 
-            {/* Text — 3 cols */}
+            {/* Text */}
             <div className="lg:col-span-3 p-10 lg:p-14 relative">
               <div className="inline-flex items-center gap-2 bg-teal-500/15 border border-teal-500/20 text-teal-300 text-[11px] font-bold px-3 py-1.5 rounded-full mb-7 uppercase tracking-wider">
                 <Shield className="h-3 w-3" /> Diferencial exclusivo
@@ -614,7 +561,7 @@ export default function Landing() {
                 <span style={{ color: "#2DD4BF" }}>aprovação por ATS</span>
               </h2>
 
-              <p className="text-gray-300 mb-8 leading-relaxed text-sm max-w-md">
+              <p className="text-gray-300 mb-8 leading-relaxed text-[15px] max-w-md">
                 Nossos modelos são estruturados para passar pelos sistemas de triagem
                 automática das grandes empresas — garantindo que seu currículo chega
                 até o recrutador humano.
@@ -626,7 +573,7 @@ export default function Landing() {
                   "Palavras-chave estratégicas por área profissional",
                   "Hierarquia visual clara e layout profissional",
                 ].map((f) => (
-                  <li key={f} className="flex items-center gap-3 text-gray-300 text-sm">
+                  <li key={f} className="flex items-center gap-3 text-gray-300 text-[15px]">
                     <span
                       className="h-5 w-5 rounded-full flex items-center justify-center flex-shrink-0"
                       style={{ backgroundColor: "#0D948830", border: "1px solid #0D948860" }}
@@ -641,14 +588,8 @@ export default function Landing() {
               <Button
                 size="lg"
                 asChild
-                className="rounded-2xl font-bold"
-                style={{
-                  backgroundColor: "#0D9488",
-                  color: "white",
-                  height: "52px",
-                  padding: "0 2rem",
-                  boxShadow: "0 4px 20px rgba(13,148,136,0.4)",
-                }}
+                className="btn-cta rounded-2xl font-bold"
+                style={{ height: "52px", padding: "0 2rem", boxShadow: "0 4px 20px rgba(13,148,136,0.4)" }}
               >
                 <Link to="/dashboard" className="flex items-center gap-2">
                   Experimentar agora
@@ -657,17 +598,18 @@ export default function Landing() {
               </Button>
             </div>
 
-            {/* Document mockup — 2 cols */}
-            <div className="hidden lg:flex lg:col-span-2 items-end justify-center px-8 pt-10 relative">
-              {/* Shadow document behind */}
+            {/* Mockup */}
+            <div className="hidden lg:flex lg:col-span-2 items-end justify-end px-6 pt-10 relative">
               <div
-                className="absolute bottom-8 right-12 w-48 h-56 rounded-t-xl opacity-20"
+                className="absolute bottom-8 right-16 w-48 h-56 rounded-t-xl opacity-20"
                 style={{ background: "linear-gradient(180deg, #2563eb44, transparent)", transform: "rotate(3deg)" }}
               />
-
               <div
-                className="relative w-full max-w-[220px] bg-white rounded-t-2xl overflow-hidden"
-                style={{ boxShadow: "0 -8px 48px rgba(0,0,0,0.3), 0 -2px 12px rgba(0,0,0,0.2)" }}
+                className="relative bg-white rounded-t-2xl overflow-hidden"
+                style={{
+                  width: "256px",
+                  boxShadow: "0 -8px 48px rgba(0,0,0,0.3), 0 -2px 12px rgba(0,0,0,0.2)",
+                }}
               >
                 <div className="h-1 w-full" style={{ backgroundColor: "#2563eb" }} />
                 <div className="p-5">
@@ -679,17 +621,15 @@ export default function Landing() {
                         <div className="h-1.5 w-10 rounded bg-gray-300" />
                       </div>
                     </div>
-                    <div
-                      className="h-10 w-10 rounded-full flex-shrink-0"
-                      style={{ background: "linear-gradient(135deg, #99f6e4, #bfdbfe)" }}
-                    />
+                    <div className="h-10 w-10 rounded-full flex-shrink-0"
+                      style={{ background: "linear-gradient(135deg, #99f6e4, #bfdbfe)" }} />
                   </div>
                   {[
-                    { label: "Experiência", lines: [100, 84, 68] },
-                    { label: "Formação", lines: [100, 76] },
-                    { label: "Habilidades", lines: [90, 70] },
-                  ].map((sec) => (
-                    <div key={sec.label} className="mb-3.5">
+                    { lines: [100, 84, 68] },
+                    { lines: [100, 76] },
+                    { lines: [90, 70] },
+                  ].map((sec, si) => (
+                    <div key={si} className="mb-3.5">
                       <div className="h-1.5 w-16 rounded mb-2" style={{ backgroundColor: "#2563eb" }} />
                       <div className="space-y-1">
                         {sec.lines.map((w, i) => (
@@ -700,20 +640,14 @@ export default function Landing() {
                   ))}
                   <div className="flex gap-1 flex-wrap pt-1">
                     {["React", "TypeScript", "Node"].map((s) => (
-                      <span
-                        key={s}
-                        className="text-[10px] px-2 py-0.5 rounded-full font-medium"
-                        style={{ backgroundColor: "#DBEAFE", color: "#2563EB" }}
-                      >
+                      <span key={s} className="text-[10px] px-2 py-0.5 rounded-full font-medium"
+                        style={{ backgroundColor: "#DBEAFE", color: "#2563EB" }}>
                         {s}
                       </span>
                     ))}
                   </div>
                 </div>
-                <div
-                  className="px-5 py-2.5 flex items-center justify-between"
-                  style={{ backgroundColor: "#0F2744" }}
-                >
+                <div className="px-5 py-2.5 flex items-center justify-between" style={{ backgroundColor: "#0F2744" }}>
                   <span className="text-[10px] text-white/40 font-mono">curriculos.fun</span>
                   <div className="flex gap-0.5">
                     {[...Array(5)].map((_, i) => (
@@ -729,9 +663,9 @@ export default function Landing() {
       </section>
 
       {/* ══ DEPOIMENTOS ═════════════════════════════════════════════════════════ */}
-      <section id="depoimentos" className="py-28 px-4 bg-white">
+      <section id="depoimentos" className="py-20 px-4 bg-white">
         <div className="container mx-auto max-w-5xl">
-          <div className="text-center mb-16">
+          <div className="text-center mb-14">
             <span className="text-teal-600 font-bold text-xs uppercase tracking-[0.18em]">
               Depoimentos
             </span>
@@ -741,7 +675,7 @@ export default function Landing() {
             >
               O que dizem nossos usuários
             </h2>
-            <p className="text-gray-500 max-w-sm mx-auto leading-relaxed">
+            <p className="text-gray-600 max-w-sm mx-auto leading-relaxed">
               Histórias reais de pessoas que conseguiram o emprego dos sonhos.
             </p>
           </div>
@@ -750,15 +684,15 @@ export default function Landing() {
             {TESTIMONIALS.map((t) => (
               <div
                 key={t.name}
-                className="rounded-2xl p-6 bg-white flex flex-col relative overflow-hidden hover:-translate-y-1 transition-all duration-200"
+                className="rounded-2xl p-7 bg-white flex flex-col relative overflow-hidden hover:-translate-y-1 transition-all duration-200"
                 style={{
-                  boxShadow: "0 2px 20px rgba(15,39,68,0.07), 0 0 0 1px rgba(15,39,68,0.05)",
+                  boxShadow: "0 2px 20px rgba(15,39,68,0.08), 0 0 0 1px rgba(15,39,68,0.05)",
                 }}
               >
-                {/* Quote mark */}
+                {/* Quote watermark */}
                 <div
                   className="absolute top-4 right-5 text-6xl font-black leading-none select-none pointer-events-none"
-                  style={{ color: `${t.avatarColor}0D`, fontFamily: "Georgia, serif" }}
+                  style={{ color: `${t.avatarColor}12`, fontFamily: "Georgia, serif" }}
                 >
                   &ldquo;
                 </div>
@@ -766,16 +700,15 @@ export default function Landing() {
                 {/* Stars */}
                 <div className="flex gap-0.5 mb-4">
                   {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="h-3.5 w-3.5 text-amber-400 fill-amber-400" />
+                    <Star key={i} className="h-4 w-4 text-amber-400 fill-amber-400" />
                   ))}
                 </div>
 
                 {/* Quote */}
-                <p className="text-gray-600 text-sm leading-relaxed flex-1 mb-5">
+                <p className="text-gray-700 text-[15px] leading-relaxed flex-1 mb-5">
                   &ldquo;{t.text}&rdquo;
                 </p>
 
-                {/* Divider */}
                 <div className="h-px bg-gray-100 mb-4" />
 
                 {/* Author */}
@@ -798,7 +731,7 @@ export default function Landing() {
                     <div className="font-bold text-sm leading-tight" style={{ color: "#0F2744" }}>
                       {t.name}
                     </div>
-                    <div className="text-xs text-gray-400 mt-0.5">{t.role}</div>
+                    <div className="text-xs text-gray-500 mt-0.5">{t.role}</div>
                     <div className="text-xs font-semibold mt-0.5" style={{ color: t.avatarColor }}>
                       {t.company}
                     </div>
@@ -811,9 +744,9 @@ export default function Landing() {
       </section>
 
       {/* ══ FAQ ═════════════════════════════════════════════════════════════════ */}
-      <section id="dicas" className="py-28 px-4" style={{ backgroundColor: "#F7F6F3" }}>
-        <div className="container mx-auto max-w-2xl">
-          <div className="text-center mb-16">
+      <section id="dicas" className="py-20 px-4" style={{ backgroundColor: "#F7F6F3" }}>
+        <div className="container mx-auto max-w-3xl">
+          <div className="text-center mb-14">
             <span className="text-teal-600 font-bold text-xs uppercase tracking-[0.18em]">
               Dicas de carreira
             </span>
@@ -823,7 +756,7 @@ export default function Landing() {
             >
               Perguntas frequentes
             </h2>
-            <p className="text-gray-500 leading-relaxed">
+            <p className="text-gray-600 leading-relaxed">
               Tudo que você precisa saber para criar um currículo que converte.
             </p>
           </div>
@@ -837,16 +770,16 @@ export default function Landing() {
                   className="bg-white rounded-2xl overflow-hidden transition-all duration-200"
                   style={{
                     boxShadow: open
-                      ? "0 4px 24px rgba(15,39,68,0.10), 0 0 0 1px rgba(13,148,136,0.2)"
-                      : "0 1px 8px rgba(15,39,68,0.05), 0 0 0 1px rgba(15,39,68,0.04)",
+                      ? "0 4px 24px rgba(15,39,68,0.10), 0 0 0 1.5px rgba(13,148,136,0.25)"
+                      : "0 1px 8px rgba(15,39,68,0.06), 0 0 0 1px rgba(15,39,68,0.04)",
                   }}
                 >
                   <button
-                    className="w-full px-6 py-5 flex items-center justify-between text-left group"
+                    className="w-full px-6 py-5 flex items-center justify-between text-left"
                     onClick={() => setActiveTip(open ? null : i)}
                   >
                     <span
-                      className="font-semibold text-sm pr-4 leading-snug"
+                      className="font-semibold text-[15px] pr-4 leading-snug"
                       style={{ color: open ? "#0D9488" : "#0F2744" }}
                     >
                       {tip.q}
@@ -855,7 +788,7 @@ export default function Landing() {
                       className="flex-shrink-0 h-7 w-7 rounded-full flex items-center justify-center transition-all duration-200"
                       style={{
                         backgroundColor: open ? "#0D948815" : "#f1f5f9",
-                        border: open ? "1px solid #0D948840" : "1px solid #e5e7eb",
+                        border: open ? "1px solid #0D948840" : "1px solid #e2e8f0",
                       }}
                     >
                       <ChevronDown
@@ -868,7 +801,7 @@ export default function Landing() {
                     </span>
                   </button>
 
-                  {/* Smooth accordion via CSS Grid */}
+                  {/* CSS Grid accordion */}
                   <div
                     style={{
                       display: "grid",
@@ -879,7 +812,7 @@ export default function Landing() {
                     <div className="overflow-hidden">
                       <div className="px-6 pb-5 pt-0">
                         <div className="h-px bg-gray-100 mb-4" />
-                        <p className="text-gray-500 text-sm leading-relaxed">{tip.a}</p>
+                        <p className="text-gray-600 text-[15px] leading-relaxed">{tip.a}</p>
                       </div>
                     </div>
                   </div>
@@ -892,28 +825,21 @@ export default function Landing() {
             <Button
               size="lg"
               asChild
-              className="rounded-2xl font-bold"
-              style={{
-                backgroundColor: "#0D9488",
-                color: "white",
-                height: "52px",
-                padding: "0 2rem",
-                boxShadow: "0 4px 16px rgba(13,148,136,0.3)",
-              }}
+              className="btn-cta rounded-2xl font-bold"
+              style={{ height: "52px", padding: "0 2rem", boxShadow: "0 4px 16px rgba(13,148,136,0.3)" }}
             >
               <Link to="/dashboard" className="flex items-center gap-2">
                 Criar meu currículo agora
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </Button>
-            <p className="mt-3 text-xs text-gray-400">Grátis · Sem cadastro obrigatório · Seus dados ficam no seu dispositivo</p>
+            <p className="mt-3 text-sm text-gray-500">Grátis · Sem cadastro obrigatório · Seus dados ficam no seu dispositivo</p>
           </div>
         </div>
       </section>
 
       {/* ══ FOOTER ══════════════════════════════════════════════════════════════ */}
       <footer style={{ backgroundColor: "#0a1828" }}>
-        {/* Top border accent */}
         <div className="h-px" style={{ background: "linear-gradient(90deg, transparent, #0D9488, transparent)" }} />
 
         <div className="container mx-auto max-w-6xl px-6 py-14">
@@ -922,21 +848,19 @@ export default function Landing() {
             {/* Brand */}
             <div>
               <Link to="/" className="inline-flex items-center gap-2.5 font-extrabold text-white text-lg mb-3">
-                <div
-                  className="h-9 w-9 rounded-xl flex items-center justify-center flex-shrink-0"
-                  style={{ backgroundColor: "#0D9488" }}
-                >
-                  <FileText className="h-4.5 w-4.5 text-white" style={{ height: "18px", width: "18px" }} />
+                <div className="h-9 w-9 rounded-xl flex items-center justify-center flex-shrink-0"
+                  style={{ backgroundColor: "#0D9488" }}>
+                  <FileText style={{ height: "18px", width: "18px", color: "white" }} />
                 </div>
                 Currículo Fácil
               </Link>
-              <p className="text-gray-500 text-sm leading-relaxed max-w-xs">
+              <p className="text-gray-400 text-sm leading-relaxed max-w-xs">
                 A forma mais simples de criar um currículo profissional e
                 conquistar sua próxima vaga de trabalho.
               </p>
             </div>
 
-            {/* Product links */}
+            {/* Product */}
             <div>
               <h4 className="text-white font-semibold text-sm mb-4 uppercase tracking-wider">Produto</h4>
               <ul className="space-y-2.5">
@@ -948,10 +872,7 @@ export default function Landing() {
                   { label: "Criar currículo", href: "/dashboard" },
                 ].map((l) => (
                   <li key={l.label}>
-                    <a
-                      href={l.href}
-                      className="text-sm text-gray-500 hover:text-white transition-colors"
-                    >
+                    <a href={l.href} className="text-sm text-gray-400 hover:text-white transition-colors duration-150">
                       {l.label}
                     </a>
                   </li>
@@ -970,10 +891,7 @@ export default function Landing() {
                   { label: "Ajuda", href: "#" },
                 ].map((l) => (
                   <li key={l.label}>
-                    <a
-                      href={l.href}
-                      className="text-sm text-gray-500 hover:text-white transition-colors"
-                    >
+                    <a href={l.href} className="text-sm text-gray-400 hover:text-white transition-colors duration-150">
                       {l.label}
                     </a>
                   </li>
@@ -983,15 +901,14 @@ export default function Landing() {
 
           </div>
 
-          {/* Bottom row */}
           <div
             className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-3"
             style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}
           >
-            <p className="text-xs text-gray-600">
+            <p className="text-xs text-gray-500">
               © 2026 Currículo Fácil · curriculos.fun · Todos os direitos reservados
             </p>
-            <p className="text-xs text-gray-600">
+            <p className="text-xs text-gray-500">
               Feito com dedicação para quem quer crescer na carreira 🇧🇷
             </p>
           </div>
