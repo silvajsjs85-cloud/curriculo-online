@@ -1,15 +1,112 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import { FileText } from "lucide-react";
+import { FileText, Menu, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
+
+const NAV_LINKS = [
+  { label: "Modelos", href: "#modelos" },
+  { label: "Como funciona", href: "#como-funciona" },
+  { label: "Depoimentos", href: "#depoimentos" },
+  { label: "Dicas", href: "#dicas" },
+];
 
 export function Navbar() {
+  const [open, setOpen] = useState(false);
+
   return (
-    <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-40">
-      <div className="container mx-auto flex h-16 items-center justify-between px-4">
-        <Link to="/" className="flex items-center gap-2 font-bold text-xl text-primary">
-          <FileText className="h-6 w-6" />
+    <header
+      className="border-b border-gray-100 sticky top-0 z-40 backdrop-blur-sm shadow-sm"
+      style={{ backgroundColor: "rgba(247, 246, 243, 0.95)" }}
+    >
+      <div className="container mx-auto flex h-16 items-center justify-between px-6 max-w-6xl">
+
+        {/* Logo */}
+        <Link to="/" className="flex items-center gap-2.5 font-extrabold text-xl" style={{ color: "#0F2744" }}>
+          <div
+            className="h-8 w-8 rounded-lg flex items-center justify-center"
+            style={{ backgroundColor: "#0D9488" }}
+          >
+            <FileText style={{ height: "17px", width: "17px", color: "white" }} />
+          </div>
           Currículo Fácil
         </Link>
+
+        {/* Desktop nav */}
+        <nav className="hidden md:flex items-center gap-7">
+          {NAV_LINKS.map((l) => (
+            <a
+              key={l.label}
+              href={l.href}
+              className="text-sm text-gray-500 hover:text-[#0F2744] transition-colors font-medium"
+            >
+              {l.label}
+            </a>
+          ))}
+        </nav>
+
+        {/* Desktop actions */}
+        <div className="hidden md:flex items-center gap-2.5">
+          <Button
+            asChild
+            variant="ghost"
+            size="sm"
+            className="text-gray-600 hover:text-[#0F2744] font-medium rounded-xl"
+          >
+            <Link to="/dashboard">Entrar</Link>
+          </Button>
+          <Button
+            asChild
+            size="sm"
+            className="text-white rounded-xl px-5 shadow-sm font-semibold"
+            style={{ backgroundColor: "#0D9488" }}
+          >
+            <Link to="/dashboard">Criar currículo</Link>
+          </Button>
+        </div>
+
+        {/* Mobile toggle */}
+        <button
+          className="md:hidden p-2 rounded-xl hover:bg-gray-100 transition-colors"
+          onClick={() => setOpen(!open)}
+          aria-label="Menu"
+        >
+          {open
+            ? <X className="h-5 w-5 text-gray-600" />
+            : <Menu className="h-5 w-5 text-gray-600" />
+          }
+        </button>
       </div>
+
+      {/* Mobile menu */}
+      {open && (
+        <div
+          className="md:hidden border-t border-gray-100 px-6 py-4 space-y-1"
+          style={{ backgroundColor: "#F7F6F3" }}
+        >
+          {NAV_LINKS.map((l) => (
+            <a
+              key={l.label}
+              href={l.href}
+              onClick={() => setOpen(false)}
+              className="block text-sm text-gray-600 hover:text-[#0F2744] py-2.5 font-medium border-b border-gray-100 last:border-0"
+            >
+              {l.label}
+            </a>
+          ))}
+          <div className="pt-3 flex flex-col gap-2">
+            <Button asChild variant="outline" className="w-full rounded-xl border-gray-200 font-medium">
+              <Link to="/dashboard">Entrar</Link>
+            </Button>
+            <Button
+              asChild
+              className="w-full text-white rounded-xl font-semibold"
+              style={{ backgroundColor: "#0D9488" }}
+            >
+              <Link to="/dashboard">Criar currículo</Link>
+            </Button>
+          </div>
+        </div>
+      )}
     </header>
   );
 }
