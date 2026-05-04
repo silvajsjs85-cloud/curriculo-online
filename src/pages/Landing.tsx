@@ -12,12 +12,12 @@ function TemplateCard({
   name,
   accent,
   tag,
-  layout = "default",
+  layout = "modern",
 }: {
   name: string;
   accent: string;
   tag?: string;
-  layout?: "default" | "sidebar";
+  layout?: "modern" | "classic" | "minimal" | "executive";
 }) {
   return (
     <div
@@ -43,46 +43,83 @@ function TemplateCard({
       {/* Accent strip */}
       <div className="h-1 w-full" style={{ backgroundColor: accent }} />
 
-      {/* Document body */}
       <div className="p-5 flex flex-col" style={{ minHeight: "12.5rem" }}>
-        {layout === "sidebar" ? (
-          <div className="flex gap-3 h-full">
-            <div className="w-1/3 flex flex-col gap-2 pr-2" style={{ borderRight: `2px solid ${accent}22` }}>
-              <div className="h-8 w-8 rounded-full self-center mb-1" style={{ background: `linear-gradient(135deg, ${accent}33, ${accent}55)` }} />
-              <div className="h-1.5 w-full rounded" style={{ backgroundColor: accent }} />
-              <div className="h-1 w-5/6 rounded bg-gray-200" />
-              <div className="h-1 w-4/6 rounded bg-gray-200" />
-              <div className="mt-2 h-1.5 w-full rounded" style={{ backgroundColor: `${accent}66` }} />
+        {layout === "executive" ? (
+          <div className="flex h-full overflow-hidden rounded-xl border border-gray-100">
+            <div className="w-[34%] p-3 flex flex-col gap-2" style={{ backgroundColor: "#0F2744" }}>
+              <div className="h-8 w-8 rounded-xl mb-1" style={{ backgroundColor: "#2DD4BF" }} />
+              <div className="h-1.5 w-12 rounded bg-teal-300" />
+              <div className="h-1 w-full rounded bg-white/25" />
+              <div className="h-1 w-4/5 rounded bg-white/20" />
+              <div className="mt-2 h-1.5 w-11 rounded bg-teal-300" />
+              <div className="h-1 w-full rounded bg-white/20" />
+              <div className="h-1 w-3/4 rounded bg-white/20" />
+            </div>
+            <div className="flex-1 p-3 flex flex-col gap-1.5 bg-white">
+              <div className="h-3 w-16 rounded bg-[#0F2744]" />
+              <div className="h-1.5 w-12 rounded bg-teal-400 mb-2" />
+              <div className="h-1.5 w-14 rounded bg-[#0F2744]" />
               <div className="h-1 w-full rounded bg-gray-100" />
               <div className="h-1 w-5/6 rounded bg-gray-100" />
-            </div>
-            <div className="flex-1 flex flex-col gap-1.5">
-              <div className="h-2.5 w-4/5 rounded" style={{ backgroundColor: "#1e293b" }} />
-              <div className="h-1.5 w-3/5 rounded bg-gray-300 mb-2" />
-              <div className="h-1.5 w-full rounded bg-gray-100" />
-              <div className="h-1.5 w-5/6 rounded bg-gray-100" />
-              <div className="h-1.5 w-3/4 rounded bg-gray-100" />
-              <div className="mt-2 h-1.5 w-2/3 rounded" style={{ backgroundColor: `${accent}88` }} />
+              <div className="mt-2 h-1.5 w-14 rounded bg-[#0F2744]" />
               <div className="h-1 w-full rounded bg-gray-100" />
-              <div className="h-1 w-4/5 rounded bg-gray-100" />
+              <div className="h-1 w-4/6 rounded bg-gray-100" />
             </div>
+          </div>
+        ) : layout === "classic" ? (
+          <div className="h-full flex flex-col items-center text-center">
+            <div className="h-2.5 w-24 rounded bg-[#0F2744] mb-1.5" />
+            <div className="h-1.5 w-20 rounded bg-gray-300 mb-3" />
+            <div className="h-px w-4/5 mb-3" style={{ backgroundColor: "#0F2744" }} />
+            {[62, 92, 78].map((w, i) => (
+              <div key={i} className="w-full mb-3">
+                <div className="h-1.5 mx-auto rounded mb-1.5" style={{ width: w, backgroundColor: "#0F2744" }} />
+                <div className="space-y-1">
+                  <div className="h-1 w-full rounded bg-gray-100" />
+                  <div className="h-1 w-5/6 mx-auto rounded bg-gray-100" />
+                </div>
+              </div>
+            ))}
+            <div className="mt-auto h-px w-full bg-gray-200" />
+          </div>
+        ) : layout === "minimal" ? (
+          <div className="h-full flex flex-col gap-3">
+            <div>
+              <div className="h-1.5 w-20 rounded mb-2" style={{ backgroundColor: accent }} />
+              <div className="h-3 w-28 rounded bg-[#0F2744] mb-2" />
+              <div className="flex gap-2">
+                <div className="h-1 w-12 rounded bg-gray-300" />
+                <div className="h-1 w-10 rounded bg-gray-300" />
+              </div>
+            </div>
+            <div className="pl-3 border-l-2" style={{ borderColor: accent }}>
+              <div className="h-1.5 w-full rounded bg-gray-100 mb-1" />
+              <div className="h-1.5 w-4/5 rounded bg-gray-100" />
+            </div>
+            {[0, 1].map((i) => (
+              <div key={i} className="grid grid-cols-[36px_1fr] gap-3">
+                <div className="h-1.5 w-8 rounded bg-gray-200 mt-1" />
+                <div className="space-y-1">
+                  <div className="h-1.5 w-16 rounded bg-[#0F2744]" />
+                  <div className="h-1 w-full rounded bg-gray-100" />
+                  <div className="h-1 w-3/4 rounded bg-gray-100" />
+                </div>
+              </div>
+            ))}
           </div>
         ) : (
           <>
-            <div className="flex items-center justify-between mb-3">
+            <div className="flex items-start justify-between mb-4">
               <div>
-                <div className="h-2.5 w-28 rounded mb-1.5" style={{ backgroundColor: "#1e293b" }} />
-                <div className="flex gap-1.5">
-                  <div className="h-1.5 w-16 rounded bg-gray-300" />
-                  <div className="h-1.5 w-12 rounded bg-gray-300" />
+                <div className="flex gap-1.5 mb-2">
+                  <div className="h-1.5 w-8 rounded-full" style={{ backgroundColor: accent }} />
+                  <div className="h-1.5 w-1.5 rounded-full bg-blue-500" />
                 </div>
+                <div className="h-3 w-28 rounded mb-1.5" style={{ backgroundColor: "#0F2744" }} />
+                <div className="h-1.5 w-20 rounded" style={{ backgroundColor: accent }} />
               </div>
-              <div
-                className="h-9 w-9 rounded-full flex-shrink-0"
-                style={{ background: `linear-gradient(135deg, ${accent}44, ${accent}88)` }}
-              />
+              <div className="h-9 w-9 rounded-2xl" style={{ backgroundColor: `${accent}22`, border: `1px solid ${accent}33` }} />
             </div>
-            <div className="h-px mb-3" style={{ backgroundColor: `${accent}44` }} />
             <div className="h-1.5 w-20 rounded mb-1.5" style={{ backgroundColor: accent }} />
             <div className="space-y-1 mb-3">
               <div className="h-1.5 w-full rounded bg-gray-100" />
@@ -96,7 +133,7 @@ function TemplateCard({
             </div>
             <div className="flex gap-1 flex-wrap mt-auto">
               {[48, 52, 40].map((w, i) => (
-                <div key={i} className="h-4 rounded-full" style={{ width: w, backgroundColor: `${accent}1a`, border: `1px solid ${accent}33` }} />
+                <div key={i} className="h-4 rounded-full" style={{ width: w, backgroundColor: `${accent}14`, border: `1px solid ${accent}30` }} />
               ))}
             </div>
           </>
@@ -140,10 +177,10 @@ function StatPill({ icon, value, label }: { icon: React.ReactNode; value: string
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
 const TEMPLATES = [
-  { name: "Moderno",     accent: "#2563eb", tag: "Popular", layout: "default" as const },
-  { name: "Clássico",    accent: "#7c3aed", tag: undefined,  layout: "default" as const },
-  { name: "Minimalista", accent: "#475569", tag: undefined,  layout: "sidebar" as const },
-  { name: "Executivo",   accent: "#0F766E", tag: "Novo",     layout: "default" as const },
+  { name: "Moderno",     accent: "#0D9488", tag: "Popular", layout: "modern" as const },
+  { name: "Clássico",    accent: "#0F2744", tag: undefined,  layout: "classic" as const },
+  { name: "Minimalista", accent: "#475569", tag: undefined,  layout: "minimal" as const },
+  { name: "Executivo",   accent: "#2DD4BF", tag: "Novo",     layout: "executive" as const },
 ];
 
 const STEPS = [

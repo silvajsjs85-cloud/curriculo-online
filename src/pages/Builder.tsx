@@ -342,6 +342,7 @@ export default function Builder() {
                     <SelectItem value="modern">Modelo moderno</SelectItem>
                     <SelectItem value="classic">Modelo clássico</SelectItem>
                     <SelectItem value="minimal">Modelo minimalista</SelectItem>
+                    <SelectItem value="executive">Modelo executivo</SelectItem>
                   </SelectContent>
                 </Select>
               </div>

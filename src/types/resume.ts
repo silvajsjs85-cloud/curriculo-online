@@ -53,7 +53,7 @@ export interface Resume {
   id: string;
   user_id: string;
   title: string;
-  template: "modern" | "classic" | "minimal";
+  template: "modern" | "classic" | "minimal" | "executive";
   data: ResumeData;
   created_at: string;
   updated_at: string;

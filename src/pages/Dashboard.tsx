@@ -37,7 +37,7 @@ type TemplateTheme = {
   label: string;
   accent: string;
   badgeClass: string;
-  layout: "default" | "sidebar";
+  layout: "default" | "sidebar" | "executive";
 };
 
 const TEMPLATE_THEMES: Record<string, TemplateTheme> = {
@@ -55,9 +55,15 @@ const TEMPLATE_THEMES: Record<string, TemplateTheme> = {
   },
   minimal: {
     label: "Minimalista",
-    accent: "#0F766E",
-    badgeClass: "bg-teal-50 text-teal-700 border-teal-100",
+    accent: "#475569",
+    badgeClass: "bg-slate-50 text-slate-700 border-slate-100",
     layout: "sidebar",
+  },
+  executive: {
+    label: "Executivo",
+    accent: "#0F2744",
+    badgeClass: "bg-teal-50 text-teal-700 border-teal-100",
+    layout: "executive",
   },
 };
 
@@ -127,7 +133,35 @@ function ResumeMiniPreview({
           boxShadow: "0 18px 40px rgba(15,39,68,0.16), 0 0 0 1px rgba(15,39,68,0.05)",
         }}
       >
-        {theme.layout === "sidebar" ? (
+        {theme.layout === "executive" ? (
+          <div className="flex h-full overflow-hidden rounded-lg">
+            <div className="flex w-9 flex-col gap-1.5 p-1.5" style={{ backgroundColor: "#0F2744" }}>
+              <div
+                className="flex h-6 w-6 items-center justify-center rounded-full text-[7px] font-black text-[#0F2744]"
+                style={{ backgroundColor: "#2DD4BF" }}
+              >
+                {initials}
+              </div>
+              <span className="mt-1 h-1 w-full rounded-full bg-teal-300/80" />
+              <span className="h-1 w-5 rounded-full bg-white/25" />
+              <span className="h-1 w-4 rounded-full bg-white/20" />
+              <span className="mt-2 h-1 w-full rounded-full bg-teal-300/70" />
+              <span className="h-1 w-5 rounded-full bg-white/20" />
+              <span className="h-1 w-4 rounded-full bg-white/20" />
+            </div>
+            <div className="flex flex-1 flex-col gap-1.5 bg-white p-2.5">
+              <span className="h-2.5 w-14 rounded-full bg-[#0F2744]" />
+              <span className="h-1.5 w-10 rounded-full bg-teal-400" />
+              <span className="my-1 h-px w-full bg-slate-100" />
+              <span className="h-1.5 w-9 rounded-full bg-[#0F2744]" />
+              <span className="h-1 w-full rounded-full bg-slate-100" />
+              <span className="h-1 w-10 rounded-full bg-slate-100" />
+              <span className="mt-1 h-1.5 w-11 rounded-full bg-[#0F2744]" />
+              <span className="h-1 w-full rounded-full bg-slate-100" />
+              <span className="h-1 w-8 rounded-full bg-slate-100" />
+            </div>
+          </div>
+        ) : theme.layout === "sidebar" ? (
           <div className="flex h-full gap-2.5">
             <div
               className="flex w-8 flex-col items-center gap-1.5 rounded-lg p-1.5"
