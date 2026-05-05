@@ -157,8 +157,8 @@ export default function Contact() {
               </div>
             </div>
 
-            {/* Response time */}
-            <div className="space-y-4">
+            {/* Response time and Responsável */}
+            <div className="space-y-6">
               <div className="rounded-2xl bg-slate-50 border border-slate-100 p-4 flex items-center gap-3">
                 <Clock className="h-5 w-5 text-teal-600 shrink-0" />
                 <p className="text-sm text-slate-600">
@@ -168,10 +168,47 @@ export default function Contact() {
                   respondemos normalmente em até 24h.
                 </p>
               </div>
+
+              {/* Responsável Card */}
+              <div className="rounded-3xl bg-white border border-slate-100 p-6 sm:p-8 flex flex-col sm:flex-row items-center sm:items-start gap-6 sm:gap-8 transition-all hover:shadow-md" style={{ boxShadow: "0 4px 20px rgba(15,39,68,0.04)" }}>
+                <div className="shrink-0 relative">
+                  <div className="absolute inset-0 bg-teal-600 rounded-3xl blur-md opacity-20 translate-y-2"></div>
+                  <img 
+                    src="/foto-responsavel.webp" 
+                    alt="Jose Aparecido da Silva - Responsável pelo Currículo Fácil" 
+                    className="relative w-28 h-28 sm:w-32 sm:h-32 rounded-3xl object-cover shadow-sm border-4 border-white"
+                  />
+                </div>
+                <div className="flex flex-col items-center sm:items-start text-center sm:text-left flex-1 w-full">
+                  <span className="text-xs font-bold uppercase tracking-wider text-teal-600 mb-1.5">
+                    Responsável pelo atendimento
+                  </span>
+                  <h3 className="text-2xl font-extrabold text-[#0F2744]">
+                    Jose Aparecido da Silva
+                  </h3>
+                  <p className="text-sm text-slate-600 mt-2 max-w-md leading-relaxed">
+                    Criador do Currículo Fácil. Atendimento para dúvidas, sugestões e suporte sobre o uso da ferramenta.
+                  </p>
+                  
+                  <div className="flex flex-wrap items-center justify-center sm:justify-start gap-4 sm:gap-6 mt-6 pt-5 border-t border-slate-100 w-full">
+                    <a href="mailto:silva.js.js1000@gmail.com" className="inline-flex items-center gap-2 text-sm font-medium text-slate-600 hover:text-teal-600 transition-colors">
+                      <Mail className="h-4 w-4" />
+                      silva.js.js1000@gmail.com
+                    </a>
+                    <a href="https://wa.me/5569981336994" target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-sm font-medium text-slate-600 hover:text-green-600 transition-colors">
+                      <MessageCircle className="h-4 w-4" />
+                      (69) 98133-6994
+                    </a>
+                    <a href="https://instagram.com/joseap096" target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-sm font-medium text-slate-600 hover:text-pink-600 transition-colors">
+                      <Instagram className="h-4 w-4" />
+                      @joseap096
+                    </a>
+                  </div>
+                </div>
+              </div>
               
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 px-2 pt-2">
-                <p className="text-xs text-slate-400">Responsável: Jose Aparecido da Silva</p>
-                <p className="text-xs text-slate-400">Suas informações de contato são usadas apenas para responder sua mensagem.</p>
+              <div className="flex flex-col sm:flex-row sm:items-center justify-center sm:justify-end gap-2 px-2 pt-2">
+                <p className="text-xs text-slate-400 text-center sm:text-right">Suas informações de contato são usadas apenas para responder sua mensagem.</p>
               </div>
             </div>
           </section>
