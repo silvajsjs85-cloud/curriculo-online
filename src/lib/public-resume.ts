@@ -16,6 +16,8 @@ export async function publishResume(
   template: string,
   userId: string | null = null
 ): Promise<{ success: boolean; url?: string; error?: string }> {
+  // O app salva localmente com "local", mas o Supabase espera UUID ou null.
+  const validUserId = userId === "local" ? null : userId;
   try {
     // Tenta buscar se o slug já existe
     const { data: existing } = await supabase
@@ -43,7 +45,7 @@ export async function publishResume(
     const { error } = await supabase.from("public_resumes").insert([
       {
         slug,
-        user_id: userId,
+        user_id: validUserId,
         resume_data: resumeData,
         template: template,
       },
