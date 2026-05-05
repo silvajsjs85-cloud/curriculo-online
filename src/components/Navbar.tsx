@@ -1,4 +1,4 @@
-import { useState, type MouseEvent } from "react";
+import { useState, useEffect, type MouseEvent } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FileText, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -13,10 +13,20 @@ const NAV_LINKS = [
 
 export function Navbar() {
   const [open, setOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const isHome = location.pathname === "/";
   const isDashboard = location.pathname === "/dashboard";
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 80);
+    };
+    window.addEventListener("scroll", handleScroll);
+    handleScroll();
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const getSectionHref = (link: (typeof NAV_LINKS)[0]) => {
     if (link.href) return link.href;
@@ -42,7 +52,9 @@ export function Navbar() {
 
   return (
     <header
-      className="border-b border-gray-100 sticky top-0 z-40 backdrop-blur-sm shadow-sm"
+      className={`border-b border-gray-100 sticky top-0 z-40 backdrop-blur-sm transition-shadow duration-300 ${
+        isScrolled ? "shadow-[0_2px_12px_rgba(0,0,0,0.08)]" : "shadow-none"
+      }`}
       style={{ backgroundColor: "rgba(247, 246, 243, 0.95)" }}
     >
       <div className="container mx-auto flex h-16 items-center justify-between px-6 max-w-6xl">
@@ -89,11 +101,13 @@ export function Navbar() {
             className={
               isDashboard
                 ? "rounded-xl border-teal-100 bg-white px-4 font-semibold text-teal-700 shadow-none hover:bg-teal-50 hover:text-teal-800"
-                : "text-white rounded-xl px-5 shadow-sm font-semibold"
+                : `text-white rounded-xl px-5 shadow-sm font-semibold transition-opacity duration-300 ${
+                    isHome && !isScrolled ? "opacity-0 pointer-events-none" : "opacity-100"
+                  }`
             }
             style={isDashboard ? undefined : { backgroundColor: "#0D9488" }}
           >
-            <Link to="/criar">Criar currículo</Link>
+            <Link to="/criar">Criar currículo grátis</Link>
           </Button>
         </div>
 
@@ -136,11 +150,13 @@ export function Navbar() {
               className={
                 isDashboard
                   ? "w-full rounded-xl border-teal-100 bg-white font-semibold text-teal-700 hover:bg-teal-50 hover:text-teal-800"
-                  : "w-full text-white rounded-xl font-semibold"
+                  : `w-full text-white rounded-xl font-semibold transition-opacity duration-300 ${
+                      isHome && !isScrolled ? "opacity-0 pointer-events-none hidden" : "opacity-100"
+                    }`
               }
               style={isDashboard ? undefined : { backgroundColor: "#0D9488" }}
             >
-              <Link to="/criar">Criar currículo</Link>
+              <Link to="/criar">Criar currículo grátis</Link>
             </Button>
           </div>
         </div>
