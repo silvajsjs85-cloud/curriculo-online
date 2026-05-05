@@ -601,11 +601,11 @@ export default function Builder() {
                     type="button" 
                     variant="outline" 
                     size="sm"
-                    className="shrink-0 bg-white border-slate-200 text-slate-400 cursor-not-allowed rounded-xl font-semibold"
-                    onClick={() => toast.info("A importação do LinkedIn estará disponível em breve!")}
+                    disabled
+                    className="shrink-0 bg-slate-50 border-slate-200 text-slate-400 cursor-not-allowed rounded-xl font-semibold"
                   >
                     <FileUp className="h-4 w-4" />
-                    Importar PDF
+                    Em breve
                   </Button>
                   <input ref={linkedinInputRef} type="file" accept="application/pdf" className="hidden" onChange={handleLinkedInImport} />
                 </div>
