@@ -8,7 +8,9 @@ import {
   ChevronRight,
   Download,
   Eye,
+  FileUp,
   Globe,
+  GripVertical,
   GraduationCap,
   Languages,
   LayoutTemplate,
@@ -39,8 +41,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { ResumePreview } from "@/components/ResumePreview";
 import { getResume, saveResume } from "@/lib/storage";
 import { publishResume } from "@/lib/public-resume";
+import { parseLinkedInPDF } from "@/lib/pdf-parser";
 import type { Resume, ResumeData, Experience, Education, Skill, Language } from "@/types/resume";
 import { defaultResumeData } from "@/types/resume";
+import { DragDropContext, Droppable, Draggable, type DropResult } from "@hello-pangea/dnd";
 
 type StepId = "pessoal" | "experiencia" | "formacao" | "habilidades" | "idiomas";
 type MobileView = "form" | "preview";
@@ -150,7 +154,9 @@ export default function Builder() {
   const [autoSaved, setAutoSaved] = useState(false);
   const [exporting, setExporting] = useState(false);
   const [publishing, setPublishing] = useState(false);
+  const [isImporting, setIsImporting] = useState(false);
   const photoInputRef = useRef<HTMLInputElement>(null);
+  const linkedinInputRef = useRef<HTMLInputElement>(null);
   const autoSaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
@@ -234,6 +240,39 @@ export default function Builder() {
     }
   };
 
+  const handleLinkedInImport = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setIsImporting(true);
+    try {
+      const importedData = await parseLinkedInPDF(file);
+      setResume((r) => {
+        // Mesclar dados importados sem sobrescrever foto/idiomas se não houver
+        const merged: ResumeData = {
+          ...r.data,
+          personalInfo: {
+            ...r.data.personalInfo,
+            name: importedData.personalInfo?.name || r.data.personalInfo.name,
+            email: importedData.personalInfo?.email || r.data.personalInfo.email,
+          },
+          experiences: importedData.experiences?.length ? importedData.experiences : r.data.experiences,
+          education: importedData.education?.length ? importedData.education : r.data.education,
+        };
+        return { ...r, data: merged };
+      });
+      toast.success("Dados importados com sucesso!", {
+        description: "Revise os campos, pois a extração pode conter erros."
+      });
+    } catch (err) {
+      toast.error("Erro ao ler PDF", { description: "O arquivo pode estar corrompido ou num formato diferente."});
+    } finally {
+      setIsImporting(false);
+      // Reset input
+      if (linkedinInputRef.current) linkedinInputRef.current.value = "";
+    }
+  };
+
   const addExperience = () => {
     const exp: Experience = {
       id: crypto.randomUUID(),
@@ -278,6 +317,24 @@ export default function Builder() {
 
   const removeEducation = (id: string) => {
     updateData({ education: resume.data.education.filter((e) => e.id !== id) });
+  };
+
+  const onDragEnd = (result: DropResult) => {
+    if (!result.destination) return;
+    const { source, destination, type } = result;
+    if (source.index === destination.index) return;
+
+    if (type === "experience") {
+      const items = Array.from(resume.data.experiences);
+      const [reorderedItem] = items.splice(source.index, 1);
+      items.splice(destination.index, 0, reorderedItem);
+      updateData({ experiences: items });
+    } else if (type === "education") {
+      const items = Array.from(resume.data.education);
+      const [reorderedItem] = items.splice(source.index, 1);
+      items.splice(destination.index, 0, reorderedItem);
+      updateData({ education: items });
+    }
   };
 
   const addSkill = () => {
@@ -456,11 +513,12 @@ export default function Builder() {
             mobileView === "preview" ? "hidden" : "flex"
           }`}
         >
-          <Tabs
-            value={activeStep}
-            onValueChange={(value) => setActiveStep(value as StepId)}
-            className="flex w-full flex-col rounded-3xl border border-white/80 bg-white shadow-[0_18px_55px_rgba(15,39,68,0.08)] lg:min-h-0 lg:overflow-hidden"
-          >
+          <DragDropContext onDragEnd={onDragEnd}>
+            <Tabs
+              value={activeStep}
+              onValueChange={(value) => setActiveStep(value as StepId)}
+              className="flex w-full flex-col rounded-3xl border border-white/80 bg-white shadow-[0_18px_55px_rgba(15,39,68,0.08)] lg:min-h-0 lg:overflow-hidden"
+            >
             <div className="border-b border-slate-100 p-3">
               <TabsList className="grid h-auto w-full grid-cols-5 gap-1 rounded-2xl bg-slate-50 p-1">
                 {STEPS.map((step) => {
@@ -526,6 +584,30 @@ export default function Builder() {
                   </div>
                 </div>
 
+                <div className="rounded-2xl border border-blue-100 bg-blue-50/70 p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div>
+                    <h4 className="font-bold text-[#0F2744] flex items-center gap-2">
+                      <Linkedin className="h-4 w-4 text-[#0A66C2]" />
+                      Importar do LinkedIn
+                    </h4>
+                    <p className="text-xs text-slate-600 mt-1 max-w-sm">
+                      Salve o seu perfil em PDF no LinkedIn e importe aqui para preencher automaticamente.
+                    </p>
+                  </div>
+                  <Button 
+                    type="button" 
+                    variant="outline" 
+                    size="sm"
+                    className="shrink-0 bg-white border-blue-200 text-blue-700 hover:bg-blue-100 rounded-xl font-semibold"
+                    onClick={() => linkedinInputRef.current?.click()}
+                    disabled={isImporting}
+                  >
+                    <FileUp className="h-4 w-4" />
+                    {isImporting ? "Lendo..." : "Importar PDF"}
+                  </Button>
+                  <input ref={linkedinInputRef} type="file" accept="application/pdf" className="hidden" onChange={handleLinkedInImport} />
+                </div>
+
                 <Field label="Nome completo" required invalid={missingName} hint={missingName ? "Esse nome aparece no topo do currículo." : undefined}>
                   <IconInput
                     icon={User}
@@ -550,7 +632,10 @@ export default function Builder() {
                     placeholder="(11) 99999-9999"
                   />
                 </Field>
-                <Field label="Localização">
+                <Field 
+                  label="Localização" 
+                  hint={pi.location.length > 0 && !pi.location.includes(',') ? "Dica: Evite colocar seu endereço completo, apenas Cidade e Estado já é suficiente (ex: São Paulo, SP)." : undefined}
+                >
                   <IconInput
                     icon={MapPin}
                     value={pi.location}
@@ -590,31 +675,48 @@ export default function Builder() {
                 {resume.data.experiences.length === 0 && (
                   <EmptyEditorState icon={Briefcase} text="Adicione sua primeira experiência profissional." />
                 )}
-                {resume.data.experiences.map((exp, i) => (
-                  <EditorItem key={exp.id} title={`Experiência ${i + 1}`} onRemove={() => removeExperience(exp.id)}>
-                    <Field label="Cargo">
-                      <Input value={exp.position} onChange={(e) => updateExperience(exp.id, { position: e.target.value })} placeholder="Desenvolvedor Frontend" className={CONTROL_CLASS} />
-                    </Field>
-                    <Field label="Empresa">
-                      <Input value={exp.company} onChange={(e) => updateExperience(exp.id, { company: e.target.value })} placeholder="Empresa LTDA" className={CONTROL_CLASS} />
-                    </Field>
-                    <div className="grid grid-cols-2 gap-3">
-                      <Field label="Início">
-                        <Input value={exp.startDate} onChange={(e) => updateExperience(exp.id, { startDate: e.target.value })} placeholder="Jan 2022" className={CONTROL_CLASS} />
-                      </Field>
-                      <Field label="Fim">
-                        <Input value={exp.endDate} onChange={(e) => updateExperience(exp.id, { endDate: e.target.value })} placeholder="Atual" disabled={exp.current} className={CONTROL_CLASS} />
-                      </Field>
+                <Droppable droppableId="experiences" type="experience">
+                  {(provided) => (
+                    <div {...provided.droppableProps} ref={provided.innerRef} className="space-y-4">
+                      {resume.data.experiences.map((exp, i) => (
+                        <Draggable key={exp.id} draggableId={exp.id} index={i}>
+                          {(provided) => (
+                            <div ref={provided.innerRef} {...provided.draggableProps}>
+                              <EditorItem 
+                                title={`Experiência ${i + 1}`} 
+                                onRemove={() => removeExperience(exp.id)}
+                                dragHandleProps={provided.dragHandleProps}
+                              >
+                                <Field label="Cargo">
+                                  <Input value={exp.position} onChange={(e) => updateExperience(exp.id, { position: e.target.value })} placeholder="Desenvolvedor Frontend" className={CONTROL_CLASS} />
+                                </Field>
+                                <Field label="Empresa">
+                                  <Input value={exp.company} onChange={(e) => updateExperience(exp.id, { company: e.target.value })} placeholder="Empresa LTDA" className={CONTROL_CLASS} />
+                                </Field>
+                                <div className="grid grid-cols-2 gap-3">
+                                  <Field label="Início">
+                                    <Input value={exp.startDate} onChange={(e) => updateExperience(exp.id, { startDate: e.target.value })} placeholder="Jan 2022" className={CONTROL_CLASS} />
+                                  </Field>
+                                  <Field label="Fim">
+                                    <Input value={exp.endDate} onChange={(e) => updateExperience(exp.id, { endDate: e.target.value })} placeholder="Atual" disabled={exp.current} className={CONTROL_CLASS} />
+                                  </Field>
+                                </div>
+                                <label className="flex items-center gap-2 rounded-xl bg-slate-50 px-3 py-2 text-sm font-medium text-slate-600">
+                                  <input type="checkbox" checked={exp.current} onChange={(e) => updateExperience(exp.id, { current: e.target.checked, endDate: "" })} className="h-4 w-4 accent-teal-600" />
+                                  Emprego atual
+                                </label>
+                                <Field label="Descrição">
+                                  <Textarea value={exp.description} onChange={(e) => updateExperience(exp.id, { description: e.target.value })} placeholder="Descreva suas responsabilidades, entregas e resultados..." className={TEXTAREA_CLASS} rows={4} />
+                                </Field>
+                              </EditorItem>
+                            </div>
+                          )}
+                        </Draggable>
+                      ))}
+                      {provided.placeholder}
                     </div>
-                    <label className="flex items-center gap-2 rounded-xl bg-slate-50 px-3 py-2 text-sm font-medium text-slate-600">
-                      <input type="checkbox" checked={exp.current} onChange={(e) => updateExperience(exp.id, { current: e.target.checked, endDate: "" })} className="h-4 w-4 accent-teal-600" />
-                      Emprego atual
-                    </label>
-                    <Field label="Descrição">
-                      <Textarea value={exp.description} onChange={(e) => updateExperience(exp.id, { description: e.target.value })} placeholder="Descreva suas responsabilidades, entregas e resultados..." className={TEXTAREA_CLASS} rows={4} />
-                    </Field>
-                  </EditorItem>
-                ))}
+                  )}
+                </Droppable>
                 <AddButton onClick={addExperience}>Adicionar experiência</AddButton>
               </TabsContent>
 
@@ -622,31 +724,48 @@ export default function Builder() {
                 {resume.data.education.length === 0 && (
                   <EmptyEditorState icon={GraduationCap} text="Adicione sua formação mais relevante." />
                 )}
-                {resume.data.education.map((edu, i) => (
-                  <EditorItem key={edu.id} title={`Formação ${i + 1}`} onRemove={() => removeEducation(edu.id)}>
-                    <Field label="Instituição">
-                      <Input value={edu.institution} onChange={(e) => updateEducation(edu.id, { institution: e.target.value })} placeholder="Universidade de São Paulo" className={CONTROL_CLASS} />
-                    </Field>
-                    <Field label="Curso">
-                      <Input value={edu.field} onChange={(e) => updateEducation(edu.id, { field: e.target.value })} placeholder="Ciência da Computação" className={CONTROL_CLASS} />
-                    </Field>
-                    <Field label="Grau">
-                      <Input value={edu.degree} onChange={(e) => updateEducation(edu.id, { degree: e.target.value })} placeholder="Bacharelado" className={CONTROL_CLASS} />
-                    </Field>
-                    <div className="grid grid-cols-2 gap-3">
-                      <Field label="Início">
-                        <Input value={edu.startDate} onChange={(e) => updateEducation(edu.id, { startDate: e.target.value })} placeholder="2018" className={CONTROL_CLASS} />
-                      </Field>
-                      <Field label="Conclusão">
-                        <Input value={edu.endDate} onChange={(e) => updateEducation(edu.id, { endDate: e.target.value })} placeholder="2022" disabled={edu.current} className={CONTROL_CLASS} />
-                      </Field>
+                <Droppable droppableId="education" type="education">
+                  {(provided) => (
+                    <div {...provided.droppableProps} ref={provided.innerRef} className="space-y-4">
+                      {resume.data.education.map((edu, i) => (
+                        <Draggable key={edu.id} draggableId={edu.id} index={i}>
+                          {(provided) => (
+                            <div ref={provided.innerRef} {...provided.draggableProps}>
+                              <EditorItem 
+                                title={`Formação ${i + 1}`} 
+                                onRemove={() => removeEducation(edu.id)}
+                                dragHandleProps={provided.dragHandleProps}
+                              >
+                                <Field label="Instituição">
+                                  <Input value={edu.institution} onChange={(e) => updateEducation(edu.id, { institution: e.target.value })} placeholder="Universidade de São Paulo" className={CONTROL_CLASS} />
+                                </Field>
+                                <Field label="Curso">
+                                  <Input value={edu.field} onChange={(e) => updateEducation(edu.id, { field: e.target.value })} placeholder="Ciência da Computação" className={CONTROL_CLASS} />
+                                </Field>
+                                <Field label="Grau">
+                                  <Input value={edu.degree} onChange={(e) => updateEducation(edu.id, { degree: e.target.value })} placeholder="Bacharelado" className={CONTROL_CLASS} />
+                                </Field>
+                                <div className="grid grid-cols-2 gap-3">
+                                  <Field label="Início">
+                                    <Input value={edu.startDate} onChange={(e) => updateEducation(edu.id, { startDate: e.target.value })} placeholder="2018" className={CONTROL_CLASS} />
+                                  </Field>
+                                  <Field label="Conclusão">
+                                    <Input value={edu.endDate} onChange={(e) => updateEducation(edu.id, { endDate: e.target.value })} placeholder="2022" disabled={edu.current} className={CONTROL_CLASS} />
+                                  </Field>
+                                </div>
+                                <label className="flex items-center gap-2 rounded-xl bg-slate-50 px-3 py-2 text-sm font-medium text-slate-600">
+                                  <input type="checkbox" checked={edu.current} onChange={(e) => updateEducation(edu.id, { current: e.target.checked, endDate: "" })} className="h-4 w-4 accent-teal-600" />
+                                  Em andamento
+                                </label>
+                              </EditorItem>
+                            </div>
+                          )}
+                        </Draggable>
+                      ))}
+                      {provided.placeholder}
                     </div>
-                    <label className="flex items-center gap-2 rounded-xl bg-slate-50 px-3 py-2 text-sm font-medium text-slate-600">
-                      <input type="checkbox" checked={edu.current} onChange={(e) => updateEducation(edu.id, { current: e.target.checked, endDate: "" })} className="h-4 w-4 accent-teal-600" />
-                      Em andamento
-                    </label>
-                  </EditorItem>
-                ))}
+                  )}
+                </Droppable>
                 <AddButton onClick={addEducation}>Adicionar formação</AddButton>
               </TabsContent>
 
@@ -733,6 +852,7 @@ export default function Builder() {
               </Button>
             </div>
           </Tabs>
+          </DragDropContext>
         </aside>
 
         <section
@@ -874,15 +994,27 @@ function EditorItem({
   title,
   onRemove,
   children,
+  dragHandleProps,
 }: {
   title: string;
   onRemove: () => void;
   children: ReactNode;
+  dragHandleProps?: any;
 }) {
   return (
-    <div className="rounded-2xl border border-slate-100 bg-white p-4 shadow-sm">
+    <div className="rounded-2xl border border-slate-100 bg-white p-4 shadow-sm relative">
       <div className="mb-4 flex items-center justify-between gap-3 border-b border-slate-100 pb-3">
-        <h3 className="text-sm font-extrabold text-[#0F2744]">{title}</h3>
+        <div className="flex items-center gap-2">
+          {dragHandleProps && (
+            <div 
+              {...dragHandleProps} 
+              className="text-slate-300 hover:text-slate-500 cursor-grab active:cursor-grabbing p-1"
+            >
+              <GripVertical className="h-5 w-5" />
+            </div>
+          )}
+          <h3 className="text-sm font-extrabold text-[#0F2744]">{title}</h3>
+        </div>
         <IconRemoveButton onClick={onRemove} />
       </div>
       <div className="space-y-3">{children}</div>
