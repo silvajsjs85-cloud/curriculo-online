@@ -584,6 +584,7 @@ export default function Builder() {
                   </div>
                 </div>
 
+                {/* 
                 <div className="rounded-2xl border border-blue-100 bg-blue-50/70 p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                   <div>
                     <h4 className="font-bold text-[#0F2744] flex items-center gap-2">
@@ -609,6 +610,7 @@ export default function Builder() {
                   </Button>
                   <input ref={linkedinInputRef} type="file" accept="application/pdf" className="hidden" onChange={handleLinkedInImport} />
                 </div>
+                */}
 
                 <Field label="Nome completo" required invalid={missingName} hint={missingName ? "Esse nome aparece no topo do currículo." : undefined}>
                   <IconInput
