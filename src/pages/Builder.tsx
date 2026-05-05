@@ -589,6 +589,9 @@ export default function Builder() {
                     <h4 className="font-bold text-[#0F2744] flex items-center gap-2">
                       <Linkedin className="h-4 w-4 text-[#0A66C2]" />
                       Importar do LinkedIn
+                      <span className="ml-2 inline-flex items-center rounded-full bg-blue-100 px-2 py-0.5 text-[10px] font-bold text-blue-700 uppercase tracking-wider">
+                        Em breve
+                      </span>
                     </h4>
                     <p className="text-xs text-slate-600 mt-1 max-w-sm">
                       Salve o seu perfil em PDF no LinkedIn e importe aqui para preencher automaticamente.
@@ -598,12 +601,11 @@ export default function Builder() {
                     type="button" 
                     variant="outline" 
                     size="sm"
-                    className="shrink-0 bg-white border-blue-200 text-blue-700 hover:bg-blue-100 rounded-xl font-semibold"
-                    onClick={() => linkedinInputRef.current?.click()}
-                    disabled={isImporting}
+                    className="shrink-0 bg-white border-slate-200 text-slate-400 cursor-not-allowed rounded-xl font-semibold"
+                    onClick={() => toast.info("A importação do LinkedIn estará disponível em breve!")}
                   >
                     <FileUp className="h-4 w-4" />
-                    {isImporting ? "Lendo..." : "Importar PDF"}
+                    Importar PDF
                   </Button>
                   <input ref={linkedinInputRef} type="file" accept="application/pdf" className="hidden" onChange={handleLinkedInImport} />
                 </div>
