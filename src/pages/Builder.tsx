@@ -19,6 +19,8 @@ import {
   Share2,
   Mail,
   MapPin,
+  Maximize,
+  Columns,
   Monitor,
   PanelLeft,
   Phone,
@@ -38,6 +40,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { ResumePreview } from "@/components/ResumePreview";
 import { getResume, saveResume } from "@/lib/storage";
 import { publishResume } from "@/lib/public-resume";
@@ -150,14 +153,33 @@ export default function Builder() {
 
   const [activeStep, setActiveStep] = useState<StepId>("pessoal");
   const [mobileView, setMobileView] = useState<MobileView>("form");
+  const [viewMode, setViewMode] = useState<"default" | "split" | "fullscreen">("default");
   const [previewZoom, setPreviewZoom] = useState<PreviewZoom>("fit");
   const [autoSaved, setAutoSaved] = useState(false);
   const [exporting, setExporting] = useState(false);
   const [publishing, setPublishing] = useState(false);
   const [isImporting, setIsImporting] = useState(false);
+  const [isTemplateModalOpen, setIsTemplateModalOpen] = useState(false);
+  const [isTipDismissed, setIsTipDismissed] = useState(() => localStorage.getItem("builderTipDismissed") === "true");
+  
+  const SUMMARY_PLACEHOLDERS = [
+    "Profissional com 5 anos de experiência em marketing digital, especializado em growth e performance...",
+    "Engenheiro de software com sólida experiência em React e Node.js, apaixonado por produtos escaláveis...",
+    "Gestora de projetos certificada PMP com histórico comprovado de entregas no prazo e dentro do orçamento..."
+  ];
+  const [summaryPlaceholder, setSummaryPlaceholder] = useState(SUMMARY_PLACEHOLDERS[0]);
+
+  const [panelWidth, setPanelWidth] = useState(() => {
+    const saved = localStorage.getItem("builderPanelWidth");
+    return saved ? parseInt(saved, 10) : 340;
+  });
   const photoInputRef = useRef<HTMLInputElement>(null);
   const linkedinInputRef = useRef<HTMLInputElement>(null);
   const autoSaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    localStorage.setItem("builderPanelWidth", panelWidth.toString());
+  }, [panelWidth]);
 
   useEffect(() => {
     if (autoSaveTimer.current) clearTimeout(autoSaveTimer.current);
@@ -417,23 +439,57 @@ export default function Builder() {
                 <Label className="mb-1.5 block text-[11px] font-bold uppercase tracking-[0.14em] text-slate-500">
                   Modelo
                 </Label>
-                <Select
-                  value={resume.template}
-                  onValueChange={(v) => setResume((r) => ({ ...r, template: v as Resume["template"] }))}
-                >
-                  <SelectTrigger className={SELECT_TRIGGER_CLASS}>
-                    <span className="flex items-center gap-2">
-                      <LayoutTemplate className="h-4 w-4 text-teal-600" />
-                      <SelectValue />
-                    </span>
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="modern">Modelo moderno</SelectItem>
-                    <SelectItem value="classic">Modelo clássico</SelectItem>
-                    <SelectItem value="minimal">Modelo minimalista</SelectItem>
-                    <SelectItem value="executive">Modelo executivo</SelectItem>
-                  </SelectContent>
-                </Select>
+                <Dialog open={isTemplateModalOpen} onOpenChange={setIsTemplateModalOpen}>
+                  <DialogTrigger asChild>
+                    <Button 
+                      variant="outline" 
+                      className={`${CONTROL_CLASS} w-full justify-start font-semibold text-slate-600 hover:bg-teal-50 hover:text-teal-700 hover:border-teal-200 transition-colors`}
+                    >
+                      <LayoutTemplate className="h-4 w-4 text-teal-600 mr-2" />
+                      Trocar modelo
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-[700px]">
+                    <DialogHeader>
+                      <DialogTitle className="text-xl font-bold text-[#0F2744]">Galeria de Templates</DialogTitle>
+                    </DialogHeader>
+                    <div className="grid grid-cols-2 gap-4 py-4 sm:grid-cols-4">
+                      {[
+                        { id: "modern", name: "Moderno", desc: "Design atual e dinâmico" },
+                        { id: "classic", name: "Clássico", desc: "Tradicional e seguro" },
+                        { id: "minimal", name: "Minimalista", desc: "Limpo e direto" },
+                        { id: "executive", name: "Executivo", desc: "Sóbrio e elegante" },
+                      ].map((tpl) => (
+                        <div
+                          key={tpl.id}
+                          onClick={() => {
+                            setResume((r) => ({ ...r, template: tpl.id as Resume["template"] }));
+                            setIsTemplateModalOpen(false);
+                          }}
+                          className={`cursor-pointer rounded-xl border-2 p-3 transition-all ${
+                            resume.template === tpl.id 
+                              ? "border-teal-500 bg-teal-50" 
+                              : "border-slate-100 hover:border-teal-200 hover:bg-slate-50"
+                          }`}
+                        >
+                          <div className={`mb-3 aspect-[1/1.4] w-full rounded border ${resume.template === tpl.id ? "border-teal-200" : "border-slate-200"} bg-white shadow-sm flex flex-col p-2 gap-1 overflow-hidden`}>
+                            <div className={`h-2 w-1/2 rounded ${tpl.id === "modern" ? "bg-teal-500" : tpl.id === "classic" ? "bg-slate-800" : tpl.id === "executive" ? "bg-blue-800" : "bg-slate-400"}`}></div>
+                            <div className="h-1 w-full rounded bg-slate-200 mt-1"></div>
+                            <div className="h-1 w-4/5 rounded bg-slate-200"></div>
+                            <div className="h-1 w-full rounded bg-slate-200 mt-1"></div>
+                            <div className="flex-1"></div>
+                            <div className="h-4 w-full bg-slate-50 rounded flex flex-col gap-[1px] p-0.5">
+                              <div className="h-[2px] w-full bg-slate-200"></div>
+                              <div className="h-[2px] w-5/6 bg-slate-200"></div>
+                            </div>
+                          </div>
+                          <div className="text-center font-bold text-[#0F2744] text-sm">{tpl.name}</div>
+                          <div className="text-center text-[10px] text-slate-500 mt-0.5">{tpl.desc}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </DialogContent>
+                </Dialog>
               </div>
             </div>
           </div>
@@ -509,10 +565,33 @@ export default function Builder() {
 
       <div className="flex flex-col lg:min-h-0 lg:flex-1 lg:overflow-hidden lg:flex-row">
         <aside
-          className={`w-full shrink-0 border-r border-white/80 bg-[#F7F6F3] p-3 sm:p-4 lg:min-h-0 lg:flex lg:w-[430px] ${
+          className={`relative w-full shrink-0 border-r border-white/80 bg-[#F7F6F3] p-3 sm:p-4 lg:min-h-0 lg:w-[var(--panel-width)] ${
             mobileView === "preview" ? "hidden" : "flex"
-          }`}
+          } ${viewMode === "fullscreen" ? "lg:hidden" : "lg:flex"}`}
+          style={{ "--panel-width": viewMode === "split" ? "50vw" : `${panelWidth}px` } as React.CSSProperties}
         >
+          {/* Resize Handle */}
+          <div
+            className="hidden lg:block absolute right-0 top-0 h-full w-2 cursor-col-resize hover:bg-teal-500/20 active:bg-teal-500/40 z-10 transition-colors"
+            onMouseDown={(e) => {
+              e.preventDefault();
+              const startX = e.clientX;
+              const startWidth = panelWidth;
+              
+              const onMouseMove = (moveEvent: MouseEvent) => {
+                const newWidth = Math.max(280, Math.min(480, startWidth + (moveEvent.clientX - startX)));
+                setPanelWidth(newWidth);
+              };
+              
+              const onMouseUp = () => {
+                document.removeEventListener("mousemove", onMouseMove);
+                document.removeEventListener("mouseup", onMouseUp);
+              };
+              
+              document.addEventListener("mousemove", onMouseMove);
+              document.addEventListener("mouseup", onMouseUp);
+            }}
+          />
           <DragDropContext onDragEnd={onDragEnd}>
             <Tabs
               value={activeStep}
@@ -663,11 +742,18 @@ export default function Builder() {
                     placeholder="joao.dev"
                   />
                 </Field>
-                <Field label="Resumo profissional" hint="Dica: escreva um resumo com 3 a 4 linhas.">
+                <Field label="Resumo profissional" hint="Dica: escreva na primeira pessoa e destaque seus principais resultados.">
                   <Textarea
                     value={pi.summary}
                     onChange={(e) => updateData({ personalInfo: { ...pi, summary: e.target.value } })}
-                    placeholder="Breve descrição sobre você, sua experiência e seus objetivos..."
+                    onFocus={() => {
+                      setSummaryPlaceholder((prev) => {
+                        const currentIndex = SUMMARY_PLACEHOLDERS.indexOf(prev);
+                        const nextIndex = (currentIndex + 1) % SUMMARY_PLACEHOLDERS.length;
+                        return SUMMARY_PLACEHOLDERS[nextIndex];
+                      });
+                    }}
+                    placeholder={summaryPlaceholder}
                     className={TEXTAREA_CLASS}
                     rows={5}
                   />
@@ -838,13 +924,39 @@ export default function Builder() {
             </div>
 
             <div className="border-t border-slate-100 bg-white p-4">
-              <div className="mb-3 rounded-2xl bg-[#0F2744] p-4 text-white">
-                <div className="mb-2 flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-teal-300">
-                  <Sparkles className="h-3.5 w-3.5" />
-                  Dica
+              {!isTipDismissed && (
+                <div className="relative mb-4 rounded-2xl bg-[#0F2744] p-4 text-white">
+                  <button 
+                    onClick={() => {
+                      setIsTipDismissed(true);
+                      localStorage.setItem("builderTipDismissed", "true");
+                    }}
+                    className="absolute right-3 top-3 rounded-full p-1 text-slate-400 hover:bg-slate-800 hover:text-white transition-colors"
+                    aria-label="Fechar dica"
+                    title="Fechar dica"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                  <div className="mb-2 flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-teal-300">
+                    <Sparkles className="h-3.5 w-3.5" />
+                    Dica
+                  </div>
+                  <p className="text-sm leading-relaxed text-slate-200">{currentStep.tip}</p>
                 </div>
-                <p className="text-sm leading-relaxed text-slate-200">{currentStep.tip}</p>
+              )}
+              
+              <div className="mb-4">
+                <div className="mb-2 text-xs font-bold uppercase tracking-wider text-slate-500">
+                  Etapa {currentStepIndex + 1} de {STEPS.length}
+                </div>
+                <div className="h-2 w-full overflow-hidden rounded-full bg-slate-100">
+                  <div
+                    className="h-full rounded-full bg-[#1D9E75] transition-all duration-200 ease-in-out"
+                    style={{ width: `${((currentStepIndex + 1) / STEPS.length) * 100}%` }}
+                  />
+                </div>
               </div>
+
               <Button
                 type="button"
                 onClick={goToNextStep}
@@ -862,7 +974,7 @@ export default function Builder() {
         <section
           className={`flex-col bg-[#eceff1]/70 lg:min-h-0 lg:flex-1 lg:overflow-hidden ${
             mobileView === "form" ? "hidden" : "flex"
-          } lg:flex`}
+          } lg:flex ${viewMode === "fullscreen" ? "fixed inset-0 z-50 bg-[#eceff1]" : ""}`}
         >
           <div className="flex shrink-0 flex-col gap-3 border-b border-white/70 bg-[#F7F6F3]/80 px-4 py-4 backdrop-blur md:flex-row md:items-center md:justify-between">
             <div>
@@ -870,6 +982,49 @@ export default function Builder() {
               <h2 className="text-lg font-extrabold text-[#0F2744]">Currículo em tempo real</h2>
             </div>
             <div className="flex flex-wrap items-center gap-2">
+              {viewMode === "fullscreen" && (
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setViewMode("default")}
+                  className="h-10 rounded-xl border-slate-200 bg-white px-3 font-semibold text-slate-600 shadow-sm hover:bg-red-50 hover:text-red-600 hover:border-red-200"
+                >
+                  <X className="h-4 w-4 mr-1" />
+                  Fechar
+                </Button>
+              )}
+              {viewMode !== "fullscreen" && (
+                <>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setViewMode(viewMode === "split" ? "default" : "split")}
+                    className={`h-10 rounded-xl border-slate-200 px-3 font-semibold shadow-sm transition-colors ${
+                      viewMode === "split" 
+                        ? "bg-teal-50 text-teal-700 border-teal-100" 
+                        : "bg-white text-slate-600 hover:bg-teal-50 hover:text-teal-700"
+                    }`}
+                    title="Dividir tela 50/50"
+                  >
+                    <Columns className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setViewMode("fullscreen")}
+                    className="h-10 rounded-xl border-slate-200 bg-white px-3 font-semibold text-slate-600 shadow-sm hover:bg-teal-50 hover:text-teal-700 transition-colors"
+                    title="Tela cheia"
+                  >
+                    <Maximize className="h-4 w-4 mr-1" />
+                    <span className="hidden sm:inline">Tela cheia</span>
+                  </Button>
+                </>
+              )}
+
+              <div className="h-6 w-px bg-slate-300 mx-1 hidden sm:block"></div>
+
               <span className="inline-flex h-10 items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 text-sm font-semibold text-slate-600 shadow-sm">
                 <Monitor className="h-4 w-4 text-teal-600" />
                 Zoom
