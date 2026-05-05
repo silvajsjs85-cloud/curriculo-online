@@ -93,6 +93,34 @@
     }
   }
 
+  /* Template preview container — responsive height */
+  .template-preview-container {
+    position: relative;
+    overflow: hidden;
+    max-width: 100%;
+    contain: layout style paint;
+    height: 200px;
+  }
+  @media (min-width: 640px) {
+    .template-preview-container {
+      height: 260px;
+    }
+  }
+  @media (min-width: 1024px) {
+    .template-preview-container {
+      height: 296px;
+    }
+  }
+
+  /* Templates carousel — hide scrollbar on all browsers */
+  .templates-carousel {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .templates-carousel::-webkit-scrollbar {
+    display: none;
+  }
+
   /* Teal CTA button — hover/focus/active that works even with inline style bg */
   .btn-cta {
     background-color: #0D9488 !important;

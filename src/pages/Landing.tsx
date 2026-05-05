@@ -113,15 +113,7 @@ function TemplateCard({
       )}
 
       {/* Real resume thumbnail — isolated container so the 794px resume never leaks to page layout */}
-      <div
-        style={{
-          position: "relative",
-          overflow: "hidden",
-          height: "296px",
-          maxWidth: "100%",
-          contain: "layout style paint",
-        }}
-      >
+      <div className="template-preview-container">
         <div
           style={{
             position: "absolute",
@@ -160,24 +152,26 @@ function TemplateCard({
 
       {/* Footer */}
       <div
-        className="px-4 py-3.5 flex items-center justify-between"
+        className="px-3 sm:px-4 py-3 sm:py-3.5 flex items-center justify-between gap-2"
         style={{ borderTop: "1px solid rgba(15,39,68,0.07)", backgroundColor: "#fafafa" }}
       >
-        <div className="leading-tight">
-          <span className="text-[15px] font-extrabold block" style={{ color: "#0F2744" }}>
+        <div className="leading-tight min-w-0">
+          <span className="text-[13px] sm:text-[15px] font-extrabold block truncate" style={{ color: "#0F2744" }}>
             {name}
           </span>
-          <span className="text-[11px] text-gray-400 font-medium">Template profissional</span>
+          <span className="text-[10px] sm:text-[11px] text-gray-400 font-medium">Template profissional</span>
         </div>
         <span
-          className="text-[12px] font-bold flex items-center gap-1.5 px-3 py-1.5 rounded-xl opacity-70 group-hover:opacity-100 transition-opacity duration-200"
+          className="text-[11px] sm:text-[12px] font-bold flex items-center gap-1 px-2.5 sm:px-3 py-1.5 rounded-xl opacity-70 group-hover:opacity-100 transition-opacity duration-200 shrink-0"
           style={{
             color: accent,
             backgroundColor: `${accent}15`,
             border: `1px solid ${accent}28`,
           }}
         >
-          Usar modelo <ArrowRight className="h-3 w-3" />
+          <span className="sm:hidden">Usar</span>
+          <span className="hidden sm:inline">Usar modelo</span>
+          <ArrowRight className="h-3 w-3" />
         </span>
       </div>
     </div>
@@ -522,9 +516,9 @@ export default function Landing() {
             </p>
           </div>
 
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-5">
+          <div className="templates-carousel flex sm:grid sm:grid-cols-2 lg:grid-cols-4 overflow-x-auto sm:overflow-visible snap-x snap-mandatory sm:snap-none gap-4 sm:gap-5 pb-3 sm:pb-0">
             {TEMPLATES.map((t) => (
-              <Link to="/dashboard" key={t.name}>
+              <Link to="/dashboard" key={t.name} className="snap-start flex-none w-[78vw] sm:w-auto h-full">
                 <TemplateCard {...t} />
               </Link>
             ))}
