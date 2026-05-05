@@ -3,7 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import {
   FileText, Download, Star, Eye, CheckCircle,
   ArrowRight, User, MousePointer, Sparkles, ChevronDown,
-  Users, TrendingUp, Shield,
+  Users, TrendingUp, Shield, Lock, UserCheck,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ResumePreview } from "@/components/ResumePreview";
@@ -233,26 +233,26 @@ const TESTIMONIALS = [
   {
     name: "Ana Carvalho",
     role: "Analista de Marketing",
-    text: "Fiz em 20 minutos e já fui chamada para entrevista dois dias depois. A qualidade do PDF impressionou até o próprio RH.",
+    text: "Usei para montar meu currículo em poucos minutos e consegui enviar para várias vagas no mesmo dia. Muito mais prático do que eu esperava.",
     initials: "AC",
     avatarColor: "#0D9488",
-    company: "Contratada na Magazord",
+    company: "São Paulo, SP",
   },
   {
     name: "Lucas Mendes",
-    role: "Desenvolvedor Júnior",
-    text: "Eu mandava currículo e não recebia nem resposta. Depois de usar esse template, tive 3 chamadas em uma semana.",
+    role: "Desenvolvedor",
+    text: "Gostei porque não precisei criar conta. Preenchi meus dados, escolhi o modelo e baixei em PDF. Simples e direto ao ponto.",
     initials: "LM",
     avatarColor: "#2563eb",
-    company: "Contratado na Stefanini",
+    company: "Porto Alegre, RS",
   },
   {
     name: "Fernanda Oliveira",
     role: "Assistente Administrativo",
-    text: "Usei o modelo clássico, mandei para 5 vagas e já tenho 2 entrevistas marcadas. Simples, rápido e sem precisar criar conta.",
+    text: "Os modelos são simples, bonitos e deixam o currículo com aparência mais profissional. Fiquei surpresa com a qualidade do resultado.",
     initials: "FO",
     avatarColor: "#7c3aed",
-    company: "Contratada na Unimed",
+    company: "Belo Horizonte, MG",
   },
 ];
 
@@ -351,14 +351,14 @@ export default function Landing() {
                 ))}
               </ul>
 
-              <div className="flex flex-col sm:flex-row gap-3 mb-8">
+              <div className="flex flex-col sm:flex-row gap-3 mb-4">
                 <Button
                   size="lg"
                   asChild
                   className="btn-cta text-base px-8 rounded-2xl font-bold"
                   style={{ height: "52px", boxShadow: "0 4px 16px rgba(13,148,136,0.35)" }}
                 >
-                  <Link to="/dashboard" className="flex items-center gap-2">
+                  <Link to="/criar" className="flex items-center gap-2">
                     Criar meu currículo grátis
                     <ArrowRight className="h-4 w-4" />
                   </Link>
@@ -373,6 +373,9 @@ export default function Landing() {
                   <a href="#modelos">Ver modelos</a>
                 </Button>
               </div>
+              <p className="text-xs text-gray-400 mb-6">
+                Sem cadastro obrigatório · Seus dados ficam no seu dispositivo
+              </p>
 
               {/* Stats */}
               <div className="flex flex-wrap gap-3">
@@ -512,6 +515,62 @@ export default function Landing() {
         </div>
       </section>
 
+      {/* ══ POR QUE USAR ════════════════════════════════════════════════════════ */}
+      <section className="py-16 px-4" style={{ backgroundColor: "#F7F6F3" }}>
+        <div className="container mx-auto max-w-5xl">
+          <div className="text-center mb-10">
+            <h2
+              className="text-2xl sm:text-3xl font-extrabold tracking-tight"
+              style={{ color: "#0F2744" }}
+            >
+              Por que usar o Currículo Fácil?
+            </h2>
+          </div>
+
+          <div className="grid sm:grid-cols-3 gap-5">
+            {[
+              {
+                icon: <UserCheck className="h-6 w-6 text-teal-600" />,
+                title: "Grátis e sem cadastro",
+                desc: "Crie seu currículo sem precisar criar conta.",
+              },
+              {
+                icon: <Download className="h-6 w-6 text-teal-600" />,
+                title: "PDF sem marca d'água",
+                desc: "Baixe um currículo limpo e pronto para enviar.",
+              },
+              {
+                icon: <FileText className="h-6 w-6 text-teal-600" />,
+                title: "Modelos profissionais",
+                desc: "Escolha layouts pensados para recrutadores e sistemas ATS.",
+              },
+            ].map((item) => (
+              <div
+                key={item.title}
+                className="bg-white rounded-2xl p-7 flex flex-col gap-4"
+                style={{
+                  boxShadow: "0 2px 16px rgba(15,39,68,0.06)",
+                  border: "1px solid rgba(15,39,68,0.06)",
+                }}
+              >
+                <div
+                  className="h-11 w-11 rounded-xl flex items-center justify-center"
+                  style={{ backgroundColor: "#0D948812" }}
+                >
+                  {item.icon}
+                </div>
+                <div>
+                  <h3 className="font-bold text-base mb-1" style={{ color: "#0F2744" }}>
+                    {item.title}
+                  </h3>
+                  <p className="text-gray-500 text-sm leading-relaxed">{item.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ══ TEMPLATES ═══════════════════════════════════════════════════════════ */}
       <section id="modelos" className="py-20 px-4" style={{ backgroundColor: "#F7F6F3" }}>
         <div className="container mx-auto max-w-6xl">
@@ -533,7 +592,7 @@ export default function Landing() {
 
           <div className="templates-carousel flex sm:grid sm:grid-cols-2 lg:grid-cols-4 overflow-x-auto sm:overflow-visible snap-x snap-mandatory sm:snap-none gap-4 sm:gap-5 pb-3 sm:pb-0">
             {TEMPLATES.map((t) => (
-              <Link to="/dashboard" key={t.name} className="snap-start flex-none w-[78vw] sm:w-auto h-full">
+              <Link to={`/criar?template=${t.layout}`} key={t.name} className="snap-start flex-none w-[78vw] sm:w-auto h-full">
                 <TemplateCard {...t} />
               </Link>
             ))}
@@ -545,7 +604,7 @@ export default function Landing() {
               variant="outline"
               className="rounded-2xl border-gray-200 text-gray-700 hover:bg-white hover:border-gray-300 px-8 h-11 font-medium transition-all duration-200"
             >
-              <Link to="/dashboard" className="flex items-center gap-2">
+              <Link to="/modelos" className="flex items-center gap-2">
                 Ver todos os modelos
                 <ArrowRight className="h-4 w-4" />
               </Link>
@@ -661,7 +720,7 @@ export default function Landing() {
                 className="btn-cta rounded-2xl font-bold"
                 style={{ height: "52px", padding: "0 2rem", boxShadow: "0 4px 20px rgba(13,148,136,0.4)" }}
               >
-                <Link to="/dashboard" className="flex items-center gap-2">
+                <Link to="/criar" className="flex items-center gap-2">
                   Criar meu currículo grátis
                   <ArrowRight className="h-4 w-4" />
                 </Link>
@@ -746,7 +805,7 @@ export default function Landing() {
               Resultados que falam por si
             </h2>
             <p className="text-gray-600 max-w-sm mx-auto leading-relaxed">
-              Veja o que dizem quem já criou o currículo e conseguiu a vaga.
+              Veja o que dizem quem já usou o Currículo Fácil.
             </p>
           </div>
 
@@ -809,6 +868,56 @@ export default function Landing() {
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ══ TRUST / DADOS ═══════════════════════════════════════════════════════ */}
+      <section className="py-12 px-4" style={{ backgroundColor: "#F7F6F3" }}>
+        <div className="container mx-auto max-w-3xl">
+          <div
+            className="rounded-2xl p-7 sm:p-9 flex flex-col sm:flex-row gap-6 items-start"
+            style={{
+              background: "linear-gradient(135deg, #0F274408 0%, #0D948808 100%)",
+              border: "1px solid rgba(13,148,136,0.14)",
+            }}
+          >
+            <div
+              className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl"
+              style={{ backgroundColor: "#0D948818", border: "1px solid rgba(13,148,136,0.2)" }}
+            >
+              <Lock className="h-6 w-6 text-teal-600" />
+            </div>
+            <div className="flex-1">
+              <h2
+                className="text-xl sm:text-2xl font-extrabold tracking-tight mb-2"
+                style={{ color: "#0F2744" }}
+              >
+                Seus dados ficam no seu dispositivo
+              </h2>
+              <p className="text-gray-600 text-[15px] leading-relaxed mb-5">
+                O Currículo Fácil foi criado para ser simples e direto. Você monta seu
+                currículo sem cadastro obrigatório, visualiza em tempo real e baixa em
+                PDF. As informações preenchidas são usadas apenas para gerar o currículo.
+              </p>
+              <ul className="space-y-2.5">
+                {[
+                  "Sem cadastro obrigatório",
+                  "PDF sem marca d'água",
+                  "Dados usados apenas para montar o currículo",
+                ].map((item) => (
+                  <li key={item} className="flex items-center gap-2.5 text-sm text-gray-700">
+                    <span
+                      className="flex-shrink-0 h-5 w-5 rounded-full flex items-center justify-center"
+                      style={{ backgroundColor: "#0D948820" }}
+                    >
+                      <CheckCircle className="h-3 w-3 text-teal-600" />
+                    </span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
       </section>
@@ -898,18 +1007,18 @@ export default function Landing() {
               className="btn-cta rounded-2xl font-bold"
               style={{ height: "52px", padding: "0 2rem", boxShadow: "0 4px 16px rgba(13,148,136,0.3)" }}
             >
-              <Link to="/dashboard" className="flex items-center gap-2">
-                Criar meu currículo agora
+              <Link to="/criar" className="flex items-center gap-2">
+                Criar meu currículo grátis
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </Button>
-            <p className="mt-3 text-sm text-gray-500">Grátis · Sem cadastro · Seus dados ficam só no seu dispositivo</p>
+            <p className="mt-3 text-sm text-gray-500">Grátis · Sem cadastro · Seus dados ficam no seu dispositivo</p>
           </div>
         </div>
       </section>
 
       {/* ══ FOOTER ══════════════════════════════════════════════════════════════ */}
-      <footer id="contato" style={{ backgroundColor: "#0a1828" }}>
+      <footer style={{ backgroundColor: "#0a1828" }}>
         <div className="h-px" style={{ background: "linear-gradient(90deg, transparent, #0D9488, transparent)" }} />
 
         <div className="container mx-auto max-w-6xl px-6 py-14">
@@ -937,11 +1046,11 @@ export default function Landing() {
               <h4 className="text-white font-semibold text-sm mb-4 uppercase tracking-wider">Produto</h4>
               <ul className="space-y-2.5">
                 {[
-                  { label: "Modelos de currículo", to: "/#modelos" },
+                  { label: "Modelos de currículo", to: "/modelos" },
                   { label: "Como funciona", to: "/#como-funciona" },
                   { label: "Depoimentos", to: "/#depoimentos" },
                   { label: "Dicas de carreira", to: "/#dicas" },
-                  { label: "Criar currículo", to: "/dashboard" },
+                  { label: "Criar currículo", to: "/criar" },
                 ].map((l) => (
                   <li key={l.label}>
                     <Link to={l.to} className="text-sm text-gray-400 hover:text-white transition-colors duration-150">
@@ -957,18 +1066,22 @@ export default function Landing() {
               <h4 className="text-white font-semibold text-sm mb-4 uppercase tracking-wider">Legal e Suporte</h4>
               <ul className="space-y-2.5 break-words">
                 <li>
-                  <span className="text-sm text-gray-400">Termos de Uso</span>
+                  <Link to="/termos-de-uso" className="text-sm text-gray-400 hover:text-white transition-colors duration-150">
+                    Termos de Uso
+                  </Link>
                 </li>
                 <li>
-                  <span className="text-sm text-gray-400">Política de Privacidade</span>
+                  <Link to="/politica-de-privacidade" className="text-sm text-gray-400 hover:text-white transition-colors duration-150">
+                    Política de Privacidade
+                  </Link>
                 </li>
                 <li>
-                  <Link to="/#contato" className="text-sm text-gray-400 hover:text-white transition-colors duration-150">
+                  <Link to="/contato" className="text-sm text-gray-400 hover:text-white transition-colors duration-150">
                     Contato
                   </Link>
                 </li>
                 <li>
-                  <Link to="/#dicas" className="text-sm text-gray-400 hover:text-white transition-colors duration-150">
+                  <Link to="/contato" className="text-sm text-gray-400 hover:text-white transition-colors duration-150">
                     Ajuda
                   </Link>
                 </li>
@@ -995,7 +1108,7 @@ export default function Landing() {
                 </li>
                 <li>
                   <a
-                    href="https://www.instagram.com/joseap096/"
+                    href="https://instagram.com/joseap096"
                     target="_blank"
                     rel="noreferrer"
                     className="text-sm text-gray-400 hover:text-white transition-colors duration-150"

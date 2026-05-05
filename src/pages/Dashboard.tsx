@@ -16,8 +16,6 @@ import {
   Trash2,
   Wrench,
 } from "lucide-react";
-import html2canvas from "html2canvas";
-import jsPDF from "jspdf";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -309,6 +307,11 @@ export default function Dashboard() {
     const root = createRoot(container);
 
     try {
+      const [{ default: html2canvas }, { jsPDF }] = await Promise.all([
+        import("html2canvas"),
+        import("jspdf"),
+      ]);
+
       flushSync(() => {
         root.render(
           <ResumePreview

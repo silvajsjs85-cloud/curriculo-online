@@ -4,10 +4,11 @@ import { FileText, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const NAV_LINKS = [
-  { label: "Modelos", id: "modelos" },
-  { label: "Como funciona", id: "como-funciona" },
-  { label: "Depoimentos", id: "depoimentos" },
-  { label: "Dicas", id: "dicas" },
+  { label: "Modelos", id: "modelos", href: "/modelos" },
+  { label: "Como funciona", id: "como-funciona", href: null },
+  { label: "Depoimentos", id: "depoimentos", href: null },
+  { label: "Dicas", id: "dicas", href: null },
+  { label: "Contato", id: null, href: "/contato" },
 ];
 
 export function Navbar() {
@@ -17,22 +18,25 @@ export function Navbar() {
   const isHome = location.pathname === "/";
   const isDashboard = location.pathname === "/dashboard";
 
-  const getSectionHref = (sectionId: string) => (
-    isHome ? `#${sectionId}` : `/#${sectionId}`
-  );
+  const getSectionHref = (link: (typeof NAV_LINKS)[0]) => {
+    if (link.href) return link.href;
+    return isHome ? `#${link.id}` : `/#${link.id}`;
+  };
 
-  const handleSectionNavigation = (
+  const handleNavClick = (
     event: MouseEvent<HTMLAnchorElement>,
-    sectionId: string,
+    link: (typeof NAV_LINKS)[0],
   ) => {
     setOpen(false);
+
+    if (link.href) return;
 
     if (isHome) return;
 
     event.preventDefault();
     navigate({
       pathname: "/",
-      hash: `#${sectionId}`,
+      hash: `#${link.id}`,
     });
   };
 
@@ -55,12 +59,12 @@ export function Navbar() {
         </Link>
 
         {/* Desktop nav */}
-        <nav className="hidden md:flex items-center gap-7">
+        <nav className="hidden md:flex items-center gap-6">
           {NAV_LINKS.map((l) => (
             <a
               key={l.label}
-              href={getSectionHref(l.id)}
-              onClick={(event) => handleSectionNavigation(event, l.id)}
+              href={getSectionHref(l)}
+              onClick={(event) => handleNavClick(event, l)}
               className="text-sm text-gray-500 hover:text-[#0F2744] transition-colors font-medium"
             >
               {l.label}
@@ -89,7 +93,7 @@ export function Navbar() {
             }
             style={isDashboard ? undefined : { backgroundColor: "#0D9488" }}
           >
-            <Link to="/dashboard">Criar currículo</Link>
+            <Link to="/criar">Criar currículo</Link>
           </Button>
         </div>
 
@@ -115,8 +119,8 @@ export function Navbar() {
           {NAV_LINKS.map((l) => (
             <a
               key={l.label}
-              href={getSectionHref(l.id)}
-              onClick={(event) => handleSectionNavigation(event, l.id)}
+              href={getSectionHref(l)}
+              onClick={(event) => handleNavClick(event, l)}
               className="block text-sm text-gray-600 hover:text-[#0F2744] py-2.5 font-medium border-b border-gray-100 last:border-0"
             >
               {l.label}
@@ -136,7 +140,7 @@ export function Navbar() {
               }
               style={isDashboard ? undefined : { backgroundColor: "#0D9488" }}
             >
-              <Link to="/dashboard">Criar currículo</Link>
+              <Link to="/criar">Criar currículo</Link>
             </Button>
           </div>
         </div>

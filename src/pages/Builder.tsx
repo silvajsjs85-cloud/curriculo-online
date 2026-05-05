@@ -28,8 +28,6 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { toast } from "sonner";
-import jsPDF from "jspdf";
-import html2canvas from "html2canvas";
 import { Button } from "@/components/ui/button";
 import { Input, type InputProps } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -187,6 +185,11 @@ export default function Builder() {
   const handleExportPDF = async () => {
     setExporting(true);
     try {
+      const [{ default: html2canvas }, { jsPDF }] = await Promise.all([
+        import("html2canvas"),
+        import("jspdf"),
+      ]);
+
       const element = document.getElementById("resume-preview-export");
       if (!element) throw new Error("Preview do currículo não encontrado");
       const canvas = await html2canvas(element, { scale: 2, useCORS: true });

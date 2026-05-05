@@ -21,12 +21,12 @@ export function saveResume(resume: Resume): void {
   localStorage.setItem(KEY, JSON.stringify(resumes));
 }
 
-export function createResume(): Resume {
+export function createResume(template: Resume["template"] = "modern"): Resume {
   const resume: Resume = {
     id: crypto.randomUUID(),
     user_id: "local",
     title: "Novo Currículo",
-    template: "modern",
+    template,
     data: defaultResumeData,
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),
