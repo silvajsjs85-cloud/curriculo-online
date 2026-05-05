@@ -11,6 +11,7 @@ const CreateResume = lazy(() => import("@/pages/CreateResume"));
 const Contact = lazy(() => import("@/pages/Contact"));
 const Models = lazy(() => import("@/pages/Models"));
 const ModelosProfissao = lazy(() => import("@/pages/ModelosProfissao"));
+const PublicResume = lazy(() => import("@/pages/PublicResume"));
 const TermsPage = lazy(() =>
   import("@/pages/Legal").then((m) => ({ default: m.TermsPage }))
 );
@@ -51,6 +52,7 @@ export default function App() {
             <Route path="/dashboard" element={<WithNavbar><Dashboard /></WithNavbar>} />
             <Route path="/modelos" element={<WithNavbar><Models /></WithNavbar>} />
             <Route path="/modelos/:slug" element={<WithNavbar><ModelosProfissao /></WithNavbar>} />
+            <Route path="/p/:slug" element={<Suspense fallback={<PageLoader />}><PublicResume /></Suspense>} />
             <Route path="/contato" element={<WithNavbar><Contact /></WithNavbar>} />
             <Route path="/termos-de-uso" element={<WithNavbar><TermsPage /></WithNavbar>} />
             <Route path="/politica-de-privacidade" element={<WithNavbar><PrivacyPage /></WithNavbar>} />

@@ -13,6 +13,8 @@ import {
   Languages,
   LayoutTemplate,
   Linkedin,
+  Link as LinkIcon,
+  Share2,
   Mail,
   MapPin,
   Monitor,
@@ -36,6 +38,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ResumePreview } from "@/components/ResumePreview";
 import { getResume, saveResume } from "@/lib/storage";
+import { publishResume } from "@/lib/public-resume";
 import type { Resume, ResumeData, Experience, Education, Skill, Language } from "@/types/resume";
 import { defaultResumeData } from "@/types/resume";
 
@@ -146,6 +149,7 @@ export default function Builder() {
   const [previewZoom, setPreviewZoom] = useState<PreviewZoom>("fit");
   const [autoSaved, setAutoSaved] = useState(false);
   const [exporting, setExporting] = useState(false);
+  const [publishing, setPublishing] = useState(false);
   const photoInputRef = useRef<HTMLInputElement>(null);
   const autoSaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -202,6 +206,31 @@ export default function Builder() {
       toast.error("Erro ao exportar PDF");
     } finally {
       setExporting(false);
+    }
+  };
+
+  const handlePublish = async () => {
+    setPublishing(true);
+    
+    // Create a deterministic or random slug for this user/resume
+    // For simplicity, we use the local resume ID or a short hash
+    const slug = resume.id.substring(0, 12);
+
+    try {
+      const result = await publishResume(slug, resume.data, resume.template, resume.user_id);
+      if (result.success && result.url) {
+        const fullUrl = `${window.location.origin}${result.url}`;
+        await navigator.clipboard.writeText(fullUrl);
+        toast.success("Link copiado para a área de transferência!", {
+          description: "Envie para recrutadores ou compartilhe no LinkedIn.",
+        });
+      } else {
+        throw new Error(result.error);
+      }
+    } catch (err) {
+      toast.error("Erro ao gerar link público. Verifique se o banco Supabase está online.");
+    } finally {
+      setPublishing(false);
     }
   };
 
@@ -366,6 +395,18 @@ export default function Builder() {
               <Save className="h-4 w-4" />
               Salvar
             </Button>
+            
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handlePublish}
+              disabled={publishing}
+              className="h-10 rounded-xl border-slate-200 bg-white px-4 font-semibold text-[#0F2744] shadow-sm hover:border-teal-200 hover:bg-teal-50 hover:text-teal-700"
+            >
+              <Share2 className="h-4 w-4" />
+              {publishing ? "Gerando..." : "Compartilhar Link"}
+            </Button>
+
             <Button
               size="sm"
               onClick={handleExportPDF}
