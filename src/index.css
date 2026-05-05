@@ -68,6 +68,13 @@
     overflow-y: auto;
     width: 100%;
   }
+  #modelos,
+  #como-funciona,
+  #depoimentos,
+  #dicas,
+  #contato {
+    scroll-margin-top: 96px;
+  }
   body {
     @apply bg-background text-foreground;
     overflow-x: hidden;

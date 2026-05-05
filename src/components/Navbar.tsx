@@ -1,19 +1,40 @@
-import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useState, type MouseEvent } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FileText, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const NAV_LINKS = [
-  { label: "Modelos", href: "#modelos" },
-  { label: "Como funciona", href: "#como-funciona" },
-  { label: "Depoimentos", href: "#depoimentos" },
-  { label: "Dicas", href: "#dicas" },
+  { label: "Modelos", id: "modelos" },
+  { label: "Como funciona", id: "como-funciona" },
+  { label: "Depoimentos", id: "depoimentos" },
+  { label: "Dicas", id: "dicas" },
 ];
 
 export function Navbar() {
   const [open, setOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+  const isHome = location.pathname === "/";
   const isDashboard = location.pathname === "/dashboard";
+
+  const getSectionHref = (sectionId: string) => (
+    isHome ? `#${sectionId}` : `/#${sectionId}`
+  );
+
+  const handleSectionNavigation = (
+    event: MouseEvent<HTMLAnchorElement>,
+    sectionId: string,
+  ) => {
+    setOpen(false);
+
+    if (isHome) return;
+
+    event.preventDefault();
+    navigate({
+      pathname: "/",
+      hash: `#${sectionId}`,
+    });
+  };
 
   return (
     <header
@@ -38,7 +59,8 @@ export function Navbar() {
           {NAV_LINKS.map((l) => (
             <a
               key={l.label}
-              href={l.href}
+              href={getSectionHref(l.id)}
+              onClick={(event) => handleSectionNavigation(event, l.id)}
               className="text-sm text-gray-500 hover:text-[#0F2744] transition-colors font-medium"
             >
               {l.label}
@@ -93,8 +115,8 @@ export function Navbar() {
           {NAV_LINKS.map((l) => (
             <a
               key={l.label}
-              href={l.href}
-              onClick={() => setOpen(false)}
+              href={getSectionHref(l.id)}
+              onClick={(event) => handleSectionNavigation(event, l.id)}
               className="block text-sm text-gray-600 hover:text-[#0F2744] py-2.5 font-medium border-b border-gray-100 last:border-0"
             >
               {l.label}

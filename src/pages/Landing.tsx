@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import {
   FileText, Download, Star, Eye, CheckCircle,
   ArrowRight, User, MousePointer, Sparkles, ChevronDown,
@@ -280,6 +280,21 @@ const COMPANIES = ["Nubank", "iFood", "Mercado Livre", "Ambev", "Gympass", "Totv
 // ─── Page ─────────────────────────────────────────────────────────────────────
 export default function Landing() {
   const [activeTip, setActiveTip] = useState<number | null>(null);
+  const location = useLocation();
+
+  useEffect(() => {
+    if (!location.hash) return;
+
+    const sectionId = decodeURIComponent(location.hash.slice(1));
+    const frame = window.requestAnimationFrame(() => {
+      document.getElementById(sectionId)?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    });
+
+    return () => window.cancelAnimationFrame(frame);
+  }, [location.hash]);
 
   return (
     <div className="flex flex-col min-h-screen" style={{ backgroundColor: "#F7F6F3" }}>
@@ -894,14 +909,14 @@ export default function Landing() {
       </section>
 
       {/* ══ FOOTER ══════════════════════════════════════════════════════════════ */}
-      <footer style={{ backgroundColor: "#0a1828" }}>
+      <footer id="contato" style={{ backgroundColor: "#0a1828" }}>
         <div className="h-px" style={{ background: "linear-gradient(90deg, transparent, #0D9488, transparent)" }} />
 
         <div className="container mx-auto max-w-6xl px-6 py-14">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-10">
+          <div className="grid grid-cols-1 gap-10 md:grid-cols-3 md:gap-12 mb-10">
 
             {/* Brand */}
-            <div>
+            <div className="min-w-0">
               <Link to="/" className="inline-flex items-center gap-2.5 font-extrabold text-white text-lg mb-3">
                 <div className="h-9 w-9 rounded-xl flex items-center justify-center flex-shrink-0"
                   style={{ backgroundColor: "#0D9488" }}>
@@ -910,47 +925,84 @@ export default function Landing() {
                 Currículo Fácil
               </Link>
               <p className="text-gray-400 text-sm leading-relaxed max-w-xs">
-                A ferramenta mais direta para criar um currículo profissional
-                e conquistar a próxima oportunidade — sem complicação.
+                A ferramenta simples e gratuita para criar um currículo profissional em poucos minutos.
+              </p>
+              <p className="mt-4 text-sm font-semibold text-teal-300">
+                curriculos.fun
               </p>
             </div>
 
             {/* Product */}
-            <div>
+            <div className="min-w-0">
               <h4 className="text-white font-semibold text-sm mb-4 uppercase tracking-wider">Produto</h4>
               <ul className="space-y-2.5">
                 {[
-                  { label: "Modelos de currículo", href: "#modelos" },
-                  { label: "Como funciona", href: "#como-funciona" },
-                  { label: "Depoimentos", href: "#depoimentos" },
-                  { label: "Dicas de carreira", href: "#dicas" },
-                  { label: "Criar currículo", href: "/dashboard" },
+                  { label: "Modelos de currículo", to: "/#modelos" },
+                  { label: "Como funciona", to: "/#como-funciona" },
+                  { label: "Depoimentos", to: "/#depoimentos" },
+                  { label: "Dicas de carreira", to: "/#dicas" },
+                  { label: "Criar currículo", to: "/dashboard" },
                 ].map((l) => (
                   <li key={l.label}>
-                    <a href={l.href} className="text-sm text-gray-400 hover:text-white transition-colors duration-150">
+                    <Link to={l.to} className="text-sm text-gray-400 hover:text-white transition-colors duration-150">
                       {l.label}
-                    </a>
+                    </Link>
                   </li>
                 ))}
               </ul>
             </div>
 
-            {/* Legal */}
-            <div>
-              <h4 className="text-white font-semibold text-sm mb-4 uppercase tracking-wider">Legal</h4>
-              <ul className="space-y-2.5">
-                {[
-                  { label: "Termos de Uso", href: "#" },
-                  { label: "Política de Privacidade", href: "#" },
-                  { label: "Contato", href: "#" },
-                  { label: "Ajuda", href: "#" },
-                ].map((l) => (
-                  <li key={l.label}>
-                    <a href={l.href} className="text-sm text-gray-400 hover:text-white transition-colors duration-150">
-                      {l.label}
-                    </a>
-                  </li>
-                ))}
+            {/* Legal and support */}
+            <div className="min-w-0">
+              <h4 className="text-white font-semibold text-sm mb-4 uppercase tracking-wider">Legal e Suporte</h4>
+              <ul className="space-y-2.5 break-words">
+                <li>
+                  <span className="text-sm text-gray-400">Termos de Uso</span>
+                </li>
+                <li>
+                  <span className="text-sm text-gray-400">Política de Privacidade</span>
+                </li>
+                <li>
+                  <Link to="/#contato" className="text-sm text-gray-400 hover:text-white transition-colors duration-150">
+                    Contato
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/#dicas" className="text-sm text-gray-400 hover:text-white transition-colors duration-150">
+                    Ajuda
+                  </Link>
+                </li>
+                <li className="pt-2 text-sm text-gray-400">
+                  Responsável: Jose Aparecido da Silva
+                </li>
+                <li>
+                  <a
+                    href="mailto:silva.js.js1000@gmail.com"
+                    className="text-sm text-gray-400 hover:text-white transition-colors duration-150"
+                  >
+                    E-mail: silva.js.js1000@gmail.com
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://wa.me/5569981336994"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-sm text-gray-400 hover:text-white transition-colors duration-150"
+                  >
+                    WhatsApp: (69) 98133-6994
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://www.instagram.com/joseap096/"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-sm text-gray-400 hover:text-white transition-colors duration-150"
+                  >
+                    Instagram: @joseap096
+                  </a>
+                </li>
               </ul>
             </div>
 
@@ -964,7 +1016,7 @@ export default function Landing() {
               © 2026 Currículo Fácil · curriculos.fun · Todos os direitos reservados
             </p>
             <p className="text-xs text-gray-500">
-              Feito com dedicação para quem quer crescer na carreira 🇧🇷
+              Feito para ajudar pessoas a criarem currículos melhores e conquistarem novas oportunidades.
             </p>
           </div>
         </div>
