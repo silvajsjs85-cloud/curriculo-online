@@ -296,7 +296,7 @@ export default function Builder() {
   };
 
   return (
-    <div className="flex h-screen flex-col overflow-hidden bg-[#F7F6F3] text-[#0F2744]">
+    <div className="flex flex-col bg-[#F7F6F3] text-[#0F2744] lg:h-screen lg:overflow-hidden">
       <header className="shrink-0 border-b border-white/80 bg-[#F7F6F3]/95 px-3 py-3 shadow-sm backdrop-blur sm:px-5">
         <div className="flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between">
           <div className="flex min-w-0 flex-1 flex-col gap-3 sm:flex-row sm:items-center">
@@ -406,16 +406,16 @@ export default function Builder() {
         </div>
       </header>
 
-      <div className="flex min-h-0 flex-1 flex-col overflow-hidden lg:flex-row">
+      <div className="flex flex-col lg:min-h-0 lg:flex-1 lg:overflow-hidden lg:flex-row">
         <aside
-          className={`min-h-0 w-full shrink-0 border-r border-white/80 bg-[#F7F6F3] p-3 sm:p-4 lg:flex lg:w-[430px] ${
+          className={`w-full shrink-0 border-r border-white/80 bg-[#F7F6F3] p-3 sm:p-4 lg:min-h-0 lg:flex lg:w-[430px] ${
             mobileView === "preview" ? "hidden" : "flex"
           }`}
         >
           <Tabs
             value={activeStep}
             onValueChange={(value) => setActiveStep(value as StepId)}
-            className="flex min-h-0 w-full flex-col overflow-hidden rounded-3xl border border-white/80 bg-white shadow-[0_18px_55px_rgba(15,39,68,0.08)]"
+            className="flex w-full flex-col rounded-3xl border border-white/80 bg-white shadow-[0_18px_55px_rgba(15,39,68,0.08)] lg:min-h-0 lg:overflow-hidden"
           >
             <div className="border-b border-slate-100 p-3">
               <TabsList className="grid h-auto w-full grid-cols-5 gap-1 rounded-2xl bg-slate-50 p-1">
@@ -435,7 +435,7 @@ export default function Builder() {
               </TabsList>
             </div>
 
-            <div className="min-h-0 flex-1 overflow-y-auto px-4 py-5 sm:px-5">
+            <div className="px-4 py-5 sm:px-5 lg:min-h-0 lg:flex-1 lg:overflow-y-auto">
               <SectionHeader step={currentStep} index={currentStepIndex} />
 
               <TabsContent value="pessoal" className="mt-5 space-y-4">
@@ -692,7 +692,7 @@ export default function Builder() {
         </aside>
 
         <section
-          className={`min-h-0 flex-1 flex-col overflow-hidden bg-[#eceff1]/70 ${
+          className={`flex-col bg-[#eceff1]/70 lg:min-h-0 lg:flex-1 lg:overflow-hidden ${
             mobileView === "form" ? "hidden" : "flex"
           } lg:flex`}
         >
@@ -729,7 +729,7 @@ export default function Builder() {
             </div>
           </div>
 
-          <div className="min-h-0 flex-1 overflow-auto px-4 py-8 sm:px-8">
+          <div className="overflow-auto px-4 py-8 sm:px-8 lg:min-h-0 lg:flex-1">
             <div className="mx-auto flex min-h-full w-full justify-center">
               <div
                 className="origin-top transition-transform duration-200"
