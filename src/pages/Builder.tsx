@@ -4,6 +4,7 @@ import {
   ArrowLeft,
   Briefcase,
   Camera,
+  Check,
   CheckCircle,
   ChevronRight,
   Download,
@@ -124,22 +125,33 @@ const PREVIEW_SCALE: Record<PreviewZoom, number> = {
   "100": 1,
 };
 
+const TEMPLATE_CATEGORIES = [
+  { id: "todos", label: "Todos" },
+  { id: "profissionais", label: "Profissionais" },
+  { id: "simples", label: "Simples" },
+  { id: "criativos", label: "Criativos" },
+  { id: "primeiro-emprego", label: "Primeiro emprego" },
+];
+
 const BUILDER_TEMPLATE_OPTIONS: Array<{
   id: ResumeTemplate;
   name: string;
   desc: string;
   accentClass: string;
+  accentColor: string;
+  category: string[];
+  layout: "modern" | "classic" | "sidebar" | "compact";
 }> = [
-  { id: "modern", name: "Moderno", desc: "Design atual e dinâmico", accentClass: "bg-teal-500" },
-  { id: "classic", name: "Clássico", desc: "Tradicional e seguro", accentClass: "bg-slate-800" },
-  { id: "minimal", name: "Minimalista", desc: "Limpo e direto", accentClass: "bg-slate-400" },
-  { id: "executive", name: "Executivo", desc: "Sóbrio e elegante", accentClass: "bg-blue-800" },
-  { id: "creative", name: "Criativo", desc: "Visual com personalidade", accentClass: "bg-violet-500" },
-  { id: "technical", name: "Técnico", desc: "Focado em tecnologia", accentClass: "bg-sky-500" },
-  { id: "first_job", name: "Primeiro Emprego", desc: "Ideal para começar", accentClass: "bg-emerald-500" },
-  { id: "international", name: "Internacional", desc: "Para vagas globais", accentClass: "bg-blue-600" },
-  { id: "institutional", name: "Institucional", desc: "Formal e oficial", accentClass: "bg-green-700" },
-  { id: "compact", name: "Compacto", desc: "Mais informação em 1 página", accentClass: "bg-neutral-900" },
+  { id: "modern", name: "Moderno", desc: "Design atual e dinâmico", accentClass: "bg-teal-500", accentColor: "#14b8a6", category: ["profissionais", "criativos"], layout: "modern" },
+  { id: "classic", name: "Clássico", desc: "Tradicional e seguro", accentClass: "bg-slate-800", accentColor: "#1e293b", category: ["profissionais", "simples"], layout: "classic" },
+  { id: "minimal", name: "Minimalista", desc: "Limpo e direto", accentClass: "bg-slate-400", accentColor: "#94a3b8", category: ["simples"], layout: "modern" },
+  { id: "executive", name: "Executivo", desc: "Sóbrio e elegante", accentClass: "bg-blue-800", accentColor: "#1e40af", category: ["profissionais"], layout: "sidebar" },
+  { id: "creative", name: "Criativo", desc: "Visual com personalidade", accentClass: "bg-violet-500", accentColor: "#8b5cf6", category: ["criativos"], layout: "modern" },
+  { id: "technical", name: "Técnico", desc: "Focado em tecnologia", accentClass: "bg-sky-500", accentColor: "#0ea5e9", category: ["profissionais", "primeiro-emprego"], layout: "classic" },
+  { id: "first_job", name: "Primeiro Emprego", desc: "Ideal para começar", accentClass: "bg-emerald-500", accentColor: "#10b981", category: ["primeiro-emprego", "simples"], layout: "modern" },
+  { id: "international", name: "Internacional", desc: "Para vagas globais", accentClass: "bg-blue-600", accentColor: "#2563eb", category: ["profissionais"], layout: "classic" },
+  { id: "institutional", name: "Institucional", desc: "Formal e oficial", accentClass: "bg-green-700", accentColor: "#15803d", category: ["profissionais", "simples"], layout: "sidebar" },
+  { id: "compact", name: "Compacto", desc: "Mais informação em 1 página", accentClass: "bg-neutral-900", accentColor: "#171717", category: ["simples"], layout: "compact" },
 ];
 
 function getPdfFileName(title: string) {
@@ -178,6 +190,7 @@ export default function Builder() {
   const [publishing, setPublishing] = useState(false);
   const [isImporting, setIsImporting] = useState(false);
   const [isTemplateModalOpen, setIsTemplateModalOpen] = useState(false);
+  const [templateFilter, setTemplateFilter] = useState("todos");
   const [isTipDismissed, setIsTipDismissed] = useState(() => localStorage.getItem("builderTipDismissed") === "true");
   
   const SUMMARY_PLACEHOLDERS = [
@@ -416,6 +429,9 @@ export default function Builder() {
   const previewScale = PREVIEW_SCALE[previewZoom];
   const missingName = !pi.name.trim();
   const missingEmail = !pi.email.trim();
+  const filteredTemplates = BUILDER_TEMPLATE_OPTIONS.filter(
+    (tpl) => templateFilter === "todos" || tpl.category.includes(templateFilter)
+  );
 
   const goToNextStep = () => {
     const nextStep = STEPS[currentStepIndex + 1];
@@ -459,49 +475,120 @@ export default function Builder() {
                 <Label className="mb-1.5 block text-[11px] font-bold uppercase tracking-[0.14em] text-slate-500">
                   Modelo
                 </Label>
-                <Dialog open={isTemplateModalOpen} onOpenChange={setIsTemplateModalOpen}>
+                <Dialog
+                  open={isTemplateModalOpen}
+                  onOpenChange={(open) => {
+                    setIsTemplateModalOpen(open);
+                    if (!open) setTemplateFilter("todos");
+                  }}
+                >
                   <DialogTrigger asChild>
-                    <Button 
-                      variant="outline" 
+                    <Button
+                      variant="outline"
                       className={`${CONTROL_CLASS} w-full justify-start font-semibold text-slate-600 hover:bg-teal-50 hover:text-teal-700 hover:border-teal-200 transition-colors`}
                     >
                       <LayoutTemplate className="h-4 w-4 text-teal-600 mr-2" />
                       Trocar modelo
                     </Button>
                   </DialogTrigger>
-                  <DialogContent className="max-h-[88vh] overflow-y-auto sm:max-w-[900px]">
-                    <DialogHeader>
-                      <DialogTitle className="text-xl font-bold text-[#0F2744]">Galeria de Templates</DialogTitle>
-                    </DialogHeader>
-                    <div className="grid grid-cols-2 gap-3 py-4 sm:grid-cols-3 lg:grid-cols-5">
-                      {BUILDER_TEMPLATE_OPTIONS.map((tpl) => (
-                        <div
-                          key={tpl.id}
-                          onClick={() => {
-                            setResume((r) => ({ ...r, template: tpl.id }));
-                            setIsTemplateModalOpen(false);
-                          }}
-                          className={`cursor-pointer rounded-xl border-2 p-3 transition-all ${
-                            resume.template === tpl.id 
-                              ? "border-teal-500 bg-teal-50" 
-                              : "border-slate-100 hover:border-teal-200 hover:bg-slate-50"
-                          }`}
-                        >
-                          <div className={`mb-3 aspect-[1/1.4] w-full rounded border ${resume.template === tpl.id ? "border-teal-200" : "border-slate-200"} bg-white shadow-sm flex flex-col p-2 gap-1 overflow-hidden`}>
-                            <div className={`h-2 w-1/2 rounded ${tpl.accentClass}`}></div>
-                            <div className="h-1 w-full rounded bg-slate-200 mt-1"></div>
-                            <div className="h-1 w-4/5 rounded bg-slate-200"></div>
-                            <div className="h-1 w-full rounded bg-slate-200 mt-1"></div>
-                            <div className="flex-1"></div>
-                            <div className="h-4 w-full bg-slate-50 rounded flex flex-col gap-[1px] p-0.5">
-                              <div className="h-[2px] w-full bg-slate-200"></div>
-                              <div className="h-[2px] w-5/6 bg-slate-200"></div>
+                  <DialogContent className="flex max-h-[88vh] flex-col gap-0 overflow-hidden p-0 sm:max-w-[860px] sm:rounded-2xl">
+                    {/* Header */}
+                    <div className="shrink-0 border-b border-slate-100 px-6 pb-4 pt-6 pr-12">
+                      <DialogHeader>
+                        <DialogTitle className="text-xl font-bold text-[#0F2744]">Galeria de Templates</DialogTitle>
+                        <p className="mt-1 text-sm text-slate-500">Escolha um modelo para começar seu currículo</p>
+                      </DialogHeader>
+                      <div className="mt-4 flex flex-wrap gap-2">
+                        {TEMPLATE_CATEGORIES.map((cat) => (
+                          <button
+                            key={cat.id}
+                            type="button"
+                            onClick={() => setTemplateFilter(cat.id)}
+                            className={`rounded-full px-4 py-1.5 text-xs font-semibold transition-all ${
+                              templateFilter === cat.id
+                                ? "bg-[#0F2744] text-white shadow-sm"
+                                : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                            }`}
+                          >
+                            {cat.label}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Grid */}
+                    <div className="flex-1 overflow-y-auto px-6 py-5">
+                      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+                        {filteredTemplates.map((tpl) => {
+                          const isSelected = resume.template === tpl.id;
+                          return (
+                            <div
+                              key={tpl.id}
+                              role="button"
+                              tabIndex={0}
+                              onClick={() => {
+                                setResume((r) => ({ ...r, template: tpl.id }));
+                                setIsTemplateModalOpen(false);
+                              }}
+                              onKeyDown={(e) => {
+                                if (e.key === "Enter" || e.key === " ") {
+                                  setResume((r) => ({ ...r, template: tpl.id }));
+                                  setIsTemplateModalOpen(false);
+                                }
+                              }}
+                              className={`group cursor-pointer rounded-xl border-2 p-2 transition-all duration-200 ${
+                                isSelected
+                                  ? "border-teal-500 bg-teal-50/60 shadow-[0_0_0_2px_rgba(20,184,166,0.15)]"
+                                  : "border-slate-100 bg-white hover:-translate-y-0.5 hover:border-teal-300 hover:shadow-md"
+                              }`}
+                            >
+                              <div className="relative mb-2.5 aspect-[1/1.41] w-full overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
+                                <div className="absolute inset-0">
+                                  <TemplatePreview tpl={tpl} />
+                                </div>
+                                {isSelected && (
+                                  <div className="absolute right-1.5 top-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-teal-500 shadow-sm">
+                                    <Check className="h-3 w-3 text-white" />
+                                  </div>
+                                )}
+                                <div className="absolute inset-0 flex items-end justify-center bg-[#0F2744]/0 pb-2 opacity-0 transition-all duration-200 group-hover:bg-[#0F2744]/25 group-hover:opacity-100">
+                                  <span className="translate-y-1 rounded-full bg-white px-3 py-1 text-[10px] font-bold text-[#0F2744] shadow-md transition-transform group-hover:translate-y-0">
+                                    Selecionar
+                                  </span>
+                                </div>
+                              </div>
+                              <div className="text-center">
+                                <div className={`text-[13px] font-bold leading-tight ${isSelected ? "text-teal-700" : "text-[#0F2744]"}`}>
+                                  {tpl.name}
+                                </div>
+                                <div className="mt-0.5 text-[10px] leading-snug text-slate-400">{tpl.desc}</div>
+                              </div>
                             </div>
+                          );
+                        })}
+                        {filteredTemplates.length === 0 && (
+                          <div className="col-span-5 flex flex-col items-center justify-center py-12 text-slate-400">
+                            <LayoutTemplate className="mb-2 h-8 w-8" />
+                            <p className="text-sm">Nenhum template nesta categoria</p>
                           </div>
-                          <div className="text-center font-bold text-[#0F2744] text-sm">{tpl.name}</div>
-                          <div className="text-center text-[10px] text-slate-500 mt-0.5">{tpl.desc}</div>
-                        </div>
-                      ))}
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Footer */}
+                    <div className="shrink-0 border-t border-slate-100 bg-slate-50/80 px-6 py-3">
+                      <div className="flex items-center justify-between">
+                        <p className="text-xs text-slate-500">
+                          {filteredTemplates.length} modelo{filteredTemplates.length !== 1 ? "s" : ""} disponíve{filteredTemplates.length !== 1 ? "is" : "l"}
+                        </p>
+                        <button
+                          type="button"
+                          onClick={() => setIsTemplateModalOpen(false)}
+                          className="text-xs font-semibold text-slate-500 transition-colors hover:text-slate-800"
+                        >
+                          Fechar
+                        </button>
+                      </div>
                     </div>
                   </DialogContent>
                 </Dialog>
@@ -1231,6 +1318,111 @@ function EmptyEditorState({ icon: Icon, text }: { icon: LucideIcon; text: string
         <Icon className="h-5 w-5" />
       </div>
       <p className="text-sm font-medium text-slate-600">{text}</p>
+    </div>
+  );
+}
+
+function TemplatePreview({ tpl }: { tpl: (typeof BUILDER_TEMPLATE_OPTIONS)[number] }) {
+  const c = tpl.accentColor;
+
+  if (tpl.layout === "sidebar") {
+    return (
+      <div className="flex h-full w-full">
+        <div className="flex w-[34%] shrink-0 flex-col items-center gap-1 px-1 pb-1 pt-2" style={{ backgroundColor: c + "18" }}>
+          <div className="h-6 w-6 rounded-full" style={{ backgroundColor: c + "55" }} />
+          <div className="mt-0.5 h-[2px] w-5/6 rounded" style={{ backgroundColor: c + "66" }} />
+          <div className="h-[2px] w-4/6 rounded" style={{ backgroundColor: c + "44" }} />
+          <div className="mt-1 h-px w-full" style={{ backgroundColor: c + "33" }} />
+          <div className="mt-1 h-[2px] w-5/6 rounded" style={{ backgroundColor: c + "44" }} />
+          <div className="h-[2px] w-4/6 rounded" style={{ backgroundColor: c + "33" }} />
+          <div className="h-[2px] w-5/6 rounded" style={{ backgroundColor: c + "33" }} />
+          <div className="mt-1 h-px w-full" style={{ backgroundColor: c + "33" }} />
+          <div className="mt-1 h-[2px] w-4/6 rounded" style={{ backgroundColor: c + "33" }} />
+          <div className="h-[2px] w-5/6 rounded" style={{ backgroundColor: c + "33" }} />
+        </div>
+        <div className="flex flex-1 flex-col gap-1 p-1.5 pt-2">
+          <div className="h-2.5 w-4/5 rounded" style={{ backgroundColor: c }} />
+          <div className="mt-0.5 h-[2px] w-3/5 rounded bg-slate-300" />
+          <div className="mt-1.5 h-px w-full bg-slate-200" />
+          <div className="mt-1 h-[2px] w-2/5 rounded" style={{ backgroundColor: c + "99" }} />
+          <div className="h-[2px] w-full rounded bg-slate-200" />
+          <div className="h-[2px] w-full rounded bg-slate-200" />
+          <div className="h-[2px] w-3/5 rounded bg-slate-200" />
+          <div className="mt-1 h-[2px] w-2/5 rounded" style={{ backgroundColor: c + "99" }} />
+          <div className="h-[2px] w-full rounded bg-slate-200" />
+          <div className="h-[2px] w-5/6 rounded bg-slate-200" />
+        </div>
+      </div>
+    );
+  }
+
+  if (tpl.layout === "classic") {
+    return (
+      <div className="flex h-full w-full flex-col p-2 pt-2.5">
+        <div className="mb-1.5 flex flex-col items-center gap-0.5 border-b-2 pb-2" style={{ borderColor: c }}>
+          <div className="h-2.5 w-2/3 rounded" style={{ backgroundColor: c }} />
+          <div className="h-[2px] w-1/2 rounded bg-slate-300" />
+          <div className="mt-0.5 flex gap-2">
+            <div className="h-[2px] w-10 rounded bg-slate-200" />
+            <div className="h-[2px] w-10 rounded bg-slate-200" />
+          </div>
+        </div>
+        <div className="mb-0.5 h-[2px] w-1/3 rounded" style={{ backgroundColor: c + "dd" }} />
+        <div className="h-[2px] w-full rounded bg-slate-200" />
+        <div className="mt-0.5 h-[2px] w-full rounded bg-slate-200" />
+        <div className="mt-0.5 h-[2px] w-4/5 rounded bg-slate-200" />
+        <div className="mb-0.5 mt-1.5 h-[2px] w-1/3 rounded" style={{ backgroundColor: c + "dd" }} />
+        <div className="h-[2px] w-full rounded bg-slate-200" />
+        <div className="mt-0.5 h-[2px] w-5/6 rounded bg-slate-200" />
+        <div className="mt-0.5 h-[2px] w-full rounded bg-slate-200" />
+      </div>
+    );
+  }
+
+  if (tpl.layout === "compact") {
+    return (
+      <div className="flex h-full w-full flex-col">
+        <div className="flex h-5 shrink-0 items-center px-2" style={{ backgroundColor: c }}>
+          <div className="h-[3px] w-1/2 rounded bg-white/80" />
+          <div className="ml-auto h-[2px] w-1/4 rounded bg-white/50" />
+        </div>
+        <div className="flex flex-1 flex-col gap-[3px] p-1.5">
+          <div className="mt-0.5 h-[2px] w-1/3 rounded" style={{ backgroundColor: c + "cc" }} />
+          <div className="h-[2px] w-full rounded bg-slate-200" />
+          <div className="h-[2px] w-full rounded bg-slate-200" />
+          <div className="mt-1 h-[2px] w-1/3 rounded" style={{ backgroundColor: c + "cc" }} />
+          <div className="h-[2px] w-full rounded bg-slate-200" />
+          <div className="h-[2px] w-full rounded bg-slate-200" />
+          <div className="h-[2px] w-4/5 rounded bg-slate-200" />
+          <div className="mt-1 h-[2px] w-1/3 rounded" style={{ backgroundColor: c + "cc" }} />
+          <div className="h-[2px] w-full rounded bg-slate-200" />
+          <div className="h-[2px] w-full rounded bg-slate-200" />
+          <div className="h-[2px] w-3/5 rounded bg-slate-200" />
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex h-full w-full flex-col">
+      <div className="flex h-8 shrink-0 items-center gap-1.5 px-2" style={{ backgroundColor: c }}>
+        <div className="h-5 w-5 shrink-0 rounded-full bg-white/30" />
+        <div className="flex min-w-0 flex-1 flex-col gap-0.5">
+          <div className="h-[3px] w-3/5 rounded bg-white/80" />
+          <div className="h-[2px] w-2/5 rounded bg-white/50" />
+        </div>
+      </div>
+      <div className="flex flex-1 flex-col gap-1 p-2">
+        <div className="h-[2px] w-2/5 rounded" style={{ backgroundColor: c + "cc" }} />
+        <div className="h-[2px] w-full rounded bg-slate-200" />
+        <div className="h-[2px] w-full rounded bg-slate-200" />
+        <div className="h-[2px] w-4/5 rounded bg-slate-200" />
+        <div className="mt-1 h-[2px] w-2/5 rounded" style={{ backgroundColor: c + "cc" }} />
+        <div className="h-[2px] w-full rounded bg-slate-200" />
+        <div className="h-[2px] w-5/6 rounded bg-slate-200" />
+        <div className="h-[2px] w-full rounded bg-slate-200" />
+        <div className="h-[2px] w-3/5 rounded bg-slate-200" />
+      </div>
     </div>
   );
 }
