@@ -45,7 +45,7 @@ import { ResumePreview } from "@/components/ResumePreview";
 import { getResume, saveResume } from "@/lib/storage";
 import { publishResume } from "@/lib/public-resume";
 import { parseLinkedInPDF } from "@/lib/pdf-parser";
-import type { Resume, ResumeData, Experience, Education, Skill, Language } from "@/types/resume";
+import type { Resume, ResumeData, Experience, Education, Skill, Language, ResumeTemplate } from "@/types/resume";
 import { defaultResumeData } from "@/types/resume";
 import { DragDropContext, Droppable, Draggable, type DraggableProvidedDragHandleProps, type DropResult } from "@hello-pangea/dnd";
 
@@ -123,6 +123,24 @@ const PREVIEW_SCALE: Record<PreviewZoom, number> = {
   "75": 0.75,
   "100": 1,
 };
+
+const BUILDER_TEMPLATE_OPTIONS: Array<{
+  id: ResumeTemplate;
+  name: string;
+  desc: string;
+  accentClass: string;
+}> = [
+  { id: "modern", name: "Moderno", desc: "Design atual e dinâmico", accentClass: "bg-teal-500" },
+  { id: "classic", name: "Clássico", desc: "Tradicional e seguro", accentClass: "bg-slate-800" },
+  { id: "minimal", name: "Minimalista", desc: "Limpo e direto", accentClass: "bg-slate-400" },
+  { id: "executive", name: "Executivo", desc: "Sóbrio e elegante", accentClass: "bg-blue-800" },
+  { id: "creative", name: "Criativo", desc: "Visual com personalidade", accentClass: "bg-violet-500" },
+  { id: "technical", name: "Técnico", desc: "Focado em tecnologia", accentClass: "bg-sky-500" },
+  { id: "first_job", name: "Primeiro Emprego", desc: "Ideal para começar", accentClass: "bg-emerald-500" },
+  { id: "international", name: "Internacional", desc: "Para vagas globais", accentClass: "bg-blue-600" },
+  { id: "institutional", name: "Institucional", desc: "Formal e oficial", accentClass: "bg-green-700" },
+  { id: "compact", name: "Compacto", desc: "Mais informação em 1 página", accentClass: "bg-neutral-900" },
+];
 
 function getPdfFileName(title: string) {
   const fileName = title.replace(/[<>:"/\\|?*]+/g, "").trim();
@@ -451,21 +469,16 @@ export default function Builder() {
                       Trocar modelo
                     </Button>
                   </DialogTrigger>
-                  <DialogContent className="sm:max-w-[700px]">
+                  <DialogContent className="max-h-[88vh] overflow-y-auto sm:max-w-[900px]">
                     <DialogHeader>
                       <DialogTitle className="text-xl font-bold text-[#0F2744]">Galeria de Templates</DialogTitle>
                     </DialogHeader>
-                    <div className="grid grid-cols-2 gap-4 py-4 sm:grid-cols-4">
-                      {[
-                        { id: "modern", name: "Moderno", desc: "Design atual e dinâmico" },
-                        { id: "classic", name: "Clássico", desc: "Tradicional e seguro" },
-                        { id: "minimal", name: "Minimalista", desc: "Limpo e direto" },
-                        { id: "executive", name: "Executivo", desc: "Sóbrio e elegante" },
-                      ].map((tpl) => (
+                    <div className="grid grid-cols-2 gap-3 py-4 sm:grid-cols-3 lg:grid-cols-5">
+                      {BUILDER_TEMPLATE_OPTIONS.map((tpl) => (
                         <div
                           key={tpl.id}
                           onClick={() => {
-                            setResume((r) => ({ ...r, template: tpl.id as Resume["template"] }));
+                            setResume((r) => ({ ...r, template: tpl.id }));
                             setIsTemplateModalOpen(false);
                           }}
                           className={`cursor-pointer rounded-xl border-2 p-3 transition-all ${
@@ -475,7 +488,7 @@ export default function Builder() {
                           }`}
                         >
                           <div className={`mb-3 aspect-[1/1.4] w-full rounded border ${resume.template === tpl.id ? "border-teal-200" : "border-slate-200"} bg-white shadow-sm flex flex-col p-2 gap-1 overflow-hidden`}>
-                            <div className={`h-2 w-1/2 rounded ${tpl.id === "modern" ? "bg-teal-500" : tpl.id === "classic" ? "bg-slate-800" : tpl.id === "executive" ? "bg-blue-800" : "bg-slate-400"}`}></div>
+                            <div className={`h-2 w-1/2 rounded ${tpl.accentClass}`}></div>
                             <div className="h-1 w-full rounded bg-slate-200 mt-1"></div>
                             <div className="h-1 w-4/5 rounded bg-slate-200"></div>
                             <div className="h-1 w-full rounded bg-slate-200 mt-1"></div>

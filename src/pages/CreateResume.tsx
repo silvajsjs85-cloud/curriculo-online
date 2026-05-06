@@ -2,9 +2,9 @@ import { useEffect, useRef } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { FileText } from "lucide-react";
 import { createResume } from "@/lib/storage";
-import type { Resume } from "@/types/resume";
+import { RESUME_TEMPLATE_IDS, type Resume } from "@/types/resume";
 
-const VALID_TEMPLATES: Resume["template"][] = ["modern", "classic", "minimal", "executive"];
+const VALID_TEMPLATES = RESUME_TEMPLATE_IDS;
 
 function getTemplate(value: string | null): Resume["template"] {
   return VALID_TEMPLATES.includes(value as Resume["template"])

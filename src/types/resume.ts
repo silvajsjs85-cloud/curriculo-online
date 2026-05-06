@@ -49,11 +49,36 @@ export interface ResumeData {
   languages: Language[];
 }
 
+export type ResumeTemplate =
+  | "modern"
+  | "classic"
+  | "minimal"
+  | "executive"
+  | "creative"
+  | "technical"
+  | "first_job"
+  | "international"
+  | "institutional"
+  | "compact";
+
+export const RESUME_TEMPLATE_IDS: ResumeTemplate[] = [
+  "modern",
+  "classic",
+  "minimal",
+  "executive",
+  "creative",
+  "technical",
+  "first_job",
+  "international",
+  "institutional",
+  "compact",
+];
+
 export interface Resume {
   id: string;
   user_id: string;
   title: string;
-  template: "modern" | "classic" | "minimal" | "executive" | "creative" | "technical" | "first_job" | "international" | "institutional" | "compact";
+  template: ResumeTemplate;
   data: ResumeData;
   created_at: string;
   updated_at: string;
