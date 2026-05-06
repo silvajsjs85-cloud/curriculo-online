@@ -17,6 +17,7 @@ import {
   LayoutTemplate,
   Linkedin,
   Link as LinkIcon,
+  Lock,
   Share2,
   Mail,
   MapPin,
@@ -43,9 +44,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { ResumePreview } from "@/components/ResumePreview";
+import { UpgradeModal } from "@/components/UpgradeModal";
 import { getResume, saveResume } from "@/lib/storage";
 import { publishResume } from "@/lib/public-resume";
 import { parseLinkedInPDF } from "@/lib/pdf-parser";
+import { isPremiumTemplate } from "@/lib/subscription";
+import { useSubscription } from "@/hooks/useSubscription";
 import type { Resume, ResumeData, Experience, Education, Skill, Language, ResumeTemplate } from "@/types/resume";
 import { defaultResumeData } from "@/types/resume";
 import { DragDropContext, Droppable, Draggable, type DraggableProvidedDragHandleProps, type DropResult } from "@hello-pangea/dnd";
@@ -191,6 +195,9 @@ export default function Builder() {
   const [isImporting, setIsImporting] = useState(false);
   const [isTemplateModalOpen, setIsTemplateModalOpen] = useState(false);
   const [templateFilter, setTemplateFilter] = useState("todos");
+  const [upgradeModalOpen, setUpgradeModalOpen] = useState(false);
+  const [lockedTemplateName, setLockedTemplateName] = useState<string | undefined>(undefined);
+  const { subscribed } = useSubscription();
   const [isTipDismissed, setIsTipDismissed] = useState(() => localStorage.getItem("builderTipDismissed") === "true");
   
   const SUMMARY_PLACEHOLDERS = [
@@ -521,17 +528,30 @@ export default function Builder() {
                       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
                         {filteredTemplates.map((tpl) => {
                           const isSelected = resume.template === tpl.id;
+                          const isLocked = !subscribed && isPremiumTemplate(tpl.id);
                           return (
                             <div
                               key={tpl.id}
                               role="button"
                               tabIndex={0}
                               onClick={() => {
+                                if (isLocked) {
+                                  setLockedTemplateName(tpl.name);
+                                  setIsTemplateModalOpen(false);
+                                  setUpgradeModalOpen(true);
+                                  return;
+                                }
                                 setResume((r) => ({ ...r, template: tpl.id }));
                                 setIsTemplateModalOpen(false);
                               }}
                               onKeyDown={(e) => {
                                 if (e.key === "Enter" || e.key === " ") {
+                                  if (isLocked) {
+                                    setLockedTemplateName(tpl.name);
+                                    setIsTemplateModalOpen(false);
+                                    setUpgradeModalOpen(true);
+                                    return;
+                                  }
                                   setResume((r) => ({ ...r, template: tpl.id }));
                                   setIsTemplateModalOpen(false);
                                 }
@@ -539,11 +559,13 @@ export default function Builder() {
                               className={`group cursor-pointer rounded-xl border-2 p-2 transition-all duration-200 ${
                                 isSelected
                                   ? "border-teal-500 bg-teal-50/60 shadow-[0_0_0_2px_rgba(20,184,166,0.15)]"
+                                  : isLocked
+                                  ? "border-slate-100 bg-slate-50/80 hover:-translate-y-0.5 hover:border-amber-300 hover:shadow-md"
                                   : "border-slate-100 bg-white hover:-translate-y-0.5 hover:border-teal-300 hover:shadow-md"
                               }`}
                             >
                               <div className="relative mb-2.5 aspect-[1/1.41] w-full overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
-                                <div className="absolute inset-0">
+                                <div className={`absolute inset-0 ${isLocked ? "opacity-40" : ""}`}>
                                   <TemplatePreview tpl={tpl} />
                                 </div>
                                 {isSelected && (
@@ -551,14 +573,33 @@ export default function Builder() {
                                     <Check className="h-3 w-3 text-white" />
                                   </div>
                                 )}
-                                <div className="absolute inset-0 flex items-end justify-center bg-[#0F2744]/0 pb-2 opacity-0 transition-all duration-200 group-hover:bg-[#0F2744]/25 group-hover:opacity-100">
-                                  <span className="translate-y-1 rounded-full bg-white px-3 py-1 text-[10px] font-bold text-[#0F2744] shadow-md transition-transform group-hover:translate-y-0">
-                                    Selecionar
-                                  </span>
-                                </div>
+                                {isLocked && (
+                                  <div className="absolute inset-0 flex flex-col items-center justify-center gap-1 bg-white/30 backdrop-blur-[1px]">
+                                    <div className="flex h-7 w-7 items-center justify-center rounded-full bg-amber-400/90 shadow-sm">
+                                      <Lock className="h-3.5 w-3.5 text-white" />
+                                    </div>
+                                    <span className="rounded-full bg-amber-400/90 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wide text-white shadow-sm">
+                                      Premium
+                                    </span>
+                                  </div>
+                                )}
+                                {!isLocked && (
+                                  <div className="absolute inset-0 flex items-end justify-center bg-[#0F2744]/0 pb-2 opacity-0 transition-all duration-200 group-hover:bg-[#0F2744]/25 group-hover:opacity-100">
+                                    <span className="translate-y-1 rounded-full bg-white px-3 py-1 text-[10px] font-bold text-[#0F2744] shadow-md transition-transform group-hover:translate-y-0">
+                                      Selecionar
+                                    </span>
+                                  </div>
+                                )}
+                                {isLocked && (
+                                  <div className="absolute inset-0 flex items-end justify-center pb-2 opacity-0 transition-all duration-200 group-hover:opacity-100">
+                                    <span className="translate-y-1 rounded-full bg-amber-400 px-3 py-1 text-[10px] font-bold text-white shadow-md transition-transform group-hover:translate-y-0">
+                                      Ver planos
+                                    </span>
+                                  </div>
+                                )}
                               </div>
                               <div className="text-center">
-                                <div className={`text-[13px] font-bold leading-tight ${isSelected ? "text-teal-700" : "text-[#0F2744]"}`}>
+                                <div className={`text-[13px] font-bold leading-tight ${isSelected ? "text-teal-700" : isLocked ? "text-slate-500" : "text-[#0F2744]"}`}>
                                   {tpl.name}
                                 </div>
                                 <div className="mt-0.5 text-[10px] leading-snug text-slate-400">{tpl.desc}</div>
@@ -1172,6 +1213,12 @@ export default function Builder() {
       <div className="fixed -left-[10000px] top-0 bg-white" aria-hidden="true">
         <ResumePreview data={resume.data} template={resume.template} id="resume-preview-export" />
       </div>
+
+      <UpgradeModal
+        open={upgradeModalOpen}
+        onOpenChange={setUpgradeModalOpen}
+        templateName={lockedTemplateName}
+      />
     </div>
   );
 }

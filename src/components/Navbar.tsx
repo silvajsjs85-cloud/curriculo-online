@@ -8,6 +8,7 @@ const NAV_LINKS = [
   { label: "Como funciona", id: "como-funciona", href: null },
   { label: "Depoimentos", id: "depoimentos", href: null },
   { label: "Dicas", id: "dicas", href: null },
+  { label: "Preços", id: null, href: "/precos" },
   { label: "Contato", id: null, href: "/contato" },
 ];
 

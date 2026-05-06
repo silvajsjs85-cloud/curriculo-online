@@ -18,6 +18,7 @@ const TermsPage = lazy(() =>
 const PrivacyPage = lazy(() =>
   import("@/pages/Legal").then((m) => ({ default: m.PrivacyPage }))
 );
+const Pricing = lazy(() => import("@/pages/Pricing"));
 
 const queryClient = new QueryClient();
 
@@ -53,6 +54,7 @@ export default function App() {
             <Route path="/modelos" element={<WithNavbar><Models /></WithNavbar>} />
             <Route path="/modelos/:slug" element={<WithNavbar><ModelosProfissao /></WithNavbar>} />
             <Route path="/p/:slug" element={<Suspense fallback={<PageLoader />}><PublicResume /></Suspense>} />
+            <Route path="/precos" element={<WithNavbar><Pricing /></WithNavbar>} />
             <Route path="/contato" element={<WithNavbar><Contact /></WithNavbar>} />
             <Route path="/termos-de-uso" element={<WithNavbar><TermsPage /></WithNavbar>} />
             <Route path="/politica-de-privacidade" element={<WithNavbar><PrivacyPage /></WithNavbar>} />
