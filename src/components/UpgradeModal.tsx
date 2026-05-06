@@ -2,7 +2,7 @@ import { Lock, Sparkles, Check } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { STRIPE_PAYMENT_LINK, PLAN_PRICE, PLAN_PERIOD } from "@/lib/subscription";
+import { PLAN_PRICE, PLAN_PERIOD } from "@/lib/subscription";
 
 const BENEFITS = [
   "8 templates exclusivos (Clássico, Executivo, Criativo e mais)",
@@ -16,12 +16,10 @@ interface UpgradeModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   templateName?: string;
+  paymentUrl?: string;
 }
 
-export function UpgradeModal({ open, onOpenChange, templateName }: UpgradeModalProps) {
-  const paymentHref = STRIPE_PAYMENT_LINK
-    ? `${STRIPE_PAYMENT_LINK}?success_url=${encodeURIComponent(window.location.origin + "/?payment=success")}`
-    : "/precos";
+export function UpgradeModal({ open, onOpenChange, templateName, paymentUrl = "#" }: UpgradeModalProps) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -66,9 +64,9 @@ export function UpgradeModal({ open, onOpenChange, templateName }: UpgradeModalP
           </div>
 
           <div className="flex flex-col gap-2.5">
-            {STRIPE_PAYMENT_LINK ? (
+            {paymentUrl !== "#" ? (
               <a
-                href={paymentHref}
+                href={paymentUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-[#0D9488] font-bold text-white shadow-md transition-opacity hover:opacity-90"

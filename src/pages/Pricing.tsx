@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { Button } from "@/components/ui/button";
 import { useSubscription } from "@/hooks/useSubscription";
-import { STRIPE_PAYMENT_LINK, PLAN_PRICE, PLAN_PERIOD, FREE_TEMPLATES, PREMIUM_TEMPLATES } from "@/lib/subscription";
+import { PLAN_PRICE, PLAN_PERIOD, FREE_TEMPLATES, PREMIUM_TEMPLATES } from "@/lib/subscription";
 
 const FREE_FEATURES = [
   "2 templates gratuitos (Moderno e Primeiro Emprego)",
@@ -34,11 +34,7 @@ const TEMPLATE_NAMES: Record<string, string> = {
 };
 
 export default function Pricing() {
-  const { subscribed } = useSubscription();
-
-  const paymentHref = STRIPE_PAYMENT_LINK
-    ? `${STRIPE_PAYMENT_LINK}?success_url=${encodeURIComponent(window.location.origin + "/?payment=success")}`
-    : "#";
+  const { subscribed, paymentUrl } = useSubscription();
 
   return (
     <>
@@ -136,9 +132,9 @@ export default function Pricing() {
                 <Button asChild className="h-11 w-full rounded-xl bg-teal-600 font-bold text-white hover:bg-teal-700">
                   <Link to="/criar">Ir para o editor</Link>
                 </Button>
-              ) : STRIPE_PAYMENT_LINK ? (
+              ) : paymentUrl !== "#" ? (
                 <a
-                  href={paymentHref}
+                  href={paymentUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-[#0D9488] font-bold text-white shadow-md transition-opacity hover:opacity-90"

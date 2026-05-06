@@ -126,3 +126,16 @@ export const STRIPE_PAYMENT_LINK =
 export const PLAN_PRICE = import.meta.env.VITE_PLAN_PRICE ?? "R$ 19,90";
 
 export const PLAN_PERIOD = import.meta.env.VITE_PLAN_PERIOD ?? "por mês";
+
+/**
+ * Builds the Stripe Payment Link URL.
+ * If a userId is provided, attaches client_reference_id so the
+ * webhook can identify the user and save the subscription securely.
+ */
+export function buildPaymentUrl(userId?: string | null): string {
+  if (!STRIPE_PAYMENT_LINK) return "#";
+  const url = new URL(STRIPE_PAYMENT_LINK);
+  if (userId) url.searchParams.set("client_reference_id", userId);
+  return url.toString();
+}
+
