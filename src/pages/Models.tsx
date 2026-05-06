@@ -99,6 +99,54 @@ const TEMPLATES = [
       "Apresentação sofisticada com destaque para liderança e resultados. Ideal para cargos seniores e posições de gestão.",
     badges: ["Novo", "Profissional"],
   },
+  {
+    name: "Criativo",
+    layout: "creative" as const,
+    accent: "#7F77DD",
+    description:
+      "Sidebar colorida e tipografia moderna. Perfeito para designers, criadores de conteúdo e profissionais de comunicação.",
+    badges: ["Novo", "Design"],
+  },
+  {
+    name: "Técnico",
+    layout: "technical" as const,
+    accent: "#378ADD",
+    description:
+      "Visual inspirado em editores de código (duas colunas, fonte mono). Direcionado para engenheiros de software e analistas de TI.",
+    badges: ["Dev", "ATS"],
+  },
+  {
+    name: "Primeiro Emprego",
+    layout: "first_job" as const,
+    accent: "#1D9E75",
+    description:
+      "Foco na formação acadêmica e atividades extracurriculares. Ideal para jovens aprendizes, estagiários e recém-formados.",
+    badges: ["Estágio"],
+  },
+  {
+    name: "Internacional",
+    layout: "international" as const,
+    accent: "#185FA5",
+    description:
+      "Padrão sem foto com estrutura em linhas similar ao Europass. Feito sob medida para vagas no exterior e multinacionais.",
+    badges: ["Global", "ATS"],
+  },
+  {
+    name: "Institucional",
+    layout: "institutional" as const,
+    accent: "#0F6E56",
+    description:
+      "Aparência formal de documento oficial, com fonte serifada e campo de registro. Recomendado para saúde, área pública e docentes.",
+    badges: ["Formal"],
+  },
+  {
+    name: "Compacto",
+    layout: "compact" as const,
+    accent: "#000000",
+    description:
+      "Fontes menores e espaços condensados para encaixar dezenas de informações em apenas uma página. Ideal para profissionais sêniores.",
+    badges: ["Sênior"],
+  },
 ];
 
 const BADGE_STYLES: Record<string, string> = {

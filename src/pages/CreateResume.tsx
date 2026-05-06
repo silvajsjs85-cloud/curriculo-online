@@ -38,10 +38,10 @@ export default function CreateResume() {
           <FileText className="h-6 w-6 text-white" />
         </div>
         <h1 className="text-2xl font-extrabold text-[#0F2744]">
-          Preparando seu curriculo
+          Preparando seu currículo
         </h1>
         <p className="mt-2 text-sm text-slate-600">
-          Abrindo o editor para voce comecar agora.
+          Abrindo o editor para você começar agora.
         </p>
       </div>
     </main>

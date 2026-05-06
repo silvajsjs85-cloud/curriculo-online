@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { ResumePreview } from "@/components/ResumePreview";
 import { getPublicResume, type PublicResume } from "@/lib/public-resume";
-import { ArrowLeft, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export default function PublicResumePage() {
@@ -66,7 +66,7 @@ export default function PublicResumePage() {
         <div className="w-full max-w-[210mm] shadow-2xl rounded-sm overflow-hidden bg-white">
           <ResumePreview
             data={data.resume_data}
-            template={data.template as any}
+            template={data.template}
             id="public-resume-preview"
           />
         </div>

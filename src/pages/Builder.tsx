@@ -47,7 +47,7 @@ import { publishResume } from "@/lib/public-resume";
 import { parseLinkedInPDF } from "@/lib/pdf-parser";
 import type { Resume, ResumeData, Experience, Education, Skill, Language } from "@/types/resume";
 import { defaultResumeData } from "@/types/resume";
-import { DragDropContext, Droppable, Draggable, type DropResult } from "@hello-pangea/dnd";
+import { DragDropContext, Droppable, Draggable, type DraggableProvidedDragHandleProps, type DropResult } from "@hello-pangea/dnd";
 
 type StepId = "pessoal" | "experiencia" | "formacao" | "habilidades" | "idiomas";
 type MobileView = "form" | "preview";
@@ -256,7 +256,9 @@ export default function Builder() {
         throw new Error(result.error);
       }
     } catch (err) {
-      toast.error("Erro ao gerar link público. Verifique se o banco Supabase está online.");
+      const description =
+        err instanceof Error ? err.message : "Verifique se o banco Supabase está online.";
+      toast.error("Erro ao gerar link público.", { description });
     } finally {
       setPublishing(false);
     }
@@ -1158,7 +1160,7 @@ function EditorItem({
   title: string;
   onRemove: () => void;
   children: ReactNode;
-  dragHandleProps?: any;
+  dragHandleProps?: DraggableProvidedDragHandleProps | null;
 }) {
   return (
     <div className="rounded-2xl border border-slate-100 bg-white p-4 shadow-sm relative">

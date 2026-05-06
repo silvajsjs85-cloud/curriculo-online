@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Template Institucional</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Merriweather:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --accent-color: #0F6E56; /* Teal escuro */
+            --bg-light: #F1EFE8; /* Cinza claro */
+            --text-color: #1A1A1A;
+            --text-light: #4A4A4A;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-light);
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+            color: var(--text-color);
+        }
+
+        .resume-container {
+            width: 794px;
+            height: 1123px;
+            background-color: #ffffff;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            padding: 70px 80px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border-top: 5px solid var(--accent-color);
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .name {
+            font-family: 'Merriweather', Georgia, serif;
+            font-size: 36px;
+            font-weight: 900;
+            color: var(--text-color);
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        .role {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--accent-color);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 4px;
+        }
+
+        .registry {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-light);
+            margin-bottom: 16px;
+        }
+
+        .contact {
+            font-size: 13px;
+            color: var(--text-light);
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .contact span::after {
+            content: "•";
+            margin-left: 12px;
+            color: #CCC;
+        }
+
+        .contact span:last-child::after {
+            content: "";
+        }
+
+        /* Seções */
+        .section {
+            margin-bottom: 35px;
+        }
+
+        .section:last-child {
+            margin-bottom: 0;
+        }
+
+        .section-title {
+            font-family: 'Merriweather', Georgia, serif;
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--accent-color);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            padding-bottom: 8px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--accent-color);
+        }
+
+        .summary {
+            font-size: 14px;
+            line-height: 1.8;
+            color: var(--text-color);
+            text-align: justify;
+        }
+
+        /* Itens */
+        .item {
+            margin-bottom: 25px;
+        }
+
+        .item:last-child {
+            margin-bottom: 0;
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 6px;
+        }
+
+        .item-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .item-period {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-light);
+        }
+
+        .item-subtitle {
+            font-size: 14px;
+            font-style: italic;
+            color: var(--text-light);
+            margin-bottom: 10px;
+        }
+
+        .item-desc {
+            font-size: 14px;
+            line-height: 1.8;
+            color: var(--text-color);
+            text-align: justify;
+        }
+
+        /* Habilidades em Linha */
+        .skills-list {
+            font-size: 14px;
+            line-height: 1.8;
+            color: var(--text-color);
+        }
+
+        .skill-item {
+            display: inline-block;
+        }
+
+        .skill-item::after {
+            content: "—";
+            margin: 0 10px;
+            color: var(--accent-color);
+            opacity: 0.5;
+        }
+
+        .skill-item:last-child::after {
+            content: "";
+        }
+
+        @media print {
+            body {
+                background-color: #fff;
+                padding: 0;
+            }
+            .resume-container {
+                box-shadow: none;
+                border-top: 4px solid var(--accent-color) !important;
+            }
+            * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!--
+JSON DATA EXAMPLE:
+{
+  "nome_completo": "Dra. Juliana Mendes",
+  "cargo_desejado": "Médica Pediatra",
+  "registro_profissional": "CRM-SP 123.456 | RQE 78910",
+  "email": "juliana.mendes@email.com",
+  "telefone": "(11) 98765-4321",
+  "cidade": "São Paulo, SP",
+  "linkedin": "linkedin.com/in/julianamendes",
+  "site": "",
+  "resumo_profissional": "Médica Pediatra com mais de 10 anos de experiência em atendimento clínico e hospitalar. Especialização em Neonatologia com atuação destacada em UTI Neonatal. Profunda dedicação ao desenvolvimento infantil e acompanhamento humanizado das famílias. Histórico comprovado de liderança de equipes multidisciplinares e participação ativa em comitês de ética médica.",
+  "experiencias": [
+    {
+      "cargo": "Médica Pediatra Intensivista",
+      "empresa": "Hospital das Clínicas de São Paulo",
+      "periodo": "Jan 2018 - Presente",
+      "descricao": "Coordenação do plantão na UTI Neonatal. Responsável pelo atendimento a recém-nascidos de alto risco, estabilização de prematuros extremos e treinamento de médicos residentes."
+    },
+    {
+      "cargo": "Pediatra Plantonista",
+      "empresa": "Hospital Maternidade Santa Joana",
+      "periodo": "Fev 2013 - Dez 2017",
+      "descricao": "Atendimento em pronto-socorro pediátrico, sala de parto e alojamento conjunto. Participação na elaboração de protocolos clínicos para triagem neonatal."
+    }
+  ],
+  "formacoes": [
+    {
+      "curso": "Residência Médica em Neonatologia",
+      "instituicao": "Universidade de São Paulo (USP)",
+      "periodo": "2011 - 2013"
+    },
+    {
+      "curso": "Residência Médica em Pediatria",
+      "instituicao": "Universidade Federal de São Paulo (UNIFESP)",
+      "periodo": "2009 - 2011"
+    },
+    {
+      "curso": "Graduação em Medicina",
+      "instituicao": "Faculdade de Medicina da USP (FMUSP)",
+      "periodo": "2002 - 2008"
+    }
+  ],
+  "habilidades": [
+    { "nome": "Neonatologia", "nivel": 5 },
+    { "nome": "Reanimação Pediátrica", "nivel": 5 },
+    { "nome": "Gestão de Equipes", "nivel": 4 },
+    { "nome": "Aleitamento Materno", "nivel": 5 },
+    { "nome": "Terapia Intensiva", "nivel": 5 }
+  ],
+  "idiomas": [
+    { "nome": "Inglês", "nivel": "Avançado (Leitura e Escrita Acadêmica)" },
+    { "nome": "Espanhol", "nivel": "Intermediário" }
+  ]
+}
+-->
+
+    <div class="resume-container">
+        <!-- Header -->
+        <div class="header">
+            <h1 class="name">Dra. Juliana Mendes</h1>
+            <div class="role">Médica Pediatra</div>
+            <div class="registry">CRM-SP 123.456 | RQE 78910</div>
+            
+            <div class="contact">
+                <span>juliana.mendes@email.com</span>
+                <span>(11) 98765-4321</span>
+                <span>São Paulo, SP</span>
+                <span>linkedin.com/in/julianamendes</span>
+            </div>
+        </div>
+
+        <!-- Resumo -->
+        <div class="section">
+            <h2 class="section-title">Resumo Profissional</h2>
+            <p class="summary">
+                Médica Pediatra com mais de 10 anos de experiência em atendimento clínico e hospitalar. Especialização em Neonatologia com atuação destacada em UTI Neonatal. Profunda dedicação ao desenvolvimento infantil e acompanhamento humanizado das famílias. Histórico comprovado de liderança de equipes multidisciplinares e participação ativa em comitês de ética médica.
+            </p>
+        </div>
+
+        <!-- Experiência -->
+        <div class="section">
+            <h2 class="section-title">Experiência Profissional</h2>
+            
+            <div class="item">
+                <div class="item-header">
+                    <div class="item-title">Médica Pediatra Intensivista</div>
+                    <div class="item-period">Jan 2018 - Presente</div>
+                </div>
+                <div class="item-subtitle">Hospital das Clínicas de São Paulo</div>
+                <p class="item-desc">
+                    Coordenação do plantão na UTI Neonatal. Responsável pelo atendimento a recém-nascidos de alto risco, estabilização de prematuros extremos e treinamento de médicos residentes e internos.
+                </p>
+            </div>
+
+            <div class="item">
+                <div class="item-header">
+                    <div class="item-title">Pediatra Plantonista</div>
+                    <div class="item-period">Fev 2013 - Dez 2017</div>
+                </div>
+                <div class="item-subtitle">Hospital Maternidade Santa Joana</div>
+                <p class="item-desc">
+                    Atendimento em pronto-socorro pediátrico, sala de parto e alojamento conjunto. Participação na elaboração de protocolos clínicos para triagem neonatal e condução de casos de alta complexidade.
+                </p>
+            </div>
+        </div>
+
+        <!-- Formação -->
+        <div class="section">
+            <h2 class="section-title">Formação Acadêmica</h2>
+            
+            <div class="item">
+                <div class="item-header">
+                    <div class="item-title">Residência Médica em Neonatologia</div>
+                    <div class="item-period">2011 - 2013</div>
+                </div>
+                <div class="item-subtitle">Universidade de São Paulo (USP)</div>
+            </div>
+
+            <div class="item">
+                <div class="item-header">
+                    <div class="item-title">Residência Médica em Pediatria</div>
+                    <div class="item-period">2009 - 2011</div>
+                </div>
+                <div class="item-subtitle">Universidade Federal de São Paulo (UNIFESP)</div>
+            </div>
+
+            <div class="item">
+                <div class="item-header">
+                    <div class="item-title">Graduação em Medicina</div>
+                    <div class="item-period">2002 - 2008</div>
+                </div>
+                <div class="item-subtitle">Faculdade de Medicina da USP (FMUSP)</div>
+            </div>
+        </div>
+
+        <!-- Habilidades & Idiomas -->
+        <div class="section">
+            <h2 class="section-title">Habilidades & Idiomas</h2>
+            <div class="skills-list">
+                <span class="skill-item">Neonatologia</span>
+                <span class="skill-item">Reanimação Pediátrica</span>
+                <span class="skill-item">Terapia Intensiva</span>
+                <span class="skill-item">Aleitamento Materno</span>
+                <span class="skill-item">Gestão de Equipes Multidisciplinares</span>
+                <span class="skill-item">Inglês Avançado</span>
+                <span class="skill-item">Espanhol Intermediário</span>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

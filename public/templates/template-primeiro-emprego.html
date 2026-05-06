@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Template Primeiro Emprego</title>
+    <!-- Tabler Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --accent-color: #1D9E75; /* Teal */
+            --accent-light: #E1F5EE; /* Teal claro */
+            --text-color: #1F2937;
+            --text-light: #4B5563;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+            color: var(--text-color);
+        }
+
+        .resume-container {
+            width: 794px;
+            height: 1123px;
+            background-color: #ffffff;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 50px 50px 40px;
+            background-color: #ffffff;
+        }
+
+        .photo {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 15px auto;
+            border: 4px solid var(--accent-light);
+            display: block;
+        }
+
+        .name {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--text-color);
+            margin-bottom: 5px;
+            letter-spacing: -0.5px;
+        }
+
+        .role {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--accent-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 18px;
+        }
+
+        .contact {
+            font-size: 13px;
+            color: var(--text-light);
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 25px;
+            font-weight: 500;
+        }
+
+        .contact span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .summary {
+            font-size: 14px;
+            line-height: 1.6;
+            max-width: 600px;
+            margin: 0 auto;
+            color: var(--text-light);
+        }
+
+        /* Seções */
+        .section {
+            padding: 35px 60px;
+        }
+
+        .section.bg-light {
+            background-color: var(--accent-light);
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--accent-color);
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            text-align: center;
+            letter-spacing: 1.5px;
+        }
+
+        .item {
+            margin-bottom: 25px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .item:last-child {
+            margin-bottom: 0;
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            align-items: baseline;
+            margin-bottom: 5px;
+        }
+
+        .item-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-color);
+        }
+
+        .item-period {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--accent-color);
+            background-color: #ffffff;
+            padding: 4px 10px;
+            border-radius: 20px;
+        }
+        
+        .section:not(.bg-light) .item-period {
+            background-color: var(--accent-light);
+        }
+
+        .item-subtitle {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-light);
+            margin-bottom: 10px;
+        }
+
+        .item-desc {
+            font-size: 14px;
+            line-height: 1.6;
+            color: var(--text-light);
+        }
+
+        /* Habilidades em Grid */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            text-align: center;
+        }
+
+        .skill-item {
+            background-color: #ffffff;
+            padding: 15px;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            border: 1px solid rgba(29, 158, 117, 0.1);
+        }
+
+        .section.bg-light .skill-item {
+            box-shadow: 0 4px 15px rgba(29, 158, 117, 0.05);
+            border: none;
+        }
+
+        .skill-icon {
+            width: 36px;
+            height: 36px;
+            background-color: var(--accent-light);
+            color: var(--accent-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .skill-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        @media print {
+            body {
+                background-color: #fff;
+                padding: 0;
+            }
+            .resume-container {
+                box-shadow: none;
+            }
+            * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!--
+JSON DATA EXAMPLE:
+{
+  "nome_completo": "Beatriz Costa",
+  "cargo_desejado": "Jovem Aprendiz Administrativo",
+  "email": "beatriz.costa@email.com",
+  "telefone": "(21) 98888-7777",
+  "cidade": "Rio de Janeiro, RJ",
+  "linkedin": "linkedin.com/in/beatrizcosta",
+  "site": "",
+  "resumo_profissional": "Estudante do Ensino Médio proativa e com facilidade para aprender. Busco minha primeira oportunidade profissional para desenvolver habilidades administrativas, contribuir com a equipe e crescer junto com a empresa. Ótima comunicação, dedicação e conhecimento intermediário em pacote Office.",
+  "formacoes": [
+    {
+      "curso": "Ensino Médio",
+      "instituicao": "Colégio Estadual Central",
+      "periodo": "2022 - 2024 (Previsão)"
+    }
+  ],
+  "cursos_complementares": [
+    {
+      "curso": "Informática Básica (Pacote Office)",
+      "instituicao": "Escola de Tecnologia Jovem",
+      "periodo": "2023"
+    },
+    {
+      "curso": "Inglês Básico",
+      "instituicao": "Curso Online de Idiomas",
+      "periodo": "2023 - Presente"
+    }
+  ],
+  "atividades_extracurriculares": [
+    {
+      "cargo": "Voluntária na Biblioteca Escolar",
+      "empresa": "Colégio Estadual Central",
+      "periodo": "Fev 2023 - Nov 2023",
+      "descricao": "Auxiliei na organização e catalogação de livros, além de orientar alunos nas pesquisas escolares."
+    },
+    {
+      "cargo": "Membro do Grêmio Estudantil",
+      "empresa": "Colégio Estadual Central",
+      "periodo": "2022 - 2023",
+      "descricao": "Apoio na organização de eventos culturais e campanhas de arrecadação de alimentos da comunidade."
+    }
+  ],
+  "habilidades": [
+    { "nome": "Pacote Office", "nivel": 4 },
+    { "nome": "Comunicação", "nivel": 5 },
+    { "nome": "Organização", "nivel": 4 },
+    { "nome": "Trabalho em equipe", "nivel": 4 }
+  ],
+  "idiomas": [
+    { "nome": "Inglês", "nivel": "Básico" }
+  ]
+}
+-->
+
+    <div class="resume-container">
+        <!-- Header -->
+        <div class="header">
+            <img src="https://i.pravatar.cc/150?img=5" alt="Foto de Beatriz Costa" class="photo">
+            <h1 class="name">Beatriz Costa</h1>
+            <div class="role">Jovem Aprendiz Administrativo</div>
+            
+            <div class="contact">
+                <span><i class="ti ti-mail"></i> beatriz.costa@email.com</span>
+                <span><i class="ti ti-phone"></i> (21) 98888-7777</span>
+                <span><i class="ti ti-map-pin"></i> Rio de Janeiro, RJ</span>
+                <span><i class="ti ti-brand-linkedin"></i> in/beatrizcosta</span>
+            </div>
+            
+            <p class="summary">
+                Estudante do Ensino Médio proativa e com facilidade para aprender. Busco minha primeira oportunidade profissional para desenvolver habilidades administrativas, contribuir com a equipe e crescer junto com a empresa. Ótima comunicação, dedicação e conhecimento intermediário em pacote Office.
+            </p>
+        </div>
+
+        <!-- Formação Acadêmica (Prioridade no Primeiro Emprego) -->
+        <div class="section bg-light">
+            <h2 class="section-title">Formação Acadêmica</h2>
+            
+            <div class="item">
+                <div class="item-header">
+                    <div class="item-title">Ensino Médio</div>
+                    <div class="item-period">2022 - 2024 (Previsão)</div>
+                </div>
+                <div class="item-subtitle">Colégio Estadual Central</div>
+            </div>
+        </div>
+
+        <!-- Atividades Extracurriculares -->
+        <div class="section">
+            <h2 class="section-title">Atividades Extracurriculares</h2>
+            
+            <div class="item">
+                <div class="item-header">
+                    <div class="item-title">Voluntária na Biblioteca Escolar</div>
+                    <div class="item-period">Fev 2023 - Nov 2023</div>
+                </div>
+                <div class="item-subtitle">Colégio Estadual Central</div>
+                <p class="item-desc">
+                    Auxiliei na organização e catalogação de livros, além de orientar alunos nas pesquisas escolares.
+                </p>
+            </div>
+
+            <div class="item">
+                <div class="item-header">
+                    <div class="item-title">Membro do Grêmio Estudantil</div>
+                    <div class="item-period">2022 - 2023</div>
+                </div>
+                <div class="item-subtitle">Colégio Estadual Central</div>
+                <p class="item-desc">
+                    Apoio na organização de eventos culturais e campanhas de arrecadação de alimentos da comunidade.
+                </p>
+            </div>
+        </div>
+
+        <!-- Cursos Complementares -->
+        <div class="section bg-light">
+            <h2 class="section-title">Cursos Complementares</h2>
+            
+            <div class="item">
+                <div class="item-header">
+                    <div class="item-title">Informática Básica (Pacote Office)</div>
+                    <div class="item-period">2023</div>
+                </div>
+                <div class="item-subtitle">Escola de Tecnologia Jovem</div>
+            </div>
+
+            <div class="item">
+                <div class="item-header">
+                    <div class="item-title">Inglês Básico</div>
+                    <div class="item-period">2023 - Presente</div>
+                </div>
+                <div class="item-subtitle">Curso Online de Idiomas</div>
+            </div>
+        </div>
+
+        <!-- Habilidades e Idiomas -->
+        <div class="section">
+            <h2 class="section-title">Habilidades & Idiomas</h2>
+            <div class="skills-grid">
+                <div class="skill-item">
+                    <div class="skill-icon"><i class="ti ti-check"></i></div>
+                    <span class="skill-name">Pacote Office</span>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-icon"><i class="ti ti-messages"></i></div>
+                    <span class="skill-name">Comunicação</span>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-icon"><i class="ti ti-layout-list"></i></div>
+                    <span class="skill-name">Organização</span>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-icon"><i class="ti ti-users"></i></div>
+                    <span class="skill-name">Trabalho em equipe</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

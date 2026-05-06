@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Template Criativo</title>
+    <!-- Tabler Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --accent-color: #7F77DD;
+            --text-color: #333333;
+            --text-light: #666666;
+            --sidebar-text: #FFFFFF;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .resume-container {
+            width: 794px;
+            height: 1123px;
+            background-color: #ffffff;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            display: flex;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 35%;
+            background-color: var(--accent-color);
+            color: var(--sidebar-text);
+            padding: 40px 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .photo-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+
+        .photo {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.2);
+            object-fit: cover;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .sidebar-section h3 {
+            font-size: 16px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+            font-weight: 600;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+            padding-bottom: 5px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+            font-size: 13px;
+            word-break: break-all;
+        }
+
+        .contact-item i {
+            font-size: 18px;
+            opacity: 0.9;
+        }
+
+        .skill-item {
+            margin-bottom: 12px;
+        }
+
+        .skill-name {
+            font-size: 13px;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .skill-bar {
+            height: 6px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .skill-progress {
+            height: 100%;
+            background-color: #FFFFFF;
+            border-radius: 10px;
+        }
+
+        /* Main Content */
+        .main-content {
+            width: 65%;
+            padding: 50px 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .header {
+            margin-bottom: 10px;
+        }
+
+        .name {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--text-color);
+            margin-bottom: 5px;
+            line-height: 1.1;
+            text-transform: uppercase;
+            letter-spacing: -0.5px;
+        }
+
+        .role {
+            font-size: 18px;
+            color: var(--text-light);
+            font-weight: 500;
+            display: inline-block;
+            position: relative;
+        }
+
+        .role::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -2px;
+            width: 100%;
+            height: 3px;
+            background-color: var(--accent-color);
+            opacity: 0.5;
+        }
+
+        .summary {
+            font-size: 14px;
+            color: var(--text-light);
+            line-height: 1.6;
+            margin-top: 15px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title::before {
+            content: '';
+            display: block;
+            width: 24px;
+            height: 3px;
+            background-color: var(--accent-color);
+        }
+
+        .experience-item, .education-item {
+            margin-bottom: 20px;
+        }
+
+        .experience-item:last-child, .education-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 4px;
+        }
+
+        .item-title {
+            font-weight: 600;
+            font-size: 15px;
+            color: var(--text-color);
+        }
+
+        .item-period {
+            font-size: 12px;
+            color: var(--accent-color);
+            font-weight: 500;
+        }
+
+        .item-subtitle {
+            font-size: 13px;
+            color: var(--text-color);
+            font-weight: 500;
+            margin-bottom: 6px;
+        }
+
+        .item-desc {
+            font-size: 13px;
+            color: var(--text-light);
+            line-height: 1.5;
+        }
+
+        @media print {
+            body {
+                background-color: #fff;
+                padding: 0;
+            }
+            .resume-container {
+                box-shadow: none;
+            }
+            /* Garantir cores de fundo no Chrome */
+            * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!--
+JSON DATA EXAMPLE:
+{
+  "nome_completo": "Alexandre Silva",
+  "cargo_desejado": "UX/UI Designer Sênior",
+  "email": "alexandre.silva@email.com",
+  "telefone": "(11) 98765-4321",
+  "cidade": "São Paulo, SP",
+  "linkedin": "linkedin.com/in/alexandresilva",
+  "site": "alexandresilva.design",
+  "resumo_profissional": "Designer com mais de 7 anos de experiência na criação de interfaces digitais focadas na experiência do usuário. Apaixonado por transformar problemas complexos em soluções simples e elegantes. Especialista em design systems e prototipagem interativa.",
+  "experiencias": [
+    {
+      "cargo": "UX/UI Designer Sênior",
+      "empresa": "Tech Solutions BR",
+      "periodo": "Jan 2020 - Presente",
+      "descricao": "Liderança na reestruturação do design system da empresa. Aumento de 35% na retenção de usuários após o redesign do app principal."
+    },
+    {
+      "cargo": "Product Designer",
+      "empresa": "Agência Criativa",
+      "periodo": "Mar 2017 - Dez 2019",
+      "descricao": "Criação de protótipos de alta fidelidade e testes de usabilidade. Colaboração direta com desenvolvedores front-end para garantir fidelidade visual."
+    }
+  ],
+  "formacoes": [
+    {
+      "curso": "Pós-graduação em Design de Interação",
+      "instituicao": "Universidade de Tecnologia",
+      "periodo": "2018 - 2019"
+    },
+    {
+      "curso": "Bacharelado em Design Gráfico",
+      "instituicao": "Faculdade de Belas Artes",
+      "periodo": "2013 - 2017"
+    }
+  ],
+  "habilidades": [
+    { "nome": "Figma / Sketch", "nivel": 5 },
+    { "nome": "Design System", "nivel": 5 },
+    { "nome": "Prototipagem", "nivel": 4 },
+    { "nome": "HTML / CSS", "nivel": 3 }
+  ],
+  "idiomas": [
+    { "nome": "Inglês", "nivel": "Fluente" },
+    { "nome": "Espanhol", "nivel": "Intermediário" }
+  ]
+}
+-->
+
+    <div class="resume-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="photo-container">
+                <!-- Se não houver foto, usar background cinza no lugar -->
+                <img src="https://i.pravatar.cc/150?img=11" alt="Foto de perfil" class="photo">
+            </div>
+
+            <div class="sidebar-section">
+                <h3>Contato</h3>
+                <div class="contact-item">
+                    <i class="ti ti-mail"></i>
+                    <span>alexandre.silva@email.com</span>
+                </div>
+                <div class="contact-item">
+                    <i class="ti ti-phone"></i>
+                    <span>(11) 98765-4321</span>
+                </div>
+                <div class="contact-item">
+                    <i class="ti ti-map-pin"></i>
+                    <span>São Paulo, SP</span>
+                </div>
+                <div class="contact-item">
+                    <i class="ti ti-brand-linkedin"></i>
+                    <span>linkedin.com/in/alexandresilva</span>
+                </div>
+                <div class="contact-item">
+                    <i class="ti ti-world"></i>
+                    <span>alexandresilva.design</span>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <h3>Habilidades</h3>
+                <div class="skill-item">
+                    <span class="skill-name">Figma / Sketch</span>
+                    <div class="skill-bar">
+                        <div class="skill-progress" style="width: 100%;"></div>
+                    </div>
+                </div>
+                <div class="skill-item">
+                    <span class="skill-name">Design System</span>
+                    <div class="skill-bar">
+                        <div class="skill-progress" style="width: 100%;"></div>
+                    </div>
+                </div>
+                <div class="skill-item">
+                    <span class="skill-name">Prototipagem</span>
+                    <div class="skill-bar">
+                        <div class="skill-progress" style="width: 80%;"></div>
+                    </div>
+                </div>
+                <div class="skill-item">
+                    <span class="skill-name">HTML / CSS</span>
+                    <div class="skill-bar">
+                        <div class="skill-progress" style="width: 60%;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <h3>Idiomas</h3>
+                <div class="skill-item">
+                    <span class="skill-name">Inglês</span>
+                    <div class="skill-bar">
+                        <div class="skill-progress" style="width: 100%;"></div>
+                    </div>
+                </div>
+                <div class="skill-item">
+                    <span class="skill-name">Espanhol</span>
+                    <div class="skill-bar">
+                        <div class="skill-progress" style="width: 60%;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="header">
+                <h1 class="name">Alexandre Silva</h1>
+                <div class="role">UX/UI Designer Sênior</div>
+                <p class="summary">
+                    Designer com mais de 7 anos de experiência na criação de interfaces digitais focadas na experiência do usuário. Apaixonado por transformar problemas complexos em soluções simples e elegantes. Especialista em design systems e prototipagem interativa.
+                </p>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">Experiência</h2>
+                
+                <div class="experience-item">
+                    <div class="item-header">
+                        <div class="item-title">UX/UI Designer Sênior</div>
+                        <div class="item-period">Jan 2020 - Presente</div>
+                    </div>
+                    <div class="item-subtitle">Tech Solutions BR</div>
+                    <p class="item-desc">
+                        Liderança na reestruturação do design system da empresa. Aumento de 35% na retenção de usuários após o redesign do app principal.
+                    </p>
+                </div>
+
+                <div class="experience-item">
+                    <div class="item-header">
+                        <div class="item-title">Product Designer</div>
+                        <div class="item-period">Mar 2017 - Dez 2019</div>
+                    </div>
+                    <div class="item-subtitle">Agência Criativa</div>
+                    <p class="item-desc">
+                        Criação de protótipos de alta fidelidade e testes de usabilidade. Colaboração direta com desenvolvedores front-end para garantir fidelidade visual.
+                    </p>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">Formação</h2>
+                
+                <div class="education-item">
+                    <div class="item-header">
+                        <div class="item-title">Pós-graduação em Design de Interação</div>
+                        <div class="item-period">2018 - 2019</div>
+                    </div>
+                    <div class="item-subtitle">Universidade de Tecnologia</div>
+                </div>
+
+                <div class="education-item">
+                    <div class="item-header">
+                        <div class="item-title">Bacharelado em Design Gráfico</div>
+                        <div class="item-period">2013 - 2017</div>
+                    </div>
+                    <div class="item-subtitle">Faculdade de Belas Artes</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

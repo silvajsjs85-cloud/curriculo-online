@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>International Template</title>
+    <!-- Tabler Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --text-dark: #2C2C2A;
+            --accent: #185FA5;
+            --text-light: #555555;
+            --border: #D1D5DB;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+            color: var(--text-dark);
+        }
+
+        .resume-container {
+            width: 794px;
+            height: 1123px;
+            background-color: #ffffff;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            padding: 60px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 20px;
+        }
+
+        .header-main {
+            flex: 1;
+        }
+
+        .name {
+            font-size: 34px;
+            font-weight: 800;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: -0.5px;
+            margin-bottom: 5px;
+        }
+
+        .role {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-dark);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .contact {
+            text-align: right;
+            font-size: 12px;
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 6px;
+        }
+
+        .header-divider {
+            border: none;
+            height: 2px;
+            background-color: var(--accent);
+            margin-bottom: 30px;
+        }
+
+        /* Layout em Linhas (Europass Style) */
+        .row {
+            display: flex;
+            margin-bottom: 25px;
+        }
+
+        .col-left {
+            width: 25%;
+            padding-right: 20px;
+        }
+
+        .col-right {
+            width: 75%;
+        }
+
+        .section-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-align: right;
+        }
+
+        .summary {
+            font-size: 13px;
+            line-height: 1.6;
+            color: var(--text-light);
+        }
+
+        /* Itens */
+        .item {
+            margin-bottom: 20px;
+        }
+
+        .item:last-child {
+            margin-bottom: 0;
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 4px;
+        }
+
+        .item-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .item-period {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-light);
+        }
+
+        .item-subtitle {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+        }
+
+        .item-desc {
+            font-size: 13px;
+            line-height: 1.6;
+            color: var(--text-light);
+        }
+
+        /* Idiomas com Bolinhas */
+        .languages-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .lang-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #F9FAFB;
+            padding: 10px 15px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+        }
+
+        .lang-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .lang-dots {
+            display: flex;
+            gap: 4px;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: var(--border);
+        }
+
+        .dot.filled {
+            background-color: var(--accent);
+        }
+
+        /* Habilidades */
+        .skills-list {
+            font-size: 13px;
+            line-height: 1.8;
+            color: var(--text-light);
+        }
+
+        .skill-tag {
+            display: inline-block;
+            font-weight: 600;
+            color: var(--text-dark);
+            background-color: #F3F4F6;
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin-right: 5px;
+            margin-bottom: 5px;
+            border: 1px solid var(--border);
+        }
+
+        /* Certificações */
+        .cert-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .cert-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .cert-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .cert-issuer {
+            font-size: 13px;
+            color: var(--text-light);
+        }
+
+        .cert-year {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        @media print {
+            body {
+                background-color: #fff;
+                padding: 0;
+            }
+            .resume-container {
+                box-shadow: none;
+            }
+            * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!--
+JSON DATA EXAMPLE:
+{
+  "nome_completo": "Marcos Souza",
+  "cargo_desejado": "Senior Data Analyst",
+  "email": "marcos.souza@email.com",
+  "telefone": "+55 11 99999-9999",
+  "cidade": "São Paulo, Brazil",
+  "linkedin": "linkedin.com/in/marcossouza",
+  "site": "github.com/marcossouza",
+  "resumo_profissional": "Detail-oriented Senior Data Analyst with over 6 years of experience in data visualization, predictive modeling, and statistical analysis. Proven track record of transforming complex data sets into actionable business insights for multinational tech companies. Fluent in English and comfortable in multicultural environments.",
+  "experiencias": [
+    {
+      "cargo": "Senior Data Analyst",
+      "empresa": "Global Tech Corp",
+      "periodo": "Mar 2020 - Present",
+      "descricao": "Lead the analytics team in developing automated dashboards that reduced reporting time by 30%. Collaborated with stakeholders across Europe and North America to align KPIs and strategic goals."
+    },
+    {
+      "cargo": "Data Analyst",
+      "empresa": "Latam Insights",
+      "periodo": "Jan 2017 - Feb 2020",
+      "descricao": "Performed A/B testing and cohort analysis that contributed to a 15% increase in user retention. Managed data pipelines using SQL and Python."
+    }
+  ],
+  "formacoes": [
+    {
+      "curso": "Master's in Data Science",
+      "instituicao": "University of Technology",
+      "periodo": "2018 - 2020"
+    },
+    {
+      "curso": "Bachelor in Statistics",
+      "instituicao": "Federal University",
+      "periodo": "2012 - 2016"
+    }
+  ],
+  "certificacoes": [
+    {
+      "nome": "AWS Certified Data Analytics",
+      "emissor": "Amazon Web Services",
+      "ano": "2022"
+    },
+    {
+      "nome": "IELTS Academic - Band 8.0",
+      "emissor": "British Council",
+      "ano": "2021"
+    }
+  ],
+  "habilidades": [
+    { "nome": "SQL", "nivel": 5 },
+    { "nome": "Python (Pandas, Scikit-learn)", "nivel": 5 },
+    { "nome": "Tableau / Power BI", "nivel": 4 },
+    { "nome": "A/B Testing", "nivel": 4 },
+    { "nome": "AWS Redshift", "nivel": 3 }
+  ],
+  "idiomas": [
+    { "nome": "Portuguese", "nivel": "Native" },
+    { "nome": "English", "nivel": "Fluent" },
+    { "nome": "Spanish", "nivel": "Intermediate" }
+  ]
+}
+-->
+
+    <div class="resume-container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-main">
+                <h1 class="name">Marcos Souza</h1>
+                <div class="role">Senior Data Analyst</div>
+            </div>
+            <div class="contact">
+                <div class="contact-item">
+                    <span>marcos.souza@email.com</span>
+                    <i class="ti ti-mail"></i>
+                </div>
+                <div class="contact-item">
+                    <span>+55 11 99999-9999</span>
+                    <i class="ti ti-phone"></i>
+                </div>
+                <div class="contact-item">
+                    <span>São Paulo, Brazil</span>
+                    <i class="ti ti-map-pin"></i>
+                </div>
+                <div class="contact-item">
+                    <span>linkedin.com/in/marcossouza</span>
+                    <i class="ti ti-brand-linkedin"></i>
+                </div>
+            </div>
+        </div>
+
+        <hr class="header-divider" />
+
+        <!-- Profile / Summary -->
+        <div class="row">
+            <div class="col-left">
+                <h2 class="section-title">Professional<br>Summary</h2>
+            </div>
+            <div class="col-right">
+                <p class="summary">
+                    Detail-oriented Senior Data Analyst with over 6 years of experience in data visualization, predictive modeling, and statistical analysis. Proven track record of transforming complex data sets into actionable business insights for multinational tech companies. Fluent in English and comfortable in multicultural environments.
+                </p>
+            </div>
+        </div>
+
+        <!-- Work Experience -->
+        <div class="row">
+            <div class="col-left">
+                <h2 class="section-title">Work<br>Experience</h2>
+            </div>
+            <div class="col-right">
+                <div class="item">
+                    <div class="item-header">
+                        <div class="item-title">Senior Data Analyst</div>
+                        <div class="item-period">Mar 2020 – Present</div>
+                    </div>
+                    <div class="item-subtitle">Global Tech Corp</div>
+                    <p class="item-desc">
+                        Lead the analytics team in developing automated dashboards that reduced reporting time by 30%. Collaborated with stakeholders across Europe and North America to align KPIs and strategic goals.
+                    </p>
+                </div>
+                <div class="item">
+                    <div class="item-header">
+                        <div class="item-title">Data Analyst</div>
+                        <div class="item-period">Jan 2017 – Feb 2020</div>
+                    </div>
+                    <div class="item-subtitle">Latam Insights</div>
+                    <p class="item-desc">
+                        Performed A/B testing and cohort analysis that contributed to a 15% increase in user retention. Managed data pipelines using SQL and Python.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Education -->
+        <div class="row">
+            <div class="col-left">
+                <h2 class="section-title">Education</h2>
+            </div>
+            <div class="col-right">
+                <div class="item">
+                    <div class="item-header">
+                        <div class="item-title">Master's in Data Science</div>
+                        <div class="item-period">2018 – 2020</div>
+                    </div>
+                    <div class="item-subtitle">University of Technology</div>
+                </div>
+                <div class="item">
+                    <div class="item-header">
+                        <div class="item-title">Bachelor in Statistics</div>
+                        <div class="item-period">2012 – 2016</div>
+                    </div>
+                    <div class="item-subtitle">Federal University</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Certifications -->
+        <div class="row">
+            <div class="col-left">
+                <h2 class="section-title">Certifications</h2>
+            </div>
+            <div class="col-right">
+                <div class="cert-item">
+                    <div>
+                        <div class="cert-title">AWS Certified Data Analytics</div>
+                        <div class="cert-issuer">Amazon Web Services</div>
+                    </div>
+                    <div class="cert-year">2022</div>
+                </div>
+                <div class="cert-item">
+                    <div>
+                        <div class="cert-title">IELTS Academic - Band 8.0</div>
+                        <div class="cert-issuer">British Council</div>
+                    </div>
+                    <div class="cert-year">2021</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Languages -->
+        <div class="row">
+            <div class="col-left">
+                <h2 class="section-title">Languages</h2>
+            </div>
+            <div class="col-right">
+                <div class="languages-grid">
+                    <div class="lang-item">
+                        <span class="lang-name">Portuguese</span>
+                        <div class="lang-dots">
+                            <div class="dot filled"></div>
+                            <div class="dot filled"></div>
+                            <div class="dot filled"></div>
+                            <div class="dot filled"></div>
+                            <div class="dot filled"></div>
+                        </div>
+                    </div>
+                    <div class="lang-item">
+                        <span class="lang-name">English</span>
+                        <div class="lang-dots">
+                            <div class="dot filled"></div>
+                            <div class="dot filled"></div>
+                            <div class="dot filled"></div>
+                            <div class="dot filled"></div>
+                            <div class="dot empty"></div>
+                        </div>
+                    </div>
+                    <div class="lang-item">
+                        <span class="lang-name">Spanish</span>
+                        <div class="lang-dots">
+                            <div class="dot filled"></div>
+                            <div class="dot filled"></div>
+                            <div class="dot empty"></div>
+                            <div class="dot empty"></div>
+                            <div class="dot empty"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Skills -->
+        <div class="row">
+            <div class="col-left">
+                <h2 class="section-title">Core Skills</h2>
+            </div>
+            <div class="col-right">
+                <div class="skills-list">
+                    <span class="skill-tag">SQL</span>
+                    <span class="skill-tag">Python (Pandas, Scikit-learn)</span>
+                    <span class="skill-tag">Tableau / Power BI</span>
+                    <span class="skill-tag">A/B Testing</span>
+                    <span class="skill-tag">AWS Redshift</span>
+                    <span class="skill-tag">Data Visualization</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

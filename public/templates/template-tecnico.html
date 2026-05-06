@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Template Técnico</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --accent-color: #378ADD; /* Azul técnico */
+            --text-color: #111111;
+            --text-light: #4B5563;
+            --border-color: #E5E7EB;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+            color: var(--text-color);
+        }
+
+        .resume-container {
+            width: 794px;
+            height: 1123px;
+            background-color: #ffffff;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            padding: 50px 60px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Header Minimalista */
+        .header {
+            border-bottom: 2px solid var(--text-color);
+            padding-bottom: 20px;
+            margin-bottom: 25px;
+        }
+
+        .header-top {
+            display: flex;
+            align-items: baseline;
+            gap: 15px;
+            margin-bottom: 12px;
+        }
+
+        .name {
+            font-size: 32px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            text-transform: uppercase;
+        }
+
+        .role {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--accent-color);
+        }
+
+        .contact {
+            font-size: 13px;
+            color: var(--text-light);
+            margin-bottom: 16px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            font-weight: 500;
+        }
+
+        .contact span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .summary {
+            font-size: 14px;
+            line-height: 1.6;
+            color: var(--text-light);
+        }
+
+        /* Colunas 50/50 */
+        .content-split {
+            display: flex;
+            flex: 1;
+        }
+
+        .col {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .col-left {
+            padding-right: 30px;
+            border-right: 1px solid var(--border-color);
+        }
+
+        .col-right {
+            padding-left: 30px;
+        }
+
+        /* Seções */
+        .section-title {
+            font-size: 16px;
+            font-weight: 800;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+            color: var(--text-color);
+            letter-spacing: 1px;
+        }
+
+        .item {
+            margin-bottom: 20px;
+        }
+
+        .item:last-child {
+            margin-bottom: 0;
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 4px;
+        }
+
+        .item-title {
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .item-period {
+            font-size: 12px;
+            color: var(--text-light);
+            font-weight: 500;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .item-subtitle {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--accent-color);
+            margin-bottom: 6px;
+        }
+
+        .item-desc {
+            font-size: 13px;
+            line-height: 1.5;
+            color: var(--text-light);
+        }
+
+        /* Projetos */
+        .project-link {
+            font-size: 12px;
+            color: var(--accent-color);
+            text-decoration: none;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .project-tech {
+            margin-top: 6px;
+            font-size: 12px;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        /* Habilidades */
+        .skills-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .skill-tag {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 4px 10px;
+            background-color: #F9FAFB;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            color: var(--text-color);
+        }
+
+        /* Idiomas */
+        .language-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .language-item:last-child {
+            border-bottom: none;
+        }
+
+        .language-name {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .language-level {
+            font-size: 13px;
+            color: var(--accent-color);
+            font-weight: 500;
+        }
+
+        @media print {
+            body {
+                background-color: #fff;
+                padding: 0;
+            }
+            .resume-container {
+                box-shadow: none;
+                width: 100%;
+                height: auto;
+            }
+            * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!--
+JSON DATA EXAMPLE:
+{
+  "nome_completo": "Alexandre Silva",
+  "cargo_desejado": "Engenheiro de Software",
+  "email": "alexandre@email.com",
+  "telefone": "(11) 98765-4321",
+  "cidade": "São Paulo, SP",
+  "linkedin": "linkedin.com/in/alexandresilva",
+  "site": "github.com/alexandresilva",
+  "resumo_profissional": "Engenheiro de Software com foco em desenvolvimento web full-stack. Experiência na construção de arquiteturas escaláveis e APIs RESTful. Focado em boas práticas (Clean Code, TDD) e performance do lado do servidor e do cliente.",
+  "experiencias": [
+    {
+      "cargo": "Desenvolvedor Backend Sênior",
+      "empresa": "Tech Solutions",
+      "periodo": "2021 - Presente",
+      "descricao": "Arquitetura e desenvolvimento de microsserviços usando Node.js e Docker. Redução de 40% no tempo de resposta das APIs críticas e migração de banco de dados legado para PostgreSQL."
+    },
+    {
+      "cargo": "Desenvolvedor Full-Stack",
+      "empresa": "Startup Inovação",
+      "periodo": "2018 - 2021",
+      "descricao": "Desenvolvimento de plataforma SaaS em React e Node. Integração com APIs de pagamento (Stripe) e criação de dashboards analíticos com alta volumetria de dados."
+    }
+  ],
+  "projetos": [
+    {
+      "nome": "Sistema de Gestão Open Source",
+      "link": "github.com/alexandresilva/sg-open",
+      "descricao": "Plataforma de gestão de tarefas com foco em times ágeis. +500 stars no GitHub. Containerização completa e CI/CD via GitHub Actions.",
+      "tecnologias": "React, TypeScript, Node.js, PostgreSQL"
+    },
+    {
+      "nome": "API de Análise Financeira",
+      "link": "github.com/alexandresilva/fin-api",
+      "descricao": "Serviço RESTful para cálculo de métricas de investimento em tempo real.",
+      "tecnologias": "Python, FastAPI, Redis"
+    }
+  ],
+  "formacoes": [
+    {
+      "curso": "Engenharia de Computação",
+      "instituicao": "Universidade de Tecnologia",
+      "periodo": "2013 - 2017"
+    }
+  ],
+  "habilidades": [
+    { "nome": "JavaScript/TypeScript", "nivel": 5 },
+    { "nome": "React.js", "nivel": 5 },
+    { "nome": "Node.js", "nivel": 4 },
+    { "nome": "Python", "nivel": 4 },
+    { "nome": "Docker & Kubernetes", "nivel": 3 },
+    { "nome": "AWS", "nivel": 3 },
+    { "nome": "PostgreSQL / MongoDB", "nivel": 4 },
+    { "nome": "GraphQL", "nivel": 3 }
+  ],
+  "idiomas": [
+    { "nome": "Inglês", "nivel": "Avançado" },
+    { "nome": "Espanhol", "nivel": "Básico" }
+  ]
+}
+-->
+
+    <div class="resume-container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-top">
+                <h1 class="name">Alexandre Silva</h1>
+                <div class="role">Engenheiro de Software</div>
+            </div>
+            <div class="contact">
+                <span>alexandre@email.com</span> &bull;
+                <span>(11) 98765-4321</span> &bull;
+                <span>São Paulo, SP</span> &bull;
+                <span>linkedin.com/in/alexandresilva</span> &bull;
+                <span>github.com/alexandresilva</span>
+            </div>
+            <p class="summary">
+                Engenheiro de Software com foco em desenvolvimento web full-stack. Experiência na construção de arquiteturas escaláveis e APIs RESTful. Focado em boas práticas (Clean Code, TDD) e performance do lado do servidor e do cliente.
+            </p>
+        </div>
+
+        <!-- Conteúdo 50/50 -->
+        <div class="content-split">
+            <!-- Coluna Esquerda -->
+            <div class="col col-left">
+                <div class="section">
+                    <h2 class="section-title">Experiência</h2>
+                    
+                    <div class="item">
+                        <div class="item-header">
+                            <div class="item-title">Desenvolvedor Backend Sênior</div>
+                            <div class="item-period">2021 - Presente</div>
+                        </div>
+                        <div class="item-subtitle">Tech Solutions</div>
+                        <p class="item-desc">
+                            Arquitetura e desenvolvimento de microsserviços usando Node.js e Docker. Redução de 40% no tempo de resposta das APIs críticas e migração de banco de dados legado para PostgreSQL.
+                        </p>
+                    </div>
+
+                    <div class="item">
+                        <div class="item-header">
+                            <div class="item-title">Desenvolvedor Full-Stack</div>
+                            <div class="item-period">2018 - 2021</div>
+                        </div>
+                        <div class="item-subtitle">Startup Inovação</div>
+                        <p class="item-desc">
+                            Desenvolvimento de plataforma SaaS em React e Node. Integração com APIs de pagamento (Stripe) e criação de dashboards analíticos com alta volumetria de dados.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h2 class="section-title">Projetos</h2>
+                    
+                    <div class="item">
+                        <div class="item-header">
+                            <div class="item-title">Sistema de Gestão Open Source</div>
+                            <a href="#" class="project-link">github.com/alexandresilva/sg-open</a>
+                        </div>
+                        <p class="item-desc">
+                            Plataforma de gestão de tarefas com foco em times ágeis. +500 stars no GitHub. Containerização completa e CI/CD via GitHub Actions.
+                        </p>
+                        <div class="project-tech">React · TypeScript · Node.js · PostgreSQL</div>
+                    </div>
+
+                    <div class="item">
+                        <div class="item-header">
+                            <div class="item-title">API de Análise Financeira</div>
+                            <a href="#" class="project-link">github.com/alexandresilva/fin-api</a>
+                        </div>
+                        <p class="item-desc">
+                            Serviço RESTful para cálculo de métricas de investimento em tempo real.
+                        </p>
+                        <div class="project-tech">Python · FastAPI · Redis</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Coluna Direita -->
+            <div class="col col-right">
+                <div class="section">
+                    <h2 class="section-title">Habilidades</h2>
+                    <div class="skills-container">
+                        <span class="skill-tag">JavaScript/TypeScript</span>
+                        <span class="skill-tag">React.js</span>
+                        <span class="skill-tag">Node.js</span>
+                        <span class="skill-tag">Python</span>
+                        <span class="skill-tag">FastAPI</span>
+                        <span class="skill-tag">PostgreSQL / MongoDB</span>
+                        <span class="skill-tag">Redis</span>
+                        <span class="skill-tag">Docker & Kubernetes</span>
+                        <span class="skill-tag">AWS</span>
+                        <span class="skill-tag">GraphQL</span>
+                        <span class="skill-tag">Git / CI/CD</span>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h2 class="section-title">Formação</h2>
+                    
+                    <div class="item">
+                        <div class="item-header">
+                            <div class="item-title">Engenharia de Computação</div>
+                            <div class="item-period">2013 - 2017</div>
+                        </div>
+                        <div class="item-subtitle">Universidade de Tecnologia</div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h2 class="section-title">Idiomas</h2>
+                    <div class="language-item">
+                        <span class="language-name">Inglês</span>
+                        <span class="language-level">Avançado</span>
+                    </div>
+                    <div class="language-item">
+                        <span class="language-name">Espanhol</span>
+                        <span class="language-level">Básico</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

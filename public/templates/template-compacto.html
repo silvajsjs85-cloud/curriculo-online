@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Template Compacto</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --text-color: #000000;
+            --text-light: #333333;
+            --line-color: #CCCCCC;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+            color: var(--text-color);
+            font-size: 11px;
+            line-height: 1.4;
+        }
+
+        .resume-container {
+            width: 794px;
+            height: 1123px;
+            background-color: #ffffff;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            padding: 25px 30px; /* Margens mínimas mas seguras para impressão */
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Header */
+        .header {
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        .header-line1 {
+            margin-bottom: 4px;
+        }
+
+        .name {
+            font-size: 18px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .role-separator {
+            margin: 0 8px;
+            color: var(--line-color);
+        }
+
+        .role {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-light);
+        }
+
+        .header-line2 {
+            color: var(--text-light);
+        }
+
+        .contact-item::after {
+            content: "•";
+            margin: 0 6px;
+            color: var(--line-color);
+        }
+
+        .contact-item:last-child::after {
+            content: "";
+            margin: 0;
+        }
+
+        /* Seções */
+        .section {
+            margin-bottom: 12px;
+        }
+
+        .section:last-child {
+            margin-bottom: 0;
+        }
+
+        .section-title {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--text-color);
+            border-bottom: 0.5px solid var(--text-color);
+            padding-bottom: 2px;
+            margin-bottom: 6px;
+            letter-spacing: 0.5px;
+        }
+
+        .summary {
+            text-align: justify;
+        }
+
+        /* Itens (Experiência, Formação) */
+        .item {
+            margin-bottom: 8px;
+        }
+
+        .item:last-child {
+            margin-bottom: 0;
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+
+        .item-role {
+            font-weight: 700;
+        }
+
+        .item-company {
+            font-weight: 600;
+            font-style: italic;
+        }
+
+        .item-separator {
+            margin: 0 4px;
+        }
+
+        .item-period {
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .item-desc {
+            text-align: justify;
+            margin-top: 2px;
+        }
+
+        /* Habilidades Inline */
+        .skills-inline {
+            text-align: justify;
+        }
+
+        .skills-inline strong {
+            margin-right: 4px;
+        }
+
+        @media print {
+            body {
+                background-color: #fff;
+                padding: 0;
+            }
+            .resume-container {
+                box-shadow: none;
+                width: 100%;
+                height: 100%;
+            }
+            * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!--
+JSON DATA EXAMPLE:
+{
+  "nome_completo": "Roberto Almeida",
+  "cargo_desejado": "Diretor Geral / CEO",
+  "email": "roberto.almeida@email.com",
+  "telefone": "(11) 99999-8888",
+  "cidade": "São Paulo, SP",
+  "linkedin": "linkedin.com/in/robertoalmeida",
+  "site": "robertoalmeida.com",
+  "resumo_profissional": "Executivo C-Level com mais de 20 anos de experiência em gestão de operações, reestruturação corporativa e expansão internacional em mercados de tecnologia e varejo. Liderou fusões e aquisições (M&A) totalizando R$ 500M e comandou equipes de alta performance com mais de 1.200 colaboradores diretos e indiretos. Especialista em estratégias go-to-market e digitalização de processos operacionais pesados.",
+  "experiencias": [
+    {
+      "cargo": "Chief Executive Officer (CEO)",
+      "empresa": "Tech Retail Operations S.A.",
+      "periodo": "Jan 2018 - Presente",
+      "descricao": "Liderou a transição digital da companhia, convertendo 40% das vendas físicas para e-commerce em 2 anos. Crescimento de 200% no EBITDA e expansão para Argentina e Colômbia. Gestão do P&L global e reporte direto ao Conselho de Administração."
+    },
+    {
+      "cargo": "Diretor de Operações (COO)",
+      "empresa": "Logística Nacional S.A.",
+      "periodo": "Mar 2012 - Dez 2017",
+      "descricao": "Reestruturação completa da cadeia de suprimentos, reduzindo custos operacionais em 18% e melhorando o SLA de entrega de 82% para 98%. Implementação de sistemas WMS e roteirização inteligente integrados via API."
+    },
+    {
+      "cargo": "Gerente Geral de Vendas",
+      "empresa": "Multinacional de Consumo",
+      "periodo": "Ago 2006 - Fev 2012",
+      "descricao": "Responsável pelo mercado da Região Sudeste. Reconstrução da malha de distribuidores e aumento de market share de 15% para 22% enfrentando forte concorrência asiática."
+    },
+    {
+      "cargo": "Consultor Estratégico Sênior",
+      "empresa": "Top Tier Consulting Group",
+      "periodo": "Fev 2001 - Jul 2006",
+      "descricao": "Projetos de otimização de portfólio, due diligence para M&A e redesenho organizacional para as 50 maiores empresas do Brasil (Fortune 500)."
+    }
+  ],
+  "formacoes": [
+    {
+      "curso": "Executive MBA em Liderança Global",
+      "instituicao": "Harvard Business School",
+      "periodo": "2010 - 2012"
+    },
+    {
+      "curso": "Mestrado em Engenharia de Produção",
+      "instituicao": "Escola Politécnica da USP",
+      "periodo": "2002 - 2004"
+    },
+    {
+      "curso": "Bacharelado em Administração de Empresas",
+      "instituicao": "Fundação Getúlio Vargas (FGV)",
+      "periodo": "1996 - 2000"
+    }
+  ],
+  "habilidades": [
+    { "nome": "Gestão Executiva (P&L)", "nivel": 5 },
+    { "nome": "Fusões e Aquisições (M&A)", "nivel": 5 },
+    { "nome": "Planejamento Estratégico", "nivel": 5 },
+    { "nome": "Transformação Digital", "nivel": 5 },
+    { "nome": "Liderança de Alta Performance", "nivel": 5 },
+    { "nome": "Negociação Internacional", "nivel": 5 }
+  ],
+  "idiomas": [
+    { "nome": "Inglês (Fluente)", "nivel": "Fluente" },
+    { "nome": "Espanhol (Avançado)", "nivel": "Avançado" },
+    { "nome": "Francês (Básico)", "nivel": "Básico" }
+  ]
+}
+-->
+
+    <div class="resume-container">
+        <!-- Header 2 Linhas -->
+        <div class="header">
+            <div class="header-line1">
+                <span class="name">Roberto Almeida</span>
+                <span class="role-separator">|</span>
+                <span class="role">Diretor Geral / CEO</span>
+            </div>
+            <div class="header-line2">
+                <span class="contact-item">roberto.almeida@email.com</span>
+                <span class="contact-item">(11) 99999-8888</span>
+                <span class="contact-item">São Paulo, SP</span>
+                <span class="contact-item">linkedin.com/in/robertoalmeida</span>
+                <span class="contact-item">robertoalmeida.com</span>
+            </div>
+        </div>
+
+        <!-- Resumo -->
+        <div class="section">
+            <div class="section-title">Resumo Profissional</div>
+            <div class="summary">
+                Executivo C-Level com mais de 20 anos de experiência em gestão de operações, reestruturação corporativa e expansão internacional em mercados de tecnologia e varejo. Liderou fusões e aquisições (M&A) totalizando R$ 500M e comandou equipes de alta performance com mais de 1.200 colaboradores diretos e indiretos. Especialista em estratégias go-to-market e digitalização de processos operacionais pesados.
+            </div>
+        </div>
+
+        <!-- Experiência -->
+        <div class="section">
+            <div class="section-title">Experiência Profissional</div>
+            
+            <div class="item">
+                <div class="item-header">
+                    <div>
+                        <span class="item-role">Chief Executive Officer (CEO)</span>
+                        <span class="item-separator">•</span>
+                        <span class="item-company">Tech Retail Operations S.A.</span>
+                    </div>
+                    <span class="item-period">Jan 2018 - Presente</span>
+                </div>
+                <div class="item-desc">
+                    Liderou a transição digital da companhia, convertendo 40% das vendas físicas para e-commerce em 2 anos. Crescimento de 200% no EBITDA e expansão para Argentina e Colômbia. Gestão do P&L global e reporte direto ao Conselho de Administração.
+                </div>
+            </div>
+
+            <div class="item">
+                <div class="item-header">
+                    <div>
+                        <span class="item-role">Diretor de Operações (COO)</span>
+                        <span class="item-separator">•</span>
+                        <span class="item-company">Logística Nacional S.A.</span>
+                    </div>
+                    <span class="item-period">Mar 2012 - Dez 2017</span>
+                </div>
+                <div class="item-desc">
+                    Reestruturação completa da cadeia de suprimentos, reduzindo custos operacionais em 18% e melhorando o SLA de entrega de 82% para 98%. Implementação de sistemas WMS e roteirização inteligente integrados via API.
+                </div>
+            </div>
+
+            <div class="item">
+                <div class="item-header">
+                    <div>
+                        <span class="item-role">Gerente Geral de Vendas</span>
+                        <span class="item-separator">•</span>
+                        <span class="item-company">Multinacional de Consumo</span>
+                    </div>
+                    <span class="item-period">Ago 2006 - Fev 2012</span>
+                </div>
+                <div class="item-desc">
+                    Responsável pelo mercado da Região Sudeste. Reconstrução da malha de distribuidores e aumento de market share de 15% para 22% enfrentando forte concorrência asiática.
+                </div>
+            </div>
+
+            <div class="item">
+                <div class="item-header">
+                    <div>
+                        <span class="item-role">Consultor Estratégico Sênior</span>
+                        <span class="item-separator">•</span>
+                        <span class="item-company">Top Tier Consulting Group</span>
+                    </div>
+                    <span class="item-period">Fev 2001 - Jul 2006</span>
+                </div>
+                <div class="item-desc">
+                    Projetos de otimização de portfólio, due diligence para M&A e redesenho organizacional para as 50 maiores empresas do Brasil (Fortune 500).
+                </div>
+            </div>
+        </div>
+
+        <!-- Formação -->
+        <div class="section">
+            <div class="section-title">Formação Acadêmica</div>
+            
+            <div class="item">
+                <div class="item-header">
+                    <div>
+                        <span class="item-role">Executive MBA em Liderança Global</span>
+                        <span class="item-separator">•</span>
+                        <span class="item-company">Harvard Business School</span>
+                    </div>
+                    <span class="item-period">2010 - 2012</span>
+                </div>
+            </div>
+
+            <div class="item">
+                <div class="item-header">
+                    <div>
+                        <span class="item-role">Mestrado em Engenharia de Produção</span>
+                        <span class="item-separator">•</span>
+                        <span class="item-company">Escola Politécnica da USP</span>
+                    </div>
+                    <span class="item-period">2002 - 2004</span>
+                </div>
+            </div>
+
+            <div class="item">
+                <div class="item-header">
+                    <div>
+                        <span class="item-role">Bacharelado em Administração de Empresas</span>
+                        <span class="item-separator">•</span>
+                        <span class="item-company">Fundação Getúlio Vargas (FGV)</span>
+                    </div>
+                    <span class="item-period">1996 - 2000</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Habilidades e Idiomas Inline -->
+        <div class="section">
+            <div class="section-title">Competências e Idiomas</div>
+            <div class="skills-inline">
+                <strong>Principais Habilidades:</strong> Gestão Executiva (P&L), Fusões e Aquisições (M&A), Planejamento Estratégico, Transformação Digital, Liderança de Alta Performance, Negociação Internacional.
+                <br>
+                <strong>Idiomas:</strong> Inglês (Fluente), Espanhol (Avançado), Francês (Básico).
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

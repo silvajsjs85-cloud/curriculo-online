@@ -7,7 +7,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ResumePreview } from "@/components/ResumePreview";
-import type { ResumeData } from "@/types/resume";
+import type { Resume, ResumeData } from "@/types/resume";
 
 // ─── Preview constants ────────────────────────────────────────────────────────
 const PREVIEW_SCALE = 0.335;
@@ -82,7 +82,7 @@ function TemplateCard({
   name: string;
   accent: string;
   tag?: string;
-  layout?: "modern" | "classic" | "minimal" | "executive";
+  layout?: Resume["template"];
 }) {
   return (
     <div
@@ -203,6 +203,12 @@ const TEMPLATES = [
   { name: "Clássico",    accent: "#0F2744", tag: undefined,  layout: "classic" as const },
   { name: "Minimalista", accent: "#475569", tag: undefined,  layout: "minimal" as const },
   { name: "Executivo",   accent: "#2DD4BF", tag: "Novo",     layout: "executive" as const },
+  { name: "Criativo",    accent: "#7F77DD", tag: "Novo",     layout: "creative" as const },
+  { name: "Técnico",     accent: "#378ADD", tag: undefined,  layout: "technical" as const },
+  { name: "Primeiro Emprego", accent: "#1D9E75", tag: undefined, layout: "first_job" as const },
+  { name: "Internacional", accent: "#185FA5", tag: undefined, layout: "international" as const },
+  { name: "Institucional", accent: "#0F6E56", tag: undefined, layout: "institutional" as const },
+  { name: "Compacto",    accent: "#000000", tag: undefined,  layout: "compact" as const },
 ];
 
 const STEPS = [

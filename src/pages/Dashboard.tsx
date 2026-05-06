@@ -63,6 +63,42 @@ const TEMPLATE_THEMES: Record<string, TemplateTheme> = {
     badgeClass: "bg-teal-50 text-teal-700 border-teal-100",
     layout: "executive",
   },
+  creative: {
+    label: "Criativo",
+    accent: "#7F77DD",
+    badgeClass: "bg-purple-50 text-purple-700 border-purple-100",
+    layout: "sidebar",
+  },
+  technical: {
+    label: "Técnico",
+    accent: "#378ADD",
+    badgeClass: "bg-blue-50 text-blue-700 border-blue-100",
+    layout: "default",
+  },
+  first_job: {
+    label: "Primeiro Emprego",
+    accent: "#1D9E75",
+    badgeClass: "bg-emerald-50 text-emerald-700 border-emerald-100",
+    layout: "default",
+  },
+  international: {
+    label: "Internacional",
+    accent: "#185FA5",
+    badgeClass: "bg-sky-50 text-sky-700 border-sky-100",
+    layout: "default",
+  },
+  institutional: {
+    label: "Institucional",
+    accent: "#0F6E56",
+    badgeClass: "bg-green-50 text-green-700 border-green-100",
+    layout: "default",
+  },
+  compact: {
+    label: "Compacto",
+    accent: "#000000",
+    badgeClass: "bg-gray-100 text-gray-800 border-gray-200",
+    layout: "default",
+  },
 };
 
 const FALLBACK_THEME: TemplateTheme = {
