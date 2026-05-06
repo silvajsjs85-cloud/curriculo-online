@@ -155,7 +155,7 @@ export default function Pricing() {
                 </Button>
               )}
               <p className="mt-3 text-center text-xs text-slate-500">
-                Pagamento seguro via Stripe · Acesso por 1 ano
+                Pagamento seguro via Stripe · Cobrança mensal recorrente
               </p>
             </div>
           </div>
@@ -193,7 +193,7 @@ export default function Pricing() {
               {[
                 {
                   q: "Posso cancelar a qualquer momento?",
-                  a: "O plano Premium é um pagamento único anual, não uma assinatura recorrente. Você terá acesso por 12 meses.",
+                  a: "Sim! Você pode cancelar a assinatura mensal a qualquer momento pelo portal do Stripe. O acesso permanece ativo até o fim do período pago.",
                 },
                 {
                   q: "O plano gratuito tem limite de currículos?",

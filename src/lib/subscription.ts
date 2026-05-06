@@ -51,7 +51,7 @@ export function activateSubscription(expiresAt?: string): void {
   const now = new Date();
   const expiry = expiresAt ? new Date(expiresAt) : (() => {
     const d = new Date(now);
-    d.setFullYear(d.getFullYear() + 1);
+    d.setMonth(d.getMonth() + 1);
     return d;
   })();
 
@@ -125,4 +125,4 @@ export const STRIPE_PAYMENT_LINK =
 
 export const PLAN_PRICE = import.meta.env.VITE_PLAN_PRICE ?? "R$ 19,90";
 
-export const PLAN_PERIOD = import.meta.env.VITE_PLAN_PERIOD ?? "por ano";
+export const PLAN_PERIOD = import.meta.env.VITE_PLAN_PERIOD ?? "por mês";

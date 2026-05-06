@@ -62,7 +62,7 @@ export function UpgradeModal({ open, onOpenChange, templateName }: UpgradeModalP
               {PLAN_PRICE}
               <span className="ml-1 text-sm font-semibold text-slate-500">{PLAN_PERIOD}</span>
             </div>
-            <p className="mt-0.5 text-xs text-slate-500">Pagamento único · Acesso por 1 ano</p>
+            <p className="mt-0.5 text-xs text-slate-500">Assinatura mensal · Cancele quando quiser</p>
           </div>
 
           <div className="flex flex-col gap-2.5">
