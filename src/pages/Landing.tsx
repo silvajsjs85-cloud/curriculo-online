@@ -73,7 +73,7 @@ export default function Landing() {
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="animate-fade-up">
               <div className="section-label animate-fade-in">O melhor criador de currículos do Brasil</div>
-              <h1 className="text-5xl lg:text-7xl font-black text-[#0F2744] leading-[1.1] mb-6 tracking-tight">
+              <h1 className="text-5xl lg:text-7xl font-black text-[#0F2744] leading-[1.1] mb-6 tracking-normal">
                 Crie um currículo <br />
                 <span className="text-[#0D9488]">profissional</span> em poucos minutos
               </h1>
@@ -131,7 +131,7 @@ export default function Landing() {
       {/* ─── Social Proof ─── */}
       <section className="py-12 border-y border-slate-100 bg-white">
         <div className="container mx-auto px-6 max-w-7xl">
-          <p className="text-center text-xs font-black uppercase tracking-[0.2em] text-slate-400 mb-8">
+          <p className="text-center text-xs font-black uppercase tracking-normal text-slate-400 mb-8">
             Usuários contratados em empresas globais
           </p>
           <div className="flex flex-wrap justify-center items-center gap-12 opacity-40 grayscale transition-all">
@@ -149,7 +149,7 @@ export default function Landing() {
         <div className="container mx-auto px-6 max-w-7xl">
           <div className="text-center mb-16 animate-fade-up">
             <div className="section-label mx-auto">Processo Simples</div>
-            <h2 className="text-4xl lg:text-5xl font-black text-[#0F2744] mb-4 tracking-tight">Como funciona?</h2>
+            <h2 className="text-4xl lg:text-5xl font-black text-[#0F2744] mb-4 tracking-normal">Como funciona?</h2>
             <p className="text-slate-500 max-w-xl mx-auto font-medium">Três passos rápidos para sair do zero ao currículo perfeito.</p>
           </div>
           <div className="grid md:grid-cols-3 gap-8 relative">
@@ -174,7 +174,7 @@ export default function Landing() {
           <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-16 gap-6">
             <div className="animate-fade-up">
               <div className="section-label">Nossos Modelos</div>
-              <h2 className="text-4xl lg:text-5xl font-black text-[#0F2744] mb-4 tracking-tight">Escolha o seu design</h2>
+              <h2 className="text-4xl lg:text-5xl font-black text-[#0F2744] mb-4 tracking-normal">Escolha o seu design</h2>
               <p className="text-slate-500 max-w-md font-medium">Layouts modernos testados para garantir que sua experiência brilhe.</p>
             </div>
             <Button asChild variant="outline" className="rounded-full font-bold h-12 border-slate-200">
@@ -202,7 +202,7 @@ export default function Landing() {
                   <div className="p-6">
                     <div className="flex items-center justify-between mb-2">
                        <h3 className="font-bold text-[#0F2744]">{t.name}</h3>
-                       <span className={`text-[10px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider ${t.tag === 'Popular' ? 'bg-teal-100 text-[#0D9488]' : 'bg-amber-100 text-amber-700'}`}>
+                       <span className={`text-[10px] font-black px-2 py-0.5 rounded-full uppercase tracking-normalr ${t.tag === 'Popular' ? 'bg-teal-100 text-[#0D9488]' : 'bg-amber-100 text-amber-700'}`}>
                          {t.tag}
                        </span>
                     </div>
@@ -239,7 +239,7 @@ export default function Landing() {
                         </div>
                         <div>
                            <div className="font-black text-[#0F2744] text-xl">PDF Export</div>
-                           <div className="text-slate-500 font-bold text-sm uppercase tracking-widest">Pixel Perfect</div>
+                           <div className="text-slate-500 font-bold text-sm uppercase tracking-normalst">Pixel Perfect</div>
                         </div>
                      </div>
                   </div>
@@ -247,7 +247,7 @@ export default function Landing() {
             </div>
             <div className="order-1 lg:order-2 animate-fade-up">
               <div className="section-label">Por que nós?</div>
-              <h2 className="text-4xl lg:text-5xl font-black text-[#0F2744] mb-8 tracking-tight">O site mais confiável para sua carreira</h2>
+              <h2 className="text-4xl lg:text-5xl font-black text-[#0F2744] mb-8 tracking-normal">O site mais confiável para sua carreira</h2>
               <div className="space-y-8">
                 {BENEFITS.map((b, i) => (
                   <div key={i} className="flex gap-6 group">
@@ -271,10 +271,10 @@ export default function Landing() {
         <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_30%_30%,rgba(13,148,136,0.1),transparent)]" />
         <div className="container mx-auto px-6 max-w-7xl relative z-10">
           <div className="text-center mb-16 animate-fade-up">
-            <div className="inline-flex items-center gap-2 bg-teal-500/10 border border-teal-500/20 text-teal-400 text-xs font-bold px-4 py-1.5 rounded-full mb-6 uppercase tracking-widest">
+            <div className="inline-flex items-center gap-2 bg-teal-500/10 border border-teal-500/20 text-teal-400 text-xs font-bold px-4 py-1.5 rounded-full mb-6 uppercase tracking-normalst">
               Planos e Preços
             </div>
-            <h2 className="text-4xl lg:text-5xl font-black mb-4 tracking-tight">Escolha o seu plano</h2>
+            <h2 className="text-4xl lg:text-5xl font-black mb-4 tracking-normal">Escolha o seu plano</h2>
             <p className="text-slate-400 font-medium max-w-lg mx-auto">Comece gratuitamente e faça upgrade para desbloquear o poder total.</p>
           </div>
 
@@ -298,7 +298,7 @@ export default function Landing() {
 
              {/* Premium Plan */}
              <div className="bg-white p-10 rounded-[2.5rem] text-[#0F2744] shadow-2xl shadow-teal-500/10 relative animate-fade-up animate-delay-100">
-                <div className="absolute -top-4 right-8 bg-[#0D9488] text-white px-4 py-1 rounded-full text-xs font-bold uppercase tracking-widest">
+                <div className="absolute -top-4 right-8 bg-[#0D9488] text-white px-4 py-1 rounded-full text-xs font-bold uppercase tracking-normalst">
                    RECOMENDADO
                 </div>
                 <h3 className="text-2xl font-bold mb-2">Premium</h3>
@@ -324,7 +324,7 @@ export default function Landing() {
         <div className="container mx-auto px-6 max-w-7xl">
           <div className="text-center mb-16 animate-fade-up">
             <div className="section-label mx-auto">Depoimentos</div>
-            <h2 className="text-4xl lg:text-5xl font-black text-[#0F2744] mb-4 tracking-tight">O que dizem nossos usuários</h2>
+            <h2 className="text-4xl lg:text-5xl font-black text-[#0F2744] mb-4 tracking-normal">O que dizem nossos usuários</h2>
             <p className="text-slate-500 font-medium">Histórias de sucesso que começaram aqui.</p>
           </div>
           <div className="grid md:grid-cols-3 gap-8">
@@ -342,7 +342,7 @@ export default function Landing() {
                    <div className="h-12 w-12 rounded-full bg-slate-200" />
                    <div>
                       <div className="font-bold text-[#0F2744]">{t.name}</div>
-                      <div className="text-xs text-slate-400 font-bold uppercase tracking-widest">{t.role}</div>
+                      <div className="text-xs text-slate-400 font-bold uppercase tracking-normalst">{t.role}</div>
                    </div>
                 </div>
               </div>
@@ -371,7 +371,7 @@ export default function Landing() {
               </div>
             </div>
             <div>
-              <h4 className="font-bold text-sm uppercase tracking-widest text-teal-400 mb-6">Navegação</h4>
+              <h4 className="font-bold text-sm uppercase tracking-normalst text-teal-400 mb-6">Navegação</h4>
               <ul className="space-y-4 font-medium text-slate-300">
                 <li><Link to="/modelos" className="hover:text-white transition-colors">Modelos</Link></li>
                 <li><a href="#como-funciona" className="hover:text-white transition-colors">Como Funciona</a></li>
@@ -380,7 +380,7 @@ export default function Landing() {
               </ul>
             </div>
             <div>
-              <h4 className="font-bold text-sm uppercase tracking-widest text-teal-400 mb-6">Legal</h4>
+              <h4 className="font-bold text-sm uppercase tracking-normalst text-teal-400 mb-6">Legal</h4>
               <ul className="space-y-4 font-medium text-slate-300">
                 <li><Link to="/termos-de-uso" className="hover:text-white transition-colors">Termos de Uso</Link></li>
                 <li><Link to="/politica-de-privacidade" className="hover:text-white transition-colors">Privacidade</Link></li>

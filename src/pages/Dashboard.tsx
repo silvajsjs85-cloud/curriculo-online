@@ -271,24 +271,24 @@ function ResumeMiniPreview({
 function EmptyState({ onCreate }: { onCreate: () => void }) {
   return (
     <section
-      className="overflow-hidden rounded-3xl border border-dashed border-teal-200 bg-white"
+      className="soft-surface overflow-hidden rounded-xl border border-dashed border-teal-200"
       style={{
-        boxShadow: "0 18px 50px rgba(15,39,68,0.08), 0 1px 0 rgba(255,255,255,0.8) inset",
+        boxShadow: "0 14px 36px rgba(15,39,68,0.07), 0 1px 0 rgba(255,255,255,0.8) inset",
       }}
     >
       <div className="grid items-center gap-8 p-6 sm:p-8 md:grid-cols-[0.9fr_1.1fr]">
         <ResumeMiniPreview
           template="modern"
           candidateName="Seu nome"
-          className="rounded-2xl border border-slate-100"
+          className="rounded-lg border border-slate-100"
         />
 
         <div>
-          <span className="mb-3 inline-flex items-center gap-2 rounded-full border border-teal-100 bg-teal-50 px-3 py-1 text-xs font-bold uppercase tracking-[0.16em] text-teal-700">
+          <span className="mb-3 inline-flex items-center gap-2 rounded-full border border-teal-100 bg-teal-50 px-3 py-1 text-xs font-bold uppercase tracking-normal text-teal-700">
             <Sparkles className="h-3.5 w-3.5" />
             Primeiro currículo
           </span>
-          <h2 className="text-2xl font-extrabold tracking-tight text-[#0F2744] sm:text-3xl">
+          <h2 className="text-2xl font-extrabold tracking-normal text-[#0F2744] sm:text-3xl">
             Comece seu primeiro currículo
           </h2>
           <p className="mt-3 max-w-lg text-sm leading-relaxed text-slate-600 sm:text-base">
@@ -297,7 +297,7 @@ function EmptyState({ onCreate }: { onCreate: () => void }) {
           <Button
             onClick={onCreate}
             size="lg"
-            className="btn-cta mt-6 h-12 rounded-2xl px-6 font-bold"
+            className="btn-cta mt-6 h-12 rounded-lg px-6 font-bold"
             style={{ boxShadow: "0 4px 16px rgba(13,148,136,0.35)" }}
           >
             <Plus className="h-5 w-5" />
@@ -389,23 +389,23 @@ export default function Dashboard() {
     <main
       className="min-h-[calc(100vh-4rem)]"
       style={{
-        background: "linear-gradient(180deg, #F7F6F3 0%, #fbfaf7 46%, #ffffff 100%)",
+        background: "linear-gradient(180deg, #F8FAFC 0%, #FFFFFF 52%, #F8FAFC 100%)",
       }}
     >
       <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-12">
         <section
-          className="mb-8 overflow-hidden rounded-3xl border border-white/80 bg-white/90 p-6 sm:p-8"
+          className="soft-surface mb-8 overflow-hidden rounded-xl p-6 sm:p-8"
           style={{
-            boxShadow: "0 18px 55px rgba(15,39,68,0.09), 0 1px 0 rgba(255,255,255,0.9) inset",
+            boxShadow: "0 14px 38px rgba(15,39,68,0.08), 0 1px 0 rgba(255,255,255,0.9) inset",
           }}
         >
           <div className="flex flex-col gap-7 md:flex-row md:items-center md:justify-between">
             <div className="max-w-2xl">
-              <span className="mb-4 inline-flex items-center gap-2 rounded-full border border-teal-100 bg-teal-50 px-3.5 py-1.5 text-xs font-bold uppercase tracking-[0.16em] text-teal-700">
+              <span className="mb-4 inline-flex items-center gap-2 rounded-full border border-teal-100 bg-teal-50 px-3.5 py-1.5 text-xs font-bold uppercase tracking-normal text-teal-700">
                 <Sparkles className="h-3.5 w-3.5" />
                 Área de trabalho
               </span>
-              <h1 className="text-3xl font-extrabold tracking-tight text-[#0F2744] sm:text-4xl lg:text-[2.75rem]">
+              <h1 className="text-3xl font-extrabold tracking-normal text-[#0F2744] sm:text-4xl lg:text-[2.75rem]">
                 Meus Currículos
               </h1>
               <p className="mt-3 max-w-xl text-sm leading-relaxed text-slate-600 sm:text-base">
@@ -427,7 +427,7 @@ export default function Dashboard() {
             <Button
               onClick={handleCreate}
               size="lg"
-              className="btn-cta h-12 rounded-2xl px-6 font-bold md:self-end"
+              className="btn-cta h-12 rounded-lg px-6 font-bold md:self-end"
               style={{ boxShadow: "0 4px 16px rgba(13,148,136,0.35)" }}
             >
               <Plus className="h-5 w-5" />
@@ -460,9 +460,9 @@ export default function Dashboard() {
                 return (
                   <article
                     key={resume.id}
-                    className="group overflow-hidden rounded-3xl border border-white bg-white transition-all duration-300 hover:-translate-y-1"
+                    className="soft-surface group overflow-hidden rounded-xl transition-all duration-300 hover:-translate-y-1"
                     style={{
-                      boxShadow: "0 10px 35px rgba(15,39,68,0.08), 0 0 0 1px rgba(15,39,68,0.04)",
+                      boxShadow: "0 10px 30px rgba(15,39,68,0.07), 0 0 0 1px rgba(15,39,68,0.04)",
                     }}
                   >
                     <div className="grid h-full sm:grid-cols-[168px_1fr]">
@@ -479,7 +479,7 @@ export default function Dashboard() {
                           <div className="min-w-0">
                             <Link
                               to={`/builder/${resume.id}`}
-                              className="line-clamp-1 text-lg font-extrabold tracking-tight text-[#0F2744] transition-colors hover:text-teal-700"
+                              className="line-clamp-1 text-lg font-extrabold tracking-normal text-[#0F2744] transition-colors hover:text-teal-700"
                             >
                               {resume.title || "Novo Currículo"}
                             </Link>
@@ -568,22 +568,22 @@ export default function Dashboard() {
         )}
 
         <section
-          className="mt-8 overflow-hidden rounded-3xl p-5 text-white sm:p-6"
+          className="mt-8 overflow-hidden rounded-xl p-5 text-white sm:p-6"
           style={{
-            background: "linear-gradient(135deg, #0F2744 0%, #0b1d32 100%)",
-            boxShadow: "0 18px 45px rgba(15,39,68,0.18)",
+            background: "linear-gradient(135deg, #102033 0%, #12394a 100%)",
+            boxShadow: "0 14px 36px rgba(15,39,68,0.16)",
           }}
         >
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex gap-4">
               <div
-                className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl"
+                className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg"
                 style={{ backgroundColor: "rgba(13,148,136,0.18)", border: "1px solid rgba(45,212,191,0.24)" }}
               >
                 <Lightbulb className="h-5 w-5 text-teal-300" />
               </div>
               <div>
-                <p className="text-xs font-bold uppercase tracking-[0.18em] text-teal-300">Dica rápida</p>
+                <p className="text-xs font-bold uppercase tracking-normal text-teal-300">Dica rápida</p>
                 <h2 className="mt-1 text-lg font-extrabold">Crie versões diferentes para cada vaga.</h2>
                 <p className="mt-1 max-w-2xl text-sm leading-relaxed text-slate-300">
                   Ajuste o título, destaque experiências relevantes e aumente suas chances de ser chamado.
@@ -594,7 +594,7 @@ export default function Dashboard() {
             <Button
               onClick={handleCreate}
               variant="outline"
-              className="h-11 rounded-2xl border-white/15 bg-white/10 px-5 font-bold text-white hover:bg-white hover:text-[#0F2744]"
+              className="h-11 rounded-lg border-white/15 bg-white/10 px-5 font-bold text-white hover:bg-white hover:text-[#0F2744]"
             >
               Nova versão
               <ArrowRight className="h-4 w-4" />

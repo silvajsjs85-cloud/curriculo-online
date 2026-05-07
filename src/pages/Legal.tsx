@@ -19,7 +19,7 @@ function LegalLayout({
   return (
     <main
       className="min-h-[calc(100vh-4rem)] px-4 py-10 sm:px-6 sm:py-14"
-      style={{ backgroundColor: "#F7F6F3" }}
+      style={{ background: "linear-gradient(180deg, #F8FAFC 0%, #FFFFFF 52%, #F8FAFC 100%)" }}
     >
       <div className="mx-auto max-w-4xl">
         <Button
@@ -33,19 +33,19 @@ function LegalLayout({
           </Link>
         </Button>
 
-        <section className="rounded-3xl bg-white p-6 shadow-sm sm:p-9">
+        <section className="soft-surface rounded-xl p-6 sm:p-9">
           <div className="mb-8 flex flex-col gap-5 border-b border-slate-100 pb-8 sm:flex-row sm:items-start">
             <div
-              className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl"
+              className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg"
               style={{ backgroundColor: "#0D9488" }}
             >
               <Icon className="h-6 w-6 text-white" />
             </div>
             <div>
-              <p className="text-xs font-bold uppercase tracking-[0.18em] text-teal-700">
+              <p className="text-xs font-bold uppercase text-teal-700">
                 Currículo Fácil
               </p>
-              <h1 className="mt-2 text-3xl font-extrabold tracking-tight text-[#0F2744] sm:text-4xl">
+              <h1 className="mt-2 text-3xl font-extrabold text-[#0F2744] sm:text-4xl">
                 {title}
               </h1>
               <p className="mt-3 max-w-2xl text-sm leading-relaxed text-slate-600 sm:text-base">
@@ -58,7 +58,7 @@ function LegalLayout({
             {children}
           </div>
 
-          <div className="mt-10 rounded-2xl border border-teal-100 bg-teal-50 p-5">
+          <div className="mt-10 rounded-lg border border-teal-100 bg-teal-50/80 p-5">
             <p className="text-sm font-bold text-[#0F2744]">Contato do responsável</p>
             <p className="mt-1 text-sm text-slate-600">Jose Aparecido da Silva</p>
             <a

@@ -35,7 +35,7 @@ export default function Pricing() {
           {/* Hero */}
           <div className="text-center mb-16 animate-fade-up">
             <div className="section-label mx-auto">Nossos Planos</div>
-            <h1 className="text-4xl lg:text-6xl font-black text-[#0F2744] mb-6 tracking-tight">
+            <h1 className="text-4xl lg:text-6xl font-black text-[#0F2744] mb-6 tracking-normal">
               O investimento certo para o seu <br />
               <span className="text-[#0D9488]">próximo emprego</span>
             </h1>
@@ -101,7 +101,7 @@ export default function Pricing() {
                 <Sparkles className="h-32 w-32" />
               </div>
               <div className="mb-8 relative z-10">
-                <div className="inline-block bg-teal-500 text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-[0.2em] mb-6">
+                <div className="inline-block bg-teal-500 text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-normal mb-6">
                   MAIS POPULAR
                 </div>
                 <h2 className="text-2xl font-bold mb-2">Plano Premium</h2>
@@ -139,7 +139,7 @@ export default function Pricing() {
                   Assinar Premium
                 </a>
               )}
-              <p className="text-center text-[10px] text-slate-400 font-bold mt-4 tracking-widest uppercase relative z-10">
+              <p className="text-center text-[10px] text-slate-400 font-bold mt-4 tracking-normalst uppercase relative z-10">
                 Pagamento Seguro via Stripe
               </p>
             </div>

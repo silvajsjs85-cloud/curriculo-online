@@ -66,7 +66,7 @@ export default function Models() {
             <Layout className="h-3.5 w-3.5" />
             Galeria de Templates
           </div>
-          <h1 className="text-4xl lg:text-6xl font-black text-[#0F2744] mb-6 tracking-tight">
+          <h1 className="text-4xl lg:text-6xl font-black text-[#0F2744] mb-6 tracking-normal">
             Escolha o modelo <br />
             <span className="text-[#0D9488]">ideal</span> para você
           </h1>
@@ -94,7 +94,7 @@ export default function Models() {
                     </div>
                   )}
                   <div className="absolute top-4 left-4 z-20 flex gap-2">
-                     <span className={`text-[10px] font-black px-2.5 py-1 rounded-full uppercase tracking-widest ${t.tag === 'Premium' ? 'bg-amber-100 text-amber-700' : 'bg-teal-50 text-[#0D9488]'}`}>
+                     <span className={`text-[10px] font-black px-2.5 py-1 rounded-full uppercase tracking-normalst ${t.tag === 'Premium' ? 'bg-amber-100 text-amber-700' : 'bg-teal-50 text-[#0D9488]'}`}>
                        {t.tag}
                      </span>
                   </div>

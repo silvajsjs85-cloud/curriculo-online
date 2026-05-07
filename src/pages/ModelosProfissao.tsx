@@ -35,7 +35,7 @@ export default function ModelosProfissao() {
               Ver todos os modelos
             </Link>
             
-            <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight mb-4 leading-tight">
+            <h1 className="text-3xl sm:text-5xl font-extrabold tracking-normal mb-4 leading-tight">
               {data.h1}
             </h1>
             <p className="text-lg sm:text-xl text-slate-300 max-w-2xl">

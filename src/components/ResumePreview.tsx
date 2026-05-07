@@ -91,7 +91,7 @@ function PremiumSectionTitle({
           color: ink,
           fontSize: 12,
           fontWeight: 850,
-          letterSpacing: "0.12em",
+          letterSpacing: "0",
           textTransform: "uppercase",
         }}
       >
@@ -110,7 +110,7 @@ function ClassicSectionTitle({ children }: { children: string }) {
         color: "#0F2744",
         fontSize: 12,
         fontWeight: 800,
-        letterSpacing: "0.14em",
+        letterSpacing: "0",
         marginBottom: 12,
         paddingBottom: 5,
         textTransform: "uppercase",
@@ -128,7 +128,7 @@ function MinimalSectionTitle({ children }: { children: string }) {
         color: "#64748b",
         fontSize: 11,
         fontWeight: 800,
-        letterSpacing: "0.18em",
+        letterSpacing: "0",
         marginBottom: 14,
         textTransform: "uppercase",
       }}
@@ -145,7 +145,7 @@ function ExecutiveSectionTitle({ children }: { children: string }) {
         color: "#0F2744",
         fontSize: 12,
         fontWeight: 850,
-        letterSpacing: "0.13em",
+        letterSpacing: "0",
         marginBottom: 12,
         textTransform: "uppercase",
       }}
@@ -219,7 +219,7 @@ function ModernTemplate({ id, data }: { id: string; data: ResumeData }) {
               <span style={{ backgroundColor: MODERN.primary, borderRadius: 999, height: 8, width: 34 }} />
               <span style={{ backgroundColor: MODERN.secondary, borderRadius: 999, height: 8, width: 8 }} />
             </div>
-            <h1 style={{ color: MODERN.ink, fontSize: 38, fontWeight: 900, letterSpacing: "-0.01em", lineHeight: 1.04 }}>
+            <h1 style={{ color: MODERN.ink, fontSize: 38, fontWeight: 900, letterSpacing: "0", lineHeight: 1.04 }}>
               {pi.name || "Seu Nome"}
             </h1>
             <p style={{ color: MODERN.primary, fontSize: 14, fontWeight: 800, marginTop: 6 }}>
@@ -376,7 +376,7 @@ function ClassicTemplate({ id, data }: { id: string; data: ResumeData }) {
             style={{ boxShadow: "0 0 0 4px #f1f5f9", height: 86, width: 86 }}
           />
         )}
-        <h1 style={{ color: "#0F2744", fontSize: 32, fontWeight: 800, letterSpacing: "0.08em", lineHeight: 1.15, textTransform: "uppercase" }}>
+        <h1 style={{ color: "#0F2744", fontSize: 32, fontWeight: 800, letterSpacing: "0", lineHeight: 1.15, textTransform: "uppercase" }}>
           {pi.name || "Seu Nome"}
         </h1>
         <p style={{ color: "#475569", fontSize: 13, fontStyle: "italic", marginTop: 7 }}>{headline}</p>
@@ -495,10 +495,10 @@ function MinimalTemplate({ id, data }: { id: string; data: ResumeData }) {
     >
       <header style={{ display: "grid", gap: 18, gridTemplateColumns: pi.photo ? "1fr 76px" : "1fr", marginBottom: 32 }}>
         <div>
-          <p style={{ color: "#0D9488", fontSize: 11, fontWeight: 800, letterSpacing: "0.16em", marginBottom: 9, textTransform: "uppercase" }}>
+          <p style={{ color: "#0D9488", fontSize: 11, fontWeight: 800, letterSpacing: "0", marginBottom: 9, textTransform: "uppercase" }}>
             {headline}
           </p>
-          <h1 style={{ color: "#0F2744", fontSize: 40, fontWeight: 350, letterSpacing: "-0.03em", lineHeight: 1.04 }}>
+          <h1 style={{ color: "#0F2744", fontSize: 40, fontWeight: 350, letterSpacing: "0", lineHeight: 1.04 }}>
             {pi.name || "Seu Nome"}
           </h1>
           <div style={{ color: "#64748b", display: "flex", flexWrap: "wrap", fontSize: 10.5, gap: "8px 16px", marginTop: 14 }}>
@@ -621,7 +621,7 @@ function ExecutiveTemplate({ id, data }: { id: string; data: ResumeData }) {
           />
         )}
         <div style={{ marginBottom: 26 }}>
-          <p style={{ color: EXECUTIVE.primary, fontSize: 10, fontWeight: 850, letterSpacing: "0.16em", marginBottom: 10, textTransform: "uppercase" }}>
+          <p style={{ color: EXECUTIVE.primary, fontSize: 10, fontWeight: 850, letterSpacing: "0", marginBottom: 10, textTransform: "uppercase" }}>
             Contato
           </p>
           <div style={{ display: "grid", gap: 9 }}>
@@ -643,7 +643,7 @@ function ExecutiveTemplate({ id, data }: { id: string; data: ResumeData }) {
         </div>
 
         <div style={{ marginBottom: 26 }}>
-          <p style={{ color: EXECUTIVE.primary, fontSize: 10, fontWeight: 850, letterSpacing: "0.16em", marginBottom: 10, textTransform: "uppercase" }}>
+          <p style={{ color: EXECUTIVE.primary, fontSize: 10, fontWeight: 850, letterSpacing: "0", marginBottom: 10, textTransform: "uppercase" }}>
             Habilidades
           </p>
           {skills.length > 0 ? (
@@ -666,7 +666,7 @@ function ExecutiveTemplate({ id, data }: { id: string; data: ResumeData }) {
         </div>
 
         <div>
-          <p style={{ color: EXECUTIVE.primary, fontSize: 10, fontWeight: 850, letterSpacing: "0.16em", marginBottom: 10, textTransform: "uppercase" }}>
+          <p style={{ color: EXECUTIVE.primary, fontSize: 10, fontWeight: 850, letterSpacing: "0", marginBottom: 10, textTransform: "uppercase" }}>
             Idiomas
           </p>
           {languages.length > 0 ? (
@@ -684,10 +684,10 @@ function ExecutiveTemplate({ id, data }: { id: string; data: ResumeData }) {
 
       <main style={{ flex: 1, padding: "18mm 18mm 18mm 15mm" }}>
         <header style={{ borderBottom: "1px solid #dbe8ef", marginBottom: 24, paddingBottom: 18 }}>
-          <p style={{ color: EXECUTIVE.primary, fontSize: 11, fontWeight: 850, letterSpacing: "0.18em", marginBottom: 9, textTransform: "uppercase" }}>
+          <p style={{ color: EXECUTIVE.primary, fontSize: 11, fontWeight: 850, letterSpacing: "0", marginBottom: 9, textTransform: "uppercase" }}>
             {headline}
           </p>
-          <h1 style={{ color: "#0F2744", fontSize: 39, fontWeight: 900, letterSpacing: "-0.02em", lineHeight: 1.02 }}>
+          <h1 style={{ color: "#0F2744", fontSize: 39, fontWeight: 900, letterSpacing: "0", lineHeight: 1.02 }}>
             {pi.name || "Seu Nome"}
           </h1>
         </header>
@@ -777,7 +777,7 @@ function CreativeTemplate({ id, data }: { id: string; data: ResumeData }) {
         </div>
 
         <div>
-          <h3 style={{ fontSize: "16px", textTransform: "uppercase", letterSpacing: "2px", marginBottom: "15px", fontWeight: 600, borderBottom: "1px solid rgba(255, 255, 255, 0.3)", paddingBottom: "5px" }}>
+          <h3 style={{ fontSize: "16px", textTransform: "uppercase", letterSpacing: "0", marginBottom: "15px", fontWeight: 600, borderBottom: "1px solid rgba(255, 255, 255, 0.3)", paddingBottom: "5px" }}>
             Contato
           </h3>
           <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
@@ -791,7 +791,7 @@ function CreativeTemplate({ id, data }: { id: string; data: ResumeData }) {
         </div>
 
         <div>
-          <h3 style={{ fontSize: "16px", textTransform: "uppercase", letterSpacing: "2px", marginBottom: "15px", fontWeight: 600, borderBottom: "1px solid rgba(255, 255, 255, 0.3)", paddingBottom: "5px" }}>
+          <h3 style={{ fontSize: "16px", textTransform: "uppercase", letterSpacing: "0", marginBottom: "15px", fontWeight: 600, borderBottom: "1px solid rgba(255, 255, 255, 0.3)", paddingBottom: "5px" }}>
             Habilidades
           </h3>
           {skills.length > 0 ? (
@@ -812,7 +812,7 @@ function CreativeTemplate({ id, data }: { id: string; data: ResumeData }) {
         </div>
 
         <div>
-          <h3 style={{ fontSize: "16px", textTransform: "uppercase", letterSpacing: "2px", marginBottom: "15px", fontWeight: 600, borderBottom: "1px solid rgba(255, 255, 255, 0.3)", paddingBottom: "5px" }}>
+          <h3 style={{ fontSize: "16px", textTransform: "uppercase", letterSpacing: "0", marginBottom: "15px", fontWeight: 600, borderBottom: "1px solid rgba(255, 255, 255, 0.3)", paddingBottom: "5px" }}>
             Idiomas
           </h3>
           {languages.length > 0 ? (
@@ -832,7 +832,7 @@ function CreativeTemplate({ id, data }: { id: string; data: ResumeData }) {
 
       <main style={{ flex: 1, padding: "20mm 15mm", display: "flex", flexDirection: "column", gap: "25px", backgroundColor: "#FFFFFF" }}>
         <div style={{ marginBottom: "10px" }}>
-          <h1 style={{ fontSize: "32px", fontWeight: 700, color: "#333333", marginBottom: "5px", lineHeight: 1.1, textTransform: "uppercase", letterSpacing: "-0.5px" }}>
+          <h1 style={{ fontSize: "32px", fontWeight: 700, color: "#333333", marginBottom: "5px", lineHeight: 1.1, textTransform: "uppercase", letterSpacing: "0" }}>
             {pi.name || "Seu Nome"}
           </h1>
           <div style={{ fontSize: "18px", color: "#666666", fontWeight: 500, display: "inline-block", position: "relative" }}>
@@ -847,7 +847,7 @@ function CreativeTemplate({ id, data }: { id: string; data: ResumeData }) {
         </div>
 
         <div>
-          <h2 style={{ fontSize: "18px", fontWeight: 600, color: "#333333", textTransform: "uppercase", letterSpacing: "1px", marginBottom: "15px", display: "flex", alignItems: "center", gap: "10px" }}>
+          <h2 style={{ fontSize: "18px", fontWeight: 600, color: "#333333", textTransform: "uppercase", letterSpacing: "0", marginBottom: "15px", display: "flex", alignItems: "center", gap: "10px" }}>
             <span style={{ display: "block", width: "24px", height: "3px", backgroundColor: ACCENT }} />
             Experiência
           </h2>
@@ -868,7 +868,7 @@ function CreativeTemplate({ id, data }: { id: string; data: ResumeData }) {
         </div>
 
         <div>
-          <h2 style={{ fontSize: "18px", fontWeight: 600, color: "#333333", textTransform: "uppercase", letterSpacing: "1px", marginBottom: "15px", display: "flex", alignItems: "center", gap: "10px" }}>
+          <h2 style={{ fontSize: "18px", fontWeight: 600, color: "#333333", textTransform: "uppercase", letterSpacing: "0", marginBottom: "15px", display: "flex", alignItems: "center", gap: "10px" }}>
             <span style={{ display: "block", width: "24px", height: "3px", backgroundColor: ACCENT }} />
             Formação
           </h2>
@@ -914,7 +914,7 @@ function TechnicalTemplate({ id, data }: { id: string; data: ResumeData }) {
     >
       <header style={{ borderBottom: `2px solid ${TEXT}`, paddingBottom: "20px", marginBottom: "25px" }}>
         <div style={{ display: "flex", alignItems: "baseline", gap: "15px", marginBottom: "12px" }}>
-          <h1 style={{ fontSize: "32px", fontWeight: 800, letterSpacing: "-0.5px", textTransform: "uppercase", margin: 0 }}>
+          <h1 style={{ fontSize: "32px", fontWeight: 800, letterSpacing: "0", textTransform: "uppercase", margin: 0 }}>
             {pi.name || "Seu Nome"}
           </h1>
           <div style={{ fontSize: "20px", fontWeight: 600, color: ACCENT }}>
@@ -944,7 +944,7 @@ function TechnicalTemplate({ id, data }: { id: string; data: ResumeData }) {
         <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "25px", paddingRight: "30px", borderRight: `1px solid ${BORDER}` }}>
           
           <section>
-            <h2 style={{ fontSize: "16px", fontWeight: 800, textTransform: "uppercase", marginBottom: "18px", color: TEXT, letterSpacing: "1px" }}>
+            <h2 style={{ fontSize: "16px", fontWeight: 800, textTransform: "uppercase", marginBottom: "18px", color: TEXT, letterSpacing: "0" }}>
               Experiência
             </h2>
             {experiences.length > 0 ? (
@@ -972,7 +972,7 @@ function TechnicalTemplate({ id, data }: { id: string; data: ResumeData }) {
           </section>
 
           <section>
-            <h2 style={{ fontSize: "16px", fontWeight: 800, textTransform: "uppercase", marginBottom: "18px", color: TEXT, letterSpacing: "1px" }}>
+            <h2 style={{ fontSize: "16px", fontWeight: 800, textTransform: "uppercase", marginBottom: "18px", color: TEXT, letterSpacing: "0" }}>
               Formação
             </h2>
             {education.length > 0 ? (
@@ -1001,7 +1001,7 @@ function TechnicalTemplate({ id, data }: { id: string; data: ResumeData }) {
         <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "25px", paddingLeft: "30px" }}>
           
           <section>
-            <h2 style={{ fontSize: "16px", fontWeight: 800, textTransform: "uppercase", marginBottom: "18px", color: TEXT, letterSpacing: "1px" }}>
+            <h2 style={{ fontSize: "16px", fontWeight: 800, textTransform: "uppercase", marginBottom: "18px", color: TEXT, letterSpacing: "0" }}>
               Habilidades Técnicas
             </h2>
             {skills.length > 0 ? (
@@ -1030,7 +1030,7 @@ function TechnicalTemplate({ id, data }: { id: string; data: ResumeData }) {
           </section>
 
           <section>
-            <h2 style={{ fontSize: "16px", fontWeight: 800, textTransform: "uppercase", marginBottom: "18px", color: TEXT, letterSpacing: "1px" }}>
+            <h2 style={{ fontSize: "16px", fontWeight: 800, textTransform: "uppercase", marginBottom: "18px", color: TEXT, letterSpacing: "0" }}>
               Idiomas
             </h2>
             {languages.length > 0 ? (
@@ -1089,10 +1089,10 @@ function FirstJobTemplate({ id, data }: { id: string; data: ResumeData }) {
           </div>
         )}
         
-        <h1 style={{ fontSize: "32px", fontWeight: 800, color: TEXT, marginBottom: "5px", letterSpacing: "-0.5px" }}>
+        <h1 style={{ fontSize: "32px", fontWeight: 800, color: TEXT, marginBottom: "5px", letterSpacing: "0" }}>
           {pi.name || "Seu Nome"}
         </h1>
-        <div style={{ fontSize: "16px", fontWeight: 700, color: ACCENT, textTransform: "uppercase", letterSpacing: "1px", marginBottom: "18px" }}>
+        <div style={{ fontSize: "16px", fontWeight: 700, color: ACCENT, textTransform: "uppercase", letterSpacing: "0", marginBottom: "18px" }}>
           {getHeadline(data)}
         </div>
         
@@ -1114,7 +1114,7 @@ function FirstJobTemplate({ id, data }: { id: string; data: ResumeData }) {
       </header>
 
       <section style={{ padding: "10mm 15mm", backgroundColor: ACCENT_LIGHT }}>
-        <h2 style={{ fontSize: "18px", fontWeight: 800, color: ACCENT, marginBottom: "25px", textTransform: "uppercase", textAlign: "center", letterSpacing: "1.5px" }}>
+        <h2 style={{ fontSize: "18px", fontWeight: 800, color: ACCENT, marginBottom: "25px", textTransform: "uppercase", textAlign: "center", letterSpacing: "0" }}>
           Formação Acadêmica
         </h2>
         {education.length > 0 ? (
@@ -1139,7 +1139,7 @@ function FirstJobTemplate({ id, data }: { id: string; data: ResumeData }) {
       </section>
 
       <section style={{ padding: "10mm 15mm", backgroundColor: "#ffffff" }}>
-        <h2 style={{ fontSize: "18px", fontWeight: 800, color: ACCENT, marginBottom: "25px", textTransform: "uppercase", textAlign: "center", letterSpacing: "1.5px" }}>
+        <h2 style={{ fontSize: "18px", fontWeight: 800, color: ACCENT, marginBottom: "25px", textTransform: "uppercase", textAlign: "center", letterSpacing: "0" }}>
           Experiência & Atividades
         </h2>
         {experiences.length > 0 ? (
@@ -1170,7 +1170,7 @@ function FirstJobTemplate({ id, data }: { id: string; data: ResumeData }) {
 
       <div style={{ display: "flex", flex: 1 }}>
         <section style={{ flex: 1, padding: "10mm 15mm", backgroundColor: ACCENT_LIGHT }}>
-          <h2 style={{ fontSize: "18px", fontWeight: 800, color: ACCENT, marginBottom: "25px", textTransform: "uppercase", textAlign: "center", letterSpacing: "1.5px" }}>
+          <h2 style={{ fontSize: "18px", fontWeight: 800, color: ACCENT, marginBottom: "25px", textTransform: "uppercase", textAlign: "center", letterSpacing: "0" }}>
             Habilidades
           </h2>
           {skills.length > 0 ? (
@@ -1190,7 +1190,7 @@ function FirstJobTemplate({ id, data }: { id: string; data: ResumeData }) {
         </section>
 
         <section style={{ flex: 1, padding: "10mm 15mm", backgroundColor: "#ffffff" }}>
-          <h2 style={{ fontSize: "18px", fontWeight: 800, color: ACCENT, marginBottom: "25px", textTransform: "uppercase", textAlign: "center", letterSpacing: "1.5px" }}>
+          <h2 style={{ fontSize: "18px", fontWeight: 800, color: ACCENT, marginBottom: "25px", textTransform: "uppercase", textAlign: "center", letterSpacing: "0" }}>
             Idiomas
           </h2>
           {languages.length > 0 ? (
@@ -1237,10 +1237,10 @@ function InternationalTemplate({ id, data }: { id: string; data: ResumeData }) {
     >
       <header style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "20px" }}>
         <div style={{ flex: 1 }}>
-          <h1 style={{ fontSize: "34px", fontWeight: 800, color: ACCENT, textTransform: "uppercase", letterSpacing: "-0.5px", margin: 0, marginBottom: "5px" }}>
+          <h1 style={{ fontSize: "34px", fontWeight: 800, color: ACCENT, textTransform: "uppercase", letterSpacing: "0", margin: 0, marginBottom: "5px" }}>
             {pi.name || "Seu Nome"}
           </h1>
-          <div style={{ fontSize: "16px", fontWeight: 600, color: TEXT_DARK, textTransform: "uppercase", letterSpacing: "1px" }}>
+          <div style={{ fontSize: "16px", fontWeight: 600, color: TEXT_DARK, textTransform: "uppercase", letterSpacing: "0" }}>
             {getHeadline(data)}
           </div>
         </div>
@@ -1262,7 +1262,7 @@ function InternationalTemplate({ id, data }: { id: string; data: ResumeData }) {
 
       <div style={{ display: "flex", marginBottom: "25px" }}>
         <div style={{ width: "25%", paddingRight: "20px" }}>
-          <h2 style={{ fontSize: "13px", fontWeight: 700, color: ACCENT, textTransform: "uppercase", letterSpacing: "1px", textAlign: "right" }}>
+          <h2 style={{ fontSize: "13px", fontWeight: 700, color: ACCENT, textTransform: "uppercase", letterSpacing: "0", textAlign: "right" }}>
             Resumo<br />Profissional
           </h2>
         </div>
@@ -1279,7 +1279,7 @@ function InternationalTemplate({ id, data }: { id: string; data: ResumeData }) {
 
       <div style={{ display: "flex", marginBottom: "25px" }}>
         <div style={{ width: "25%", paddingRight: "20px" }}>
-          <h2 style={{ fontSize: "13px", fontWeight: 700, color: ACCENT, textTransform: "uppercase", letterSpacing: "1px", textAlign: "right" }}>
+          <h2 style={{ fontSize: "13px", fontWeight: 700, color: ACCENT, textTransform: "uppercase", letterSpacing: "0", textAlign: "right" }}>
             Experiência
           </h2>
         </div>
@@ -1307,7 +1307,7 @@ function InternationalTemplate({ id, data }: { id: string; data: ResumeData }) {
 
       <div style={{ display: "flex", marginBottom: "25px" }}>
         <div style={{ width: "25%", paddingRight: "20px" }}>
-          <h2 style={{ fontSize: "13px", fontWeight: 700, color: ACCENT, textTransform: "uppercase", letterSpacing: "1px", textAlign: "right" }}>
+          <h2 style={{ fontSize: "13px", fontWeight: 700, color: ACCENT, textTransform: "uppercase", letterSpacing: "0", textAlign: "right" }}>
             Formação
           </h2>
         </div>
@@ -1330,7 +1330,7 @@ function InternationalTemplate({ id, data }: { id: string; data: ResumeData }) {
 
       <div style={{ display: "flex", marginBottom: "25px" }}>
         <div style={{ width: "25%", paddingRight: "20px" }}>
-          <h2 style={{ fontSize: "13px", fontWeight: 700, color: ACCENT, textTransform: "uppercase", letterSpacing: "1px", textAlign: "right" }}>
+          <h2 style={{ fontSize: "13px", fontWeight: 700, color: ACCENT, textTransform: "uppercase", letterSpacing: "0", textAlign: "right" }}>
             Idiomas
           </h2>
         </div>
@@ -1364,7 +1364,7 @@ function InternationalTemplate({ id, data }: { id: string; data: ResumeData }) {
 
       <div style={{ display: "flex" }}>
         <div style={{ width: "25%", paddingRight: "20px" }}>
-          <h2 style={{ fontSize: "13px", fontWeight: 700, color: ACCENT, textTransform: "uppercase", letterSpacing: "1px", textAlign: "right" }}>
+          <h2 style={{ fontSize: "13px", fontWeight: 700, color: ACCENT, textTransform: "uppercase", letterSpacing: "0", textAlign: "right" }}>
             Habilidades
           </h2>
         </div>
@@ -1407,7 +1407,7 @@ function InstitutionalTemplate({ id, data }: { id: string; data: ResumeData }) {
       }}
     >
       <header style={{ border: `2px solid ${ACCENT}`, padding: "20px 24px", textAlign: "center", marginBottom: "24px" }}>
-        <div style={{ fontSize: "10px", letterSpacing: "2px", textTransform: "uppercase", color: ACCENT, fontWeight: 700, marginBottom: "8px" }}>
+        <div style={{ fontSize: "10px", letterSpacing: "0", textTransform: "uppercase", color: ACCENT, fontWeight: 700, marginBottom: "8px" }}>
           Currículo profissional
         </div>
         <h1 style={{ fontSize: "30px", lineHeight: 1.1, margin: 0, color: INK, textTransform: "uppercase" }}>
@@ -1424,7 +1424,7 @@ function InstitutionalTemplate({ id, data }: { id: string; data: ResumeData }) {
       </header>
 
       <section style={{ marginBottom: "20px" }}>
-        <h2 style={{ fontSize: "13px", letterSpacing: "1.6px", textTransform: "uppercase", color: ACCENT, borderBottom: `1px solid ${LINE}`, paddingBottom: "6px", marginBottom: "10px" }}>
+        <h2 style={{ fontSize: "13px", letterSpacing: "0", textTransform: "uppercase", color: ACCENT, borderBottom: `1px solid ${LINE}`, paddingBottom: "6px", marginBottom: "10px" }}>
           Perfil
         </h2>
         {pi.summary ? (
@@ -1435,7 +1435,7 @@ function InstitutionalTemplate({ id, data }: { id: string; data: ResumeData }) {
       </section>
 
       <section style={{ marginBottom: "20px" }}>
-        <h2 style={{ fontSize: "13px", letterSpacing: "1.6px", textTransform: "uppercase", color: ACCENT, borderBottom: `1px solid ${LINE}`, paddingBottom: "6px", marginBottom: "12px" }}>
+        <h2 style={{ fontSize: "13px", letterSpacing: "0", textTransform: "uppercase", color: ACCENT, borderBottom: `1px solid ${LINE}`, paddingBottom: "6px", marginBottom: "12px" }}>
           Experiência Profissional
         </h2>
         {experiences.length > 0 ? (
@@ -1456,7 +1456,7 @@ function InstitutionalTemplate({ id, data }: { id: string; data: ResumeData }) {
 
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "22px" }}>
         <section>
-          <h2 style={{ fontSize: "13px", letterSpacing: "1.6px", textTransform: "uppercase", color: ACCENT, borderBottom: `1px solid ${LINE}`, paddingBottom: "6px", marginBottom: "12px" }}>
+          <h2 style={{ fontSize: "13px", letterSpacing: "0", textTransform: "uppercase", color: ACCENT, borderBottom: `1px solid ${LINE}`, paddingBottom: "6px", marginBottom: "12px" }}>
             Formação
           </h2>
           {education.length > 0 ? (
@@ -1473,7 +1473,7 @@ function InstitutionalTemplate({ id, data }: { id: string; data: ResumeData }) {
         </section>
 
         <section>
-          <h2 style={{ fontSize: "13px", letterSpacing: "1.6px", textTransform: "uppercase", color: ACCENT, borderBottom: `1px solid ${LINE}`, paddingBottom: "6px", marginBottom: "12px" }}>
+          <h2 style={{ fontSize: "13px", letterSpacing: "0", textTransform: "uppercase", color: ACCENT, borderBottom: `1px solid ${LINE}`, paddingBottom: "6px", marginBottom: "12px" }}>
             Competências
           </h2>
           {skills.length > 0 ? (
@@ -1531,13 +1531,13 @@ function CompactTemplate({ id, data }: { id: string; data: ResumeData }) {
 
       {pi.summary ? (
         <section style={{ marginBottom: "10px" }}>
-          <h2 style={{ margin: "0 0 4px", fontSize: "11px", textTransform: "uppercase", letterSpacing: "1px", borderBottom: `1px solid ${LINE}`, paddingBottom: "3px" }}>Resumo</h2>
+          <h2 style={{ margin: "0 0 4px", fontSize: "11px", textTransform: "uppercase", letterSpacing: "0", borderBottom: `1px solid ${LINE}`, paddingBottom: "3px" }}>Resumo</h2>
           <p style={{ margin: 0, color: MUTED }}>{pi.summary}</p>
         </section>
       ) : null}
 
       <section style={{ marginBottom: "10px" }}>
-        <h2 style={{ margin: "0 0 5px", fontSize: "11px", textTransform: "uppercase", letterSpacing: "1px", borderBottom: `1px solid ${LINE}`, paddingBottom: "3px" }}>Experiência</h2>
+        <h2 style={{ margin: "0 0 5px", fontSize: "11px", textTransform: "uppercase", letterSpacing: "0", borderBottom: `1px solid ${LINE}`, paddingBottom: "3px" }}>Experiência</h2>
         {experiences.length > 0 ? (
           experiences.map((exp) => (
             <div key={exp.id} style={{ marginBottom: "8px" }}>
@@ -1554,7 +1554,7 @@ function CompactTemplate({ id, data }: { id: string; data: ResumeData }) {
       </section>
 
       <section style={{ marginBottom: "10px" }}>
-        <h2 style={{ margin: "0 0 5px", fontSize: "11px", textTransform: "uppercase", letterSpacing: "1px", borderBottom: `1px solid ${LINE}`, paddingBottom: "3px" }}>Formação</h2>
+        <h2 style={{ margin: "0 0 5px", fontSize: "11px", textTransform: "uppercase", letterSpacing: "0", borderBottom: `1px solid ${LINE}`, paddingBottom: "3px" }}>Formação</h2>
         {education.length > 0 ? (
           education.map((edu) => (
             <div key={edu.id} style={{ display: "flex", justifyContent: "space-between", gap: "10px", marginBottom: "5px" }}>
@@ -1569,7 +1569,7 @@ function CompactTemplate({ id, data }: { id: string; data: ResumeData }) {
 
       <div style={{ display: "grid", gridTemplateColumns: "1.2fr 0.8fr", gap: "14px" }}>
         <section>
-          <h2 style={{ margin: "0 0 5px", fontSize: "11px", textTransform: "uppercase", letterSpacing: "1px", borderBottom: `1px solid ${LINE}`, paddingBottom: "3px" }}>Habilidades</h2>
+          <h2 style={{ margin: "0 0 5px", fontSize: "11px", textTransform: "uppercase", letterSpacing: "0", borderBottom: `1px solid ${LINE}`, paddingBottom: "3px" }}>Habilidades</h2>
           {skills.length > 0 ? (
             <p style={{ margin: 0, color: MUTED }}>{skills.map((skill) => skill.name).join(" • ")}</p>
           ) : (
@@ -1577,7 +1577,7 @@ function CompactTemplate({ id, data }: { id: string; data: ResumeData }) {
           )}
         </section>
         <section>
-          <h2 style={{ margin: "0 0 5px", fontSize: "11px", textTransform: "uppercase", letterSpacing: "1px", borderBottom: `1px solid ${LINE}`, paddingBottom: "3px" }}>Idiomas</h2>
+          <h2 style={{ margin: "0 0 5px", fontSize: "11px", textTransform: "uppercase", letterSpacing: "0", borderBottom: `1px solid ${LINE}`, paddingBottom: "3px" }}>Idiomas</h2>
           {languages.length > 0 ? (
             <p style={{ margin: 0, color: MUTED }}>{languages.map((lang) => `${lang.name} (${lang.level})`).join(", ")}</p>
           ) : (

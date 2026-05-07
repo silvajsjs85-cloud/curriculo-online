@@ -33,10 +33,10 @@ export default function Contact() {
                 <Mail className="h-7 w-7 text-white" />
               </div>
               <div>
-                <p className="text-xs font-bold uppercase tracking-[0.18em] text-teal-700">
+                <p className="text-xs font-bold uppercase tracking-normal text-teal-700">
                   Currículo Fácil
                 </p>
-                <h1 className="mt-2 text-3xl font-extrabold tracking-tight text-[#0F2744] sm:text-4xl">
+                <h1 className="mt-2 text-3xl font-extrabold tracking-normal text-[#0F2744] sm:text-4xl">
                   Fale com o Currículo Fácil
                 </h1>
                 <p className="mt-3 max-w-xl text-sm leading-relaxed text-slate-600 sm:text-base">
@@ -180,7 +180,7 @@ export default function Contact() {
                   />
                 </div>
                 <div className="flex flex-col items-center sm:items-start text-center sm:text-left flex-1 w-full">
-                  <span className="text-xs font-bold uppercase tracking-wider text-teal-600 mb-1.5">
+                  <span className="text-xs font-bold uppercase tracking-normalr text-teal-600 mb-1.5">
                     Responsável pelo atendimento
                   </span>
                   <h3 className="text-2xl font-extrabold text-[#0F2744]">
@@ -241,7 +241,7 @@ export default function Contact() {
 
             {/* Product */}
             <div className="min-w-0">
-              <h4 className="text-white font-semibold text-sm mb-4 uppercase tracking-wider">Produto</h4>
+              <h4 className="text-white font-semibold text-sm mb-4 uppercase tracking-normalr">Produto</h4>
               <ul className="space-y-2.5">
                 {[
                   { label: "Modelos de currículo", to: "/modelos" },
@@ -261,7 +261,7 @@ export default function Contact() {
 
             {/* Legal and support */}
             <div className="min-w-0">
-              <h4 className="text-white font-semibold text-sm mb-4 uppercase tracking-wider">Legal e Suporte</h4>
+              <h4 className="text-white font-semibold text-sm mb-4 uppercase tracking-normalr">Legal e Suporte</h4>
               <ul className="space-y-2.5 break-words">
                 <li>
                   <Link to="/termos-de-uso" className="text-sm text-gray-400 hover:text-white transition-colors duration-150">

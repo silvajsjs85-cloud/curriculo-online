@@ -513,7 +513,7 @@ export default function Builder() {
 
             <div className="grid min-w-0 flex-1 gap-3 sm:grid-cols-[minmax(220px,360px)_180px]">
               <div>
-                <Label className="mb-1.5 block text-[11px] font-bold uppercase tracking-[0.14em] text-slate-500">
+                <Label className="mb-1.5 block text-[11px] font-bold uppercase tracking-normal text-slate-500">
                   Nome do currículo
                 </Label>
                 <Input
@@ -525,7 +525,7 @@ export default function Builder() {
               </div>
 
               <div>
-                <Label className="mb-1.5 block text-[11px] font-bold uppercase tracking-[0.14em] text-slate-500">
+                <Label className="mb-1.5 block text-[11px] font-bold uppercase tracking-normal text-slate-500">
                   Modelo
                 </Label>
                 <Dialog
@@ -624,7 +624,7 @@ export default function Builder() {
                                     <div className="flex h-7 w-7 items-center justify-center rounded-full bg-amber-400/90 shadow-sm">
                                       <Lock className="h-3.5 w-3.5 text-white" />
                                     </div>
-                                    <span className="rounded-full bg-amber-400/90 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wide text-white shadow-sm">
+                                    <span className="rounded-full bg-amber-400/90 px-2 py-0.5 text-[9px] font-bold uppercase tracking-normal text-white shadow-sm">
                                       Premium
                                     </span>
                                   </div>
@@ -810,7 +810,7 @@ export default function Builder() {
 
               <TabsContent value="pessoal" className="mt-5 space-y-4">
                 <div className="rounded-2xl border border-teal-100 bg-teal-50/70 p-4">
-                  <Label className="mb-3 block text-xs font-bold uppercase tracking-[0.14em] text-teal-700">
+                  <Label className="mb-3 block text-xs font-bold uppercase tracking-normal text-teal-700">
                     Foto de perfil
                   </Label>
                   <div className="flex items-center gap-4">
@@ -858,7 +858,7 @@ export default function Builder() {
                     <h4 className="font-bold text-[#0F2744] flex items-center gap-2">
                       <Linkedin className="h-4 w-4 text-[#0A66C2]" />
                       Importar do LinkedIn
-                      <span className="ml-2 inline-flex items-center rounded-full bg-blue-100 px-2 py-0.5 text-[10px] font-bold text-blue-700 uppercase tracking-wider">
+                      <span className="ml-2 inline-flex items-center rounded-full bg-blue-100 px-2 py-0.5 text-[10px] font-bold text-blue-700 uppercase tracking-normalr">
                         Em breve
                       </span>
                     </h4>
@@ -1126,7 +1126,7 @@ export default function Builder() {
                   >
                     <X className="h-4 w-4" />
                   </button>
-                  <div className="mb-2 flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-teal-300">
+                  <div className="mb-2 flex items-center gap-2 text-xs font-bold uppercase tracking-normal text-teal-300">
                     <Sparkles className="h-3.5 w-3.5" />
                     Dica
                   </div>
@@ -1135,7 +1135,7 @@ export default function Builder() {
               )}
               
               <div className="mb-4">
-                <div className="mb-2 text-xs font-bold uppercase tracking-wider text-slate-500">
+                <div className="mb-2 text-xs font-bold uppercase tracking-normalr text-slate-500">
                   Etapa {currentStepIndex + 1} de {STEPS.length}
                 </div>
                 <div className="h-2 w-full overflow-hidden rounded-full bg-slate-100">
@@ -1167,7 +1167,7 @@ export default function Builder() {
         >
           <div className="flex shrink-0 flex-col gap-3 border-b border-white/70 bg-[#F7F6F3]/80 px-4 py-4 backdrop-blur md:flex-row md:items-center md:justify-between">
             <div>
-              <p className="text-xs font-bold uppercase tracking-[0.18em] text-teal-700">Pré-visualização</p>
+              <p className="text-xs font-bold uppercase tracking-normal text-teal-700">Pré-visualização</p>
               <h2 className="text-lg font-extrabold text-[#0F2744]">Currículo em tempo real</h2>
             </div>
             <div className="flex flex-wrap items-center gap-2">
@@ -1282,7 +1282,7 @@ function SectionHeader({
   return (
     <div>
       <div className="mb-4 flex items-center justify-between gap-3">
-        <span className="inline-flex items-center gap-2 rounded-full border border-teal-100 bg-teal-50 px-3 py-1 text-xs font-bold uppercase tracking-[0.14em] text-teal-700">
+        <span className="inline-flex items-center gap-2 rounded-full border border-teal-100 bg-teal-50 px-3 py-1 text-xs font-bold uppercase tracking-normal text-teal-700">
           Etapa {index + 1} de {STEPS.length}
         </span>
         <span className="h-2 flex-1 overflow-hidden rounded-full bg-slate-100">
@@ -1297,7 +1297,7 @@ function SectionHeader({
           <Icon className="h-5 w-5" />
         </div>
         <div>
-          <h1 className="text-xl font-extrabold tracking-tight text-[#0F2744]">{step.title}</h1>
+          <h1 className="text-xl font-extrabold tracking-normal text-[#0F2744]">{step.title}</h1>
           <p className="mt-1 text-sm leading-relaxed text-slate-600">{step.subtitle}</p>
         </div>
       </div>
@@ -1321,7 +1321,7 @@ function Field({
   return (
     <div className="space-y-1.5">
       <div className="flex items-center justify-between gap-2">
-        <Label className={`text-xs font-bold uppercase tracking-[0.12em] ${invalid ? "text-red-500" : "text-slate-500"}`}>
+        <Label className={`text-xs font-bold uppercase tracking-normal ${invalid ? "text-red-500" : "text-slate-500"}`}>
           {label}
           {required && <span className="ml-1 text-teal-600">*</span>}
         </Label>

@@ -60,7 +60,7 @@ export function Navbar() {
           <div className="h-10 w-10 rounded-xl bg-[#0F2744] flex items-center justify-center transition-transform group-hover:scale-105 group-hover:rotate-3 shadow-lg shadow-blue-900/10">
             <FileText className="h-5 w-5 text-teal-400" />
           </div>
-          <span className="font-black text-xl tracking-tight text-[#0F2744]">
+          <span className="font-black text-xl tracking-normal text-[#0F2744]">
             Currículo<span className="text-[#0D9488]">Fácil</span>
           </span>
         </Link>

@@ -26,7 +26,7 @@ function PageLoader() {
   return (
     <main
       className="grid min-h-[calc(100vh-4rem)] place-items-center px-4"
-      style={{ backgroundColor: "#F7F6F3" }}
+      style={{ background: "linear-gradient(180deg, #F8FAFC 0%, #FFFFFF 52%, #F8FAFC 100%)" }}
     >
       <div className="h-10 w-10 animate-spin rounded-full border-4 border-teal-100 border-t-[#0D9488]" />
     </main>
