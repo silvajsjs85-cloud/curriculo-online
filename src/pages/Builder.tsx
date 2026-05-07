@@ -1,5 +1,5 @@
 import { useState, useCallback, useRef, useEffect, type ReactNode } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import {
   ArrowLeft,
   Briefcase,
@@ -48,7 +48,7 @@ import { UpgradeModal } from "@/components/UpgradeModal";
 import { getResume, saveResume } from "@/lib/storage";
 import { publishResume } from "@/lib/public-resume";
 import { parseLinkedInPDF } from "@/lib/pdf-parser";
-import { isPremiumTemplate } from "@/lib/subscription";
+import { isPremiumTemplate, canUserUseTemplate } from "@/lib/templateAccess";
 import { useSubscription } from "@/hooks/useSubscription";
 import type { Resume, ResumeData, Experience, Education, Skill, Language, ResumeTemplate } from "@/types/resume";
 import { defaultResumeData } from "@/types/resume";
@@ -165,6 +165,7 @@ function getPdfFileName(title: string) {
 
 export default function Builder() {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
 
   const [resume, setResume] = useState<Resume>(() => {
     const found = id ? getResume(id) : null;
@@ -197,7 +198,30 @@ export default function Builder() {
   const [templateFilter, setTemplateFilter] = useState("todos");
   const [upgradeModalOpen, setUpgradeModalOpen] = useState(false);
   const [lockedTemplateName, setLockedTemplateName] = useState<string | undefined>(undefined);
-  const { subscribed } = useSubscription();
+  const { subscribed, paymentUrl } = useSubscription();
+
+  // ── Proteção de acesso por URL direta ──────────────────────
+  // Se um usuário abrir /builder/:id com um currículo que usa template Premium
+  // sem ter assinatura, o template é revertido para "modern" (gratuito).
+  useEffect(() => {
+    if (!isPremiumTemplate(resume.template)) return; // template gratuito, ok
+
+    canUserUseTemplate(resume.template).then((result) => {
+      if (!result.allowed) {
+        // Reverter template para gratuito e mostrar modal de upgrade
+        setResume((r) => ({ ...r, template: "modern" }));
+        setLockedTemplateName(
+          BUILDER_TEMPLATE_OPTIONS.find((t) => t.id === resume.template)?.name
+        );
+        setUpgradeModalOpen(true);
+        toast.warning("Template Premium revertido", {
+          description: "Assine o plano Premium para usar este modelo.",
+        });
+      }
+    });
+  // Executar apenas uma vez ao montar (não depender de `resume` para evitar loop)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const [isTipDismissed, setIsTipDismissed] = useState(() => localStorage.getItem("builderTipDismissed") === "true");
   
   const SUMMARY_PLACEHOLDERS = [
@@ -253,6 +277,17 @@ export default function Builder() {
   };
 
   const handleExportPDF = async () => {
+    // ── Verificação de acesso Premium antes de exportar ────────
+    const accessResult = await canUserUseTemplate(resume.template);
+    if (!accessResult.allowed) {
+      setLockedTemplateName(
+        BUILDER_TEMPLATE_OPTIONS.find((t) => t.id === resume.template)?.name
+      );
+      setUpgradeModalOpen(true);
+      toast.error("Este modelo é Premium. Faça upgrade para exportar o PDF.");
+      return;
+    }
+
     setExporting(true);
     try {
       const [{ default: html2canvas }, { jsPDF }] = await Promise.all([
@@ -276,6 +311,17 @@ export default function Builder() {
   };
 
   const handlePublish = async () => {
+    // ── Verificação de acesso Premium antes de publicar ────────
+    const accessResult = await canUserUseTemplate(resume.template);
+    if (!accessResult.allowed) {
+      setLockedTemplateName(
+        BUILDER_TEMPLATE_OPTIONS.find((t) => t.id === resume.template)?.name
+      );
+      setUpgradeModalOpen(true);
+      toast.error("Este modelo é Premium. Faça upgrade para compartilhar.");
+      return;
+    }
+
     setPublishing(true);
     
     // Create a deterministic or random slug for this user/resume
@@ -1218,6 +1264,7 @@ export default function Builder() {
         open={upgradeModalOpen}
         onOpenChange={setUpgradeModalOpen}
         templateName={lockedTemplateName}
+        paymentUrl={paymentUrl}
       />
     </div>
   );

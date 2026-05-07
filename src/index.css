@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -33,7 +35,6 @@
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
-
   .dark {
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
@@ -58,22 +59,16 @@
 }
 
 @layer base {
-  * {
-    @apply border-border;
-    box-sizing: border-box;
-  }
+  * { @apply border-border; box-sizing: border-box; }
   html {
     scroll-behavior: smooth;
     overflow-x: hidden;
     overflow-y: auto;
     width: 100%;
+    font-family: 'Inter', system-ui, sans-serif;
   }
-  #modelos,
-  #como-funciona,
-  #depoimentos,
-  #dicas,
-  #contato {
-    scroll-margin-top: 96px;
+  #modelos, #como-funciona, #depoimentos, #dicas, #contato {
+    scroll-margin-top: 80px;
   }
   body {
     @apply bg-background text-foreground;
@@ -83,24 +78,19 @@
     position: relative;
     min-height: 100%;
     width: 100%;
+    font-family: 'Inter', system-ui, sans-serif;
   }
-  #root {
-    overflow-x: hidden;
-    overflow-y: visible;
-    min-height: 100%;
-  }
+  #root { overflow-x: hidden; overflow-y: visible; min-height: 100%; }
 }
 
 @layer components {
-  /* Template card hover — done in CSS so it doesn't interfere with mobile touch scroll */
   @media (hover: hover) {
     .template-card:hover {
-      transform: translateY(-7px);
-      box-shadow: 0 22px 52px rgba(15, 39, 68, 0.15), 0 4px 16px rgba(15, 39, 68, 0.08) !important;
+      transform: translateY(-6px);
+      box-shadow: 0 20px 48px rgba(15,39,68,0.14), 0 4px 16px rgba(15,39,68,0.08) !important;
     }
   }
 
-  /* Template preview container — responsive height */
   .template-preview-container {
     position: relative;
     overflow: hidden;
@@ -108,27 +98,12 @@
     contain: layout style paint;
     height: 200px;
   }
-  @media (min-width: 640px) {
-    .template-preview-container {
-      height: 260px;
-    }
-  }
-  @media (min-width: 1024px) {
-    .template-preview-container {
-      height: 296px;
-    }
-  }
+  @media (min-width: 640px) { .template-preview-container { height: 260px; } }
+  @media (min-width: 1024px) { .template-preview-container { height: 300px; } }
 
-  /* Templates carousel — hide scrollbar on all browsers */
-  .templates-carousel {
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-  }
-  .templates-carousel::-webkit-scrollbar {
-    display: none;
-  }
+  .templates-carousel { scrollbar-width: none; -ms-overflow-style: none; }
+  .templates-carousel::-webkit-scrollbar { display: none; }
 
-  /* Teal CTA button — hover/focus/active that works even with inline style bg */
   .btn-cta {
     background-color: #0D9488 !important;
     color: white !important;
@@ -136,13 +111,58 @@
   }
   .btn-cta:hover {
     background-color: #0f766e !important;
-    box-shadow: 0 6px 28px rgba(13,148,136,0.5) !important;
+    box-shadow: 0 8px 32px rgba(13,148,136,0.5) !important;
+    transform: translateY(-1px);
   }
-  .btn-cta:active {
-    transform: translateY(1px);
-  }
+  .btn-cta:active { transform: translateY(1px); }
   .btn-cta:focus-visible {
     outline: none !important;
     box-shadow: 0 0 0 3px rgba(13,148,136,0.35), 0 4px 16px rgba(13,148,136,0.3) !important;
   }
+
+  .section-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(13,148,136,0.08);
+    border: 1px solid rgba(13,148,136,0.2);
+    color: #0D9488;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 5px 14px;
+    border-radius: 999px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .card-hover {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  @media (hover: hover) {
+    .card-hover:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(15,39,68,0.12) !important;
+    }
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes slideInRight {
+    from { opacity: 0; transform: translateX(32px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+  .animate-fade-in { animation: fadeIn 0.6s ease forwards; }
+  .animate-fade-up { animation: fadeInUp 0.7s ease forwards; }
+  .animate-slide-right { animation: slideInRight 0.7s ease forwards; }
+  .animate-delay-100 { animation-delay: 0.1s; opacity: 0; }
+  .animate-delay-200 { animation-delay: 0.2s; opacity: 0; }
+  .animate-delay-300 { animation-delay: 0.3s; opacity: 0; }
+  .animate-delay-400 { animation-delay: 0.4s; opacity: 0; }
 }
